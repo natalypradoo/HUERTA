@@ -20,6 +20,11 @@ app.set('puerto',3002);
    next();
  });
 
+ //config del cors
+//libreria pára poder usar reac cositas de permiso da acceso al servidor
+const cors = require('cors');
+app.use(cors());
+
  // rutas para mi aplicación
  app.use(require('./router/router'));
 
