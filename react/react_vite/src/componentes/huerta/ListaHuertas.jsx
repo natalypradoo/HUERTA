@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {Link} from 'react-router-dom'
-import * as API from '../servicios/servicios'
+import * as API from '../../servicios/servicios'
 export function ListaHuertas(){
     const [huerta,setHuertas]=useState([]);
     useEffect(()=>{

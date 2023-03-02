@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import {Link} from 'react-router-dom'
-import * as API from '../servicios/servicios'
+import * as API from '../../servicios/servicios'
 
 export function EliminarHuerta(){
     const id_huerta=useRef();
