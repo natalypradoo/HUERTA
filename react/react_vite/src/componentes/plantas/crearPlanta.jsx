@@ -60,7 +60,7 @@ export function CrearPlanta(){
                 </div>
                 <div className="form-group">
                     <button onClick={agregar} type="button" className="btn btn-primary">Guardar</button>
-                    <Link to={'/listarHuertas'}><button type="button" className="btn btn-secondary">Volver al Listado</button></Link>
+                    <Link to={'/listarPlantas'}><button type="button" className="btn btn-secondary">Volver al Listado</button></Link>
 
                 </div>
                 </div>

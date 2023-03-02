@@ -9,8 +9,8 @@ import { EliminarHuerta } from './componentes/huerta/eliminarHuerta'
 import { ListaUsuarios } from './componentes/usuarios/ListaUsuarios'
 import { CreaUsuario } from './componentes/usuarios/CreaUsuario'
 import { ListaPlantas } from './componentes/plantas/ListaPlantas'
-// import { CrearPlanta } from './componentes/plantas/crearPlanta', <Route path='/crearPlanta' element={<crearPlanta/>}> </Route>
-// import { AgregarComentario } from './componentes/plantas/agregarComentario' , <Route path='/comentar' element={<agregarComentario/>}> </Route>
+import { CrearPlanta } from './componentes/plantas/crearPlanta'
+import { AgregarComentario } from './componentes/plantas/agregarComentario'
 
 function App() {
   const [usuario,setUsuario]=useState('');
@@ -37,6 +37,8 @@ function App() {
         <Route path='/listarUsuarios' element={<ListaUsuarios/>}> </Route>
         <Route path='/crearUsuario' element={<CreaUsuario/>}> </Route>
         <Route path='/listarPlantas' element={<ListaPlantas/>}> </Route>
+        <Route path='/crearPlanta' element={<CrearPlanta/>}> </Route>
+        <Route path='/comentar' element={<AgregarComentario/>}> </Route>
         
        
       </Routes>
