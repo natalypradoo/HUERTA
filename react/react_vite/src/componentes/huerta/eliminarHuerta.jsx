@@ -23,7 +23,7 @@ export function EliminarHuerta(){
             </div>
                 <div className="card-body">
                 <div className="form-group">
-                  <label for="">Número de Huerta</label>
+                  <label for="">Ingrese el número de Huerta que desea eliminar</label>
                   <input type="text" ref= {id_huerta} name="" id="" className="form-control" placeholder="" aria-describedby="helpId"/>
                   <small id="helpId" className="text-muted">&nbsp;</small>
                 </div>

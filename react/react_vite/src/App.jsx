@@ -1,14 +1,16 @@
 import {Routes,Route} from 'react-router-dom'
 import {useState, useEffect} from 'react'
-import { ListaHuertas } from './componentes/huerta/ListaHuertas'
 import { Principal } from './componentes/Principal'
+import { Menu } from './componentes/Menu'
+import {LoginForm} from './componentes/login/LoginForm'
+import { ListaHuertas } from './componentes/huerta/ListaHuertas'
 import { CreaHuerta } from './componentes/huerta/CreaHuerta'
+import { EliminarHuerta } from './componentes/huerta/eliminarHuerta'
 import { ListaUsuarios } from './componentes/usuarios/ListaUsuarios'
 import {CreaUsuario} from './componentes/usuarios/CreaUsuario'
-import {LoginForm} from './componentes/login/LoginForm'
-import { Menu } from './componentes/Menu'
-import { EliminarHuerta } from './componentes/huerta/eliminarHuerta'
-
+import {ListaPlantas} from './componentes/plantas/ListaPlantas'
+import { crearPlanta } from './componentes/plantas/crearPlanta'
+import { agregarComentario } from './componentes/plantas/agregarComentario'
 
 function App() {
   const [usuario,setUsuario]=useState('');
@@ -28,12 +30,16 @@ function App() {
 <Menu/>
 <Routes>
         <Route path='/' element={<Principal/>}></Route>
+        <Route path='/login' element={<LoginForm/>}></Route>   
         <Route path='/listarHuertas' element={<ListaHuertas/>}> </Route>
         <Route path='/crearHuerta' element={<CreaHuerta/>}> </Route>
+        <Route path='/eliminarHuerta' element={<EliminarHuerta/>}> </Route>
         <Route path='/listarUsuarios' element={<ListaUsuarios/>}> </Route>
         <Route path='/crearUsuario' element={<CreaUsuario/>}> </Route>
-        <Route path='/eliminarHuerta' element={<EliminarHuerta/>}> </Route>
-        <Route path='/login' element={<LoginForm/>}></Route>   
+        <Route path='/listarPlantas' element={<ListaPlantas/>}> </Route>
+        <Route path='/crearPlanta' element={<crearPlanta/>}> </Route>
+        <Route path='/comentar' element={<agregarComentario/>}> </Route>
+
       </Routes>
 </div>
     }    
