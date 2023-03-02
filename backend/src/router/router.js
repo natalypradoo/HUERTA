@@ -176,7 +176,7 @@ router.get('/huertas',(req,res)=>{
     //  if(err){
     //     res.sendStatus(403);
      // }else{
-         let query= `SELECT h.nombre Nombre, h.localidad Localidad, count(uh.id_huerta) Usuarios FROM huerta.huerta as h 
+         let query= `SELECT h.id_huerta, h.nombre, h.localidad, count(uh.id_huerta) usuarios FROM huerta.huerta as h 
          INNER JOIN huerta.usuario_huerta as uh where h.id_huerta=uh.id_huerta 
          group by uh.id_huerta;`;
       mysqlConeccion.query(query,(err,registros)=>{
@@ -289,7 +289,7 @@ router.get('/plantas',(req,res)=>{
     //  if(err){
       //   res.sendStatus(403);
     //  }else{
-         let query= `SELECT pl.nombre, pl.comentario, pl.epoca, pl.luna, pl.forma, count(cp.id_planta) Comentarios FROM huerta.plantas AS pl 
+         let query= `SELECT pl.id_planta, pl.nombre, pl.comentario, pl.epoca, pl.luna, pl.forma, count(cp.id_planta) Comentarios FROM huerta.plantas AS pl 
          LEFT JOIN comentario_planta AS cp ON pl.id_planta=cp.id_planta GROUP BY cp.id_planta;`;
       mysqlConeccion.query(query,(err,registros)=>{
           if(!err){

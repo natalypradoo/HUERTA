@@ -17,6 +17,7 @@ export function ListaHuertas(){
                 <thead className="thead-inverse">
                      <tr></tr>
                          <tr>
+                            <th>Número</th>
                             <th>Nombre</th>
                             <th>Localidad</th>
                             <th>Usuarios</th>
@@ -27,9 +28,11 @@ export function ListaHuertas(){
                     <tbody>
                         {huerta.map((huerta)=>(
                             <tr>
+                            <td scope="row">{huerta.id_huerta}</td>
                             <td scope="row">{huerta.nombre}</td>
                             <td scope="row">{huerta.localidad}</td>
-                            <td scope="row">{huerta.id_huerta}</td>
+                            <td scope="row">{huerta.usuarios}</td>
+
                             <td>
                             <div className="btn-group" role="group" aria-label="">
                                 <button type="button" className="btn btn-success">Editar</button>

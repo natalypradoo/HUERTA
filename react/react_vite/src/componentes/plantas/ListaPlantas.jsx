@@ -18,20 +18,27 @@ export function ListaPlantas(){
                 <thead className="thead-inverse">
                      <tr></tr>
                          <tr>
+                            
+                            <th>Número</th>
                             <th>Nombre</th>
-                            <th>Comentario</th>
                             <th>Estación del Año</th>
-                             <th>Fase Lunar</th>
+                            <th>Fase Lunar</th>
+                            <th>Forma de Plantar</th>
+                            <th>Comentario</th>
+
             
                          </tr>
                     </thead>
                     <tbody>
                         {plantas.map((plantas)=>(
                             <tr>
+                            <td scope="row">{plantas.id_planta}</td>
                             <td scope="row">{plantas.nombre}</td>
-                            <td scope="row">{plantas.comentario}</td>
                             <td scope="row">{plantas.epoca}</td>
                             <td scope="row">{plantas.luna}</td>
+                            <td scope="row">{plantas.forma}</td>
+                            <td scope="row">{plantas.comentario}</td>
+
                             <td>
                             <div className="btn-group" role="group" aria-label="">
                                 <button type="button" className="btn btn-success">Editar</button>
