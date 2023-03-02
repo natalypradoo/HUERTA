@@ -31,7 +31,7 @@ export function ListaPlantas(){
                             <td scope="row">{plantas.nombre}</td>
                             <td scope="row">{plantas.comentario}</td>
                             <td scope="row">{plantas.epoca}</td>
-                            <td scope="row">{plantas.fase}</td>
+                            <td scope="row">{plantas.luna}</td>
                             <td>
                             <div className="btn-group" role="group" aria-label="">
                                 <button type="button" className="btn btn-success">Editar</button>

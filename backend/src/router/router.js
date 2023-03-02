@@ -284,12 +284,12 @@ router.put('/eliminarmihuerta/:id_huerta',(req,res)=>{
 /////////PLANTAS//////////
 /////////////////////////
 //Lista de Plantas con cantidad de comentarios
-router.get('/plantas', verificarToken, (req,res)=>{
-   jwt.verify(req.token,'huerta1Key',(err,valido)=>{
-      if(err){
-         res.sendStatus(403);
-      }else{
-         let query= `SELECT pl.nombre, pl.comentario, pl.epoca, pl.luna, pl.forma,  count(cp.id_planta) Comentarios FROM huerta.plantas AS pl 
+router.get('/plantas',(req,res)=>{
+   //jwt.verify(req.token,'huerta1Key',(err,valido)=>{
+    //  if(err){
+      //   res.sendStatus(403);
+    //  }else{
+         let query= `SELECT pl.nombre, pl.comentario, pl.epoca, pl.luna, pl.forma, count(cp.id_planta) Comentarios FROM huerta.plantas AS pl 
          LEFT JOIN comentario_planta AS cp ON pl.id_planta=cp.id_planta GROUP BY cp.id_planta;`;
       mysqlConeccion.query(query,(err,registros)=>{
           if(!err){
@@ -299,9 +299,9 @@ router.get('/plantas', verificarToken, (req,res)=>{
              console.log(err);
           }
        })
-      }
-   })
- });
+      });
+  // })
+ //});
 
  //ruta de prueba de generación de TOKEN
  function verificarToken(req,res,next){
