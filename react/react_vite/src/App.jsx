@@ -8,7 +8,7 @@ import { CreaHuerta } from './componentes/huerta/CreaHuerta'
 import { EliminarHuerta } from './componentes/huerta/eliminarHuerta'
 import { ListaUsuarios } from './componentes/usuarios/ListaUsuarios'
 import { CreaUsuario } from './componentes/usuarios/CreaUsuario'
-// import { ListaPlantas } from './componentes/plantas/ListaPlantas', <Route path='/listarPlantas' element={<ListaPlantas/>}> </Route>
+import { ListaPlantas } from './componentes/plantas/ListaPlantas'
 // import { CrearPlanta } from './componentes/plantas/crearPlanta', <Route path='/crearPlanta' element={<crearPlanta/>}> </Route>
 // import { AgregarComentario } from './componentes/plantas/agregarComentario' , <Route path='/comentar' element={<agregarComentario/>}> </Route>
 
@@ -36,6 +36,7 @@ function App() {
         <Route path='/eliminarHuerta' element={<EliminarHuerta/>}> </Route>
         <Route path='/listarUsuarios' element={<ListaUsuarios/>}> </Route>
         <Route path='/crearUsuario' element={<CreaUsuario/>}> </Route>
+        <Route path='/listarPlantas' element={<ListaPlantas/>}> </Route>
         
        
       </Routes>

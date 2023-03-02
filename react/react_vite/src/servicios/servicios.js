@@ -1,6 +1,6 @@
 const API_URL = 'http://localhost:3002'
 
-//API LOGIN//
+///API LOGIN///
 export async function Login(datos){
     const requestOptions={
         method: 'POST',
@@ -20,7 +20,21 @@ export async function Login(datos){
     }
 }
 
-//API HUERTAS//
+///API USUARIOS///
+
+//Listar Usuarios
+export async function getUsuarios(){
+    try{
+const response = await fetch(`${API_URL}/usuarios`);
+const data= await response.json();
+return data;
+}catch(error){
+console.log('Nuestro error',error);
+}
+};
+
+
+///API HUERTAS///
 
 // Listar Huertas
 export async function getHuertas(){
@@ -57,18 +71,25 @@ export function EliminarHuerta(datos){
     fetch(`${API_URL}/huertas`, requestOptions)
 }
 
-//API USUARIOS//
+///API PLANTAS///
 
-//Listar Usuarios
-export async function getUsuarios(){
+//Listar Plantas
+export async function getPlantas(){
+    const token = JSON.parse(localStorage.getItem('token'));
+    const requestOptions = {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
     try{
-const response = await fetch(`${API_URL}/usuarios`);
-const data= await response.json();
-return data;
-}catch(error){
-console.log('Nuestro error',error);
+        const response = await fetch(`${API_URL}/plantas`, requestOptions);
+        const data = await response.json();
+        return data;
+    }catch(error){
+        console.log('Nuestro error', error);
+    }
 }
-};
 
 
 
