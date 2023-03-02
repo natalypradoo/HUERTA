@@ -1,7 +1,7 @@
-export function agregarComentario(){
+export function AgregarComentario(){
     return(
         <div>
-            funciona
+            funcionaaaaaa
         </div>
     )
 }
