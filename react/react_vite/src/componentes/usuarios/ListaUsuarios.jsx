@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import {Link} from 'react-router-dom'
-import {useState} from 'react'
 import * as API from '../../servicios/servicios'
+
 export function ListaUsuarios(){
-    const [usuarios,setUsuarios]=useState([]);
+    const [usuario,setUsuarios]=useState([]);
     useEffect(()=>{
         API.getUsuarios().then(setUsuarios)
     },[])
@@ -17,21 +17,19 @@ export function ListaUsuarios(){
             <table className="table table-striped table-inverse table-responsive">
                 <thead className="thead-inverse">
                      <tr>
+                        <th>Número de usuario</th>
                         <th>Username</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Email</th>
-
-        
+                        <th>Nombre y Apellido</th>
+                        <th>Estado</th>
                      </tr>
                 </thead>
                 <tbody>
-                    {usuarios.map((usuarios)=>(
+                    {usuario.map((usuarios)=>(
                         <tr>
+                        <td scope="row">{usuarios.id_usuario}</td>
                         <td scope="row">{usuarios.username}</td>
-                        <td scope="row"> {personas.nombre}</td>
-                        <td scope="row">{personas.apellido}</td>
-                        <td scope="row">{personas.email}</td>
+                        <td scope="row"> {usuarios.nombre}</td>
+                        <td scope="row">{usuarios.estado}</td>
 
                         <td>
                         <div class="btn-group" role="group" aria-label="">

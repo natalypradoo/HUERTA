@@ -145,26 +145,23 @@ router.put('/resetpassword/:id',(req,res)=>{
 
 
 //LISTAR USUARIOS
-router.get('/usuarios', verificarToken, (req,res)=>{
-   jwt.verify(req.token,'huerta1Key',(err,valido)=>{
-      if(err){
-         res.sendStatus(403);
-      }else{
-         let query= `SELECT u.username, concat_ws(" ", p.nombre,p.apellido) Nombre, up.estado FROM huerta.usuarios as u 
-         inner join huerta.usuario_persona as up
-         inner join huerta.personas as p
-         where (u.id_usuario=up.id_usuario and up.id_persona=p.id_persona and up.estado='A');`;
+router.get('/usuarios', (req,res)=>{
+   //jwt.verify(req.token,'huerta1Key',(err,valido)=>{
+     // if(err){
+       //  res.sendStatus(403);
+      //}else{
+         let query= `SELECT u.id_usuario, u.username, concat_ws(" ", p.nombre,p.apellido) nombre, up.estado estado FROM huerta.usuarios as u inner join huerta.usuario_persona as up inner join huerta.personas as p where (u.id_usuario=up.id_usuario and up.id_persona=p.id_persona and up.estado='A');`;
       mysqlConeccion.query(query,(err,registros)=>{
          if(!err){
             console.log(registros.lenght)
             res.json(registros);
          }else{
             console.log(err);
-         };
+         }
+      })
       });
-      };
-   });
-});
+  // });
+//});
 
 /////////////////////////////
 /////////HUERTA/////////////
@@ -267,8 +264,9 @@ router.put('/mihuerta/:id_huerta',(req,res)=>{
 
 //DAR BAJA HUERTA
 router.put('/eliminarmihuerta/:id_huerta',(req,res)=>{
-   let id_huerta= req.params.id_huerta;
-   let query= `UPDATE huerta SET estado='B' WHERE id_huerta='${id_huerta}'`;
+   let id_huerta=req.params.id_huerta;
+   const {estado} = req.body;
+   let query= `UPDATE huerta SET estado='${estado}' WHERE id_huerta='${id_huerta}'`;
    mysqlConeccion.query(query,(err,registros)=>{
       if(!err){
        res.send('se eliminó la huerta exitosamente');

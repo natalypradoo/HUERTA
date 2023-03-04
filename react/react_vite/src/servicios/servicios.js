@@ -68,7 +68,7 @@ export function EliminarHuerta(datos){
         },
         body:JSON.stringify(datos)
     };
-    fetch(`${API_URL}/huertas`, requestOptions)
+    fetch(`${API_URL}/eliminarmihuerta`, requestOptions)
 }
 
 ///API PLANTAS///
