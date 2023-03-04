@@ -9,14 +9,18 @@ export function LoginForm() {
 
   const form =async (event) => {
     event.preventDefault();
-    const username = await API.Login({username,password})
-    console.log(usuario);
+    const user = await API.Login({username,password})
+   // console.log(usuario);
     if(user.status){
       window.localStorage.setItem('usuario',JSON.stringify(user));
-      setUsuario(usuario)
       setUsername('')
       setPassword('')
       window.location.reload(true)
+    }else{
+      setmensajeError(user.mensaje)
+      setTimeout(()=>{
+        setmensajeError('')
+      },4000)
     }
   };
 
@@ -25,21 +29,27 @@ export function LoginForm() {
           <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/"/>
          <link href="C:\Users\Nataly\huerta\react\react_vite\src\componentes\styles.css\bootstrap.min.css" rel="stylesheet"/>
         <link href="C:\Users\Nataly\react\silicon_react_vite\src\styles.css\registrostyle.css" rel="stylesheet"/>
-        <div class="container" name="login">
-            <div class="row justify-content-center">
-            <div class="col-md-5">
-             <div class="card">
-               <h2 class="card-title text-center">Log In</h2>
-                <div class="card-body py-md-4">
+        <div className="container" name="login">
+            <div className="row justify-content-center">
+            <div className="col-md-5">
+             <div className="card">
+               <h2 className="card-title text-center">Log In</h2>
+                <div className="card-body py-md-4">
                  <form onSubmit={form}>
-                 
-                    <div class="form-group">
-                       <input type="text" class="form-control" required="required" id="username" value={username}  name="username" placeholder="Nombre de Usuario" onChange={(event)=>setUsername(event.target.value)}></input>
+                 {
+                    mensajeError?
+                    <div className="alert alert-danger" role="alert">
+                      {mensajeError}
+                    </div>:''
+                  }
+
+                    <div className="form-group">
+                       <input type="text" className="form-control" required="required" id="username" value={username}  name="username" placeholder="Nombre de Usuario" onChange={(event)=>setUsername(event.target.value)}></input>
                   </div>
-                  <div class="form-group">
-                    <input type="password" class="form-control" required="required" id="password" value={password} name="password" placeholder="Password" onChange={(event)=>setPassword(event.target.value)}></input>
+                  <div className="form-group">
+                    <input type="password" className="form-control" required="required" id="password" value={password} name="password" placeholder="Password" onChange={(event)=>setPassword(event.target.value)}></input>
                   </div>     
-                  <button class="w-100 btn btn-lg btn-danger" type="submit">Ingresar
+                  <button className="w-100 btn btn-lg btn-danger" type="submit">Ingresar
                 <a href="C:\Users\Nataly\huerta\react\react_vite\src\App.jsx"/>
                 </button>
                  </form>

@@ -83,7 +83,7 @@ router.post('/registro',async(req,res)=>{
 router.post('/login', async(req,res)=>{
     const {username,password} = req.body
     if(username!=undefined && password!=undefined){
-      mysqlConeccion.query('select u.id_usuario, u.username, u.password from huerta.usuarios as u where u.username=?;',[username],(err,rows)=>{
+      mysqlConeccion.query('select u.username, u.password from huerta.usuarios as u where u.username=?;',[username],(err,rows)=>{
 
       //mysqlConeccion.query('SELECT concat_ws(" ", p.nombre, p.apellido) Nombre, p.email, p.contacto from huerta.personas p inner join huerta.usuarios where usuarios.estado="A" and username=?;',[username],(err,rows)=>{
         if(!err){

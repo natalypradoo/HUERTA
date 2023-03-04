@@ -7,7 +7,6 @@ import { ListaHuertas } from './componentes/huerta/ListaHuertas'
 import { CreaHuerta } from './componentes/huerta/CreaHuerta'
 import { EliminarHuerta } from './componentes/huerta/eliminarHuerta'
 import { ListaUsuarios } from './componentes/usuarios/ListaUsuarios'
-import { CreaUsuario } from './componentes/usuarios/CreaUsuario'
 import { ListaPlantas } from './componentes/plantas/ListaPlantas'
 import { CrearPlanta } from './componentes/plantas/crearPlanta'
 import { AgregarComentario } from './componentes/plantas/agregarComentario'
@@ -35,7 +34,6 @@ function App() {
         <Route path='/crearHuerta' element={<CreaHuerta/>}> </Route>
         <Route path='/eliminarHuerta' element={<EliminarHuerta/>}> </Route>
         <Route path='/listarUsuarios' element={<ListaUsuarios/>}> </Route>
-        <Route path='/crearUsuario' element={<CreaUsuario/>}> </Route>
         <Route path='/listarPlantas' element={<ListaPlantas/>}> </Route>
         <Route path='/crearPlanta' element={<CrearPlanta/>}> </Route>
         <Route path='/comentar' element={<AgregarComentario/>}> </Route>

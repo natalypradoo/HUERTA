@@ -37,7 +37,6 @@ export function Menu(){
         </a>
         <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <Link className="dropdown-item" to={'/listarUsuarios'}>Lista de Usuarios</Link>
-          <Link className="dropdown-item" to={'/crearUsuario'}> Crear Usuario</Link> 
           <Link className="dropdown-item" to={'/contactos'}> Contactos</Link> 
 
         </div>
