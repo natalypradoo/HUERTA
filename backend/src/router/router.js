@@ -262,19 +262,22 @@ router.put('/mihuerta/:id_huerta',(req,res)=>{
 });
 
 //DAR BAJA HUERTA
-router.put('/eliminarmihuerta/:id_huerta',(req,res)=>{
-   let id_huerta=req.params.id_huerta;
-   const {estado} = req.body;
-   let query= `UPDATE huerta SET estado='${estado}' WHERE id_huerta='${id_huerta}'`;
-   mysqlConeccion.query(query,(err,registros)=>{
-      if(!err){
-       res.send('se eliminó la huerta exitosamente');
-      }else{
-         res.send('ocurrió un error en el servidor');
-      }
-   });
-}
-);
+router.put('/bajahuerta/:id_huerta', (req, res)=>{
+   // asigna a id_huerta el valor que recibe por el parametro 
+    let id_huerta  = req.params.id_huerta;
+    let query=`UPDATE huerta.huerta SET estado='B' WHERE id_huerta='${id_huerta}'`;
+    mysqlConeccion.query(query, (err, registros)=>{
+       if(!err){
+           res.json({
+               status: true,
+               mensaje:"La huerta se dio de BAJA correctamente"
+           });
+       }else{
+           console.log(err)
+       }
+   })
+   
+});
 
 
 ///////////////////////////

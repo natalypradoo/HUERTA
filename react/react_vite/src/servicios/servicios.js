@@ -78,6 +78,7 @@ export async function BajaHuerta(id_huerta){
         alert('No se puede conectar con el servidor')
     }
 }
+
 ///API PLANTAS///
 
 //Listar Plantas
