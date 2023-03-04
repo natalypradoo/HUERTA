@@ -10,6 +10,7 @@ import { ListaUsuarios } from './componentes/usuarios/ListaUsuarios'
 import { ListaPlantas } from './componentes/plantas/ListaPlantas'
 import { CrearPlanta } from './componentes/plantas/crearPlanta'
 import { AgregarComentario } from './componentes/plantas/agregarComentario'
+// import { Login } from './servicios/servicios'
 
 function App() {
   const [usuario,setUsuario]=useState('');
@@ -24,7 +25,9 @@ function App() {
     <>
     {
       !usuario?
-      <LoginForm/>:
+      <>
+        <LoginForm/>
+      </>:
 <div className='container'>
 <Menu/>
 <Routes>

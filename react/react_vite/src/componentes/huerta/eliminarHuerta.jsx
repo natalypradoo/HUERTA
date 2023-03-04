@@ -4,7 +4,7 @@ import * as API from '../../servicios/servicios'
 
 export function EliminarHuerta(){
 const darDeBajaHuerta = async(id_huerta)=>{
-  const huerta = await API.bajahuerta(id)
+  const huerta = await API.Bajahuerta(id_huerta)
   // const user = await API.bajaUsuario(id)
   if(huerta.status){
       
@@ -25,7 +25,7 @@ const darDeBajaHuerta = async(id_huerta)=>{
 
   return (
     <div>
-        {huertas.map((huerta) => (
+        {huerta.map((huerta) => (
           <li key={huerta.id_huerta}></li>
         ))}
       <input type="number" ref={id_huerta} />

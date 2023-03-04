@@ -38,10 +38,11 @@ export function ListaHuertas(){
                                 <button type="button" className="btn btn-success">Editar</button>
                                 <Link name="" id="" className="btn btn-danger" to={'/eliminarHuerta'} role="button">Eliminar</Link>
                                 
-                            </div>  </td>
+                            </div>  
+                            </td>
                         </tr>
                         ))}
-                        
+                    
                     </tbody>
                 </table>
             </div>

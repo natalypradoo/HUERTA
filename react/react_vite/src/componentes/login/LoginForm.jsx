@@ -1,5 +1,6 @@
 import { useState } from "react";
 import * as API from '../../servicios/servicios'
+
 import "./login.css";
 
 export function LoginForm() {
@@ -50,7 +51,6 @@ export function LoginForm() {
                     <input type="password" className="form-control" required="required" id="password" value={password} name="password" placeholder="Password" onChange={(event)=>setPassword(event.target.value)}></input>
                   </div>     
                   <button className="w-100 btn btn-lg btn-danger" type="submit">Ingresar
-                <a href="C:\Users\Nataly\huerta\react\react_vite\src\App.jsx"/>
                 </button>
                  </form>
                </div>
