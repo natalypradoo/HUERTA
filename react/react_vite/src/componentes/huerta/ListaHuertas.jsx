@@ -57,7 +57,6 @@ export function ListaHuertas(){
                             <th>Número</th>
                             <th>Nombre</th>
                             <th>Localidad</th>
-                            <th>Usuarios</th>
                              <th>Acciones</th>
             
                          </tr>
@@ -68,7 +67,6 @@ export function ListaHuertas(){
                             <td scope="row">{huerta.id_huerta}</td>
                             <td scope="row">{huerta.nombre}</td>
                             <td scope="row">{huerta.localidad}</td>
-                            <td scope="row">{huerta.usuarios}</td>
 
                             <td>
                             <div className="btn-group" role="group" aria-label="">

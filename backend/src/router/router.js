@@ -171,10 +171,8 @@ router.get('/huertas',(req,res)=>{
   // jwt.verify(req.token,'huerta1Key',(err,valido)=>{
     //  if(err){
     //     res.sendStatus(403);
-     // }else{
-         let query= `SELECT h.id_huerta, h.nombre, h.localidad, count(uh.id_huerta) usuarios FROM huerta.huerta as h 
-         INNER JOIN huerta.usuario_huerta as uh where h.id_huerta=uh.id_huerta 
-         group by uh.id_huerta;`;
+     // }else{ INNER JOIN huerta.usuario_huerta as uh where h.id_huerta=uh.id_huerta group by uh.id_huerta;
+         let query= `SELECT * FROM huerta.huerta `;
       mysqlConeccion.query(query,(err,registros)=>{
          if(!err){
             console.log(registros.lenght)
