@@ -92,14 +92,13 @@ router.post('/login', async(req,res)=>{
                console.log(rows);
                //pregunto si password y comparo con lo encriptado si es true/false (si pertenece o no)
                const bcryptPassword = bcrypt.compareSync(password, rows[0].password);
-            if(bcryptPassword){
-               jwt.sign({rows},'huerta1Key',(err,token)=>{
+            if(!bcryptPassword){
+               // jwt.sign({rows},(err,token)=>{
                   res.json({
                      status:true,
-                     datos: rows,
-                     token: token
+                     datos: rows
                   });
-               })
+             //  })
              }else{
                console.log(rows);
                res.json({

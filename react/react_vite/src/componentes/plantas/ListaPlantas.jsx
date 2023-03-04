@@ -24,7 +24,7 @@ export function ListaPlantas(){
                             <th>Estación del Año</th>
                             <th>Fase Lunar</th>
                             <th>Forma de Plantar</th>
-                            <th>Comentario</th>
+                            <th>Comentarios</th>
 
             
                          </tr>
@@ -37,7 +37,7 @@ export function ListaPlantas(){
                             <td scope="row">{plantas.epoca}</td>
                             <td scope="row">{plantas.luna}</td>
                             <td scope="row">{plantas.forma}</td>
-                            <td scope="row">{plantas.comentario}</td>
+                            <td scope="row">{plantas.Comentarios}</td>
 
                             <td>
                             <div className="btn-group" role="group" aria-label="">

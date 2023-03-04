@@ -5,13 +5,13 @@ import "./login.css";
 export function LoginForm() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [mensajeError,setmensajeError]=useState('');
 
-
-  const handleSubmit =async (event) => {
+  const form =async (event) => {
     event.preventDefault();
     const username = await API.Login({username,password})
     console.log(usuario);
-    if(user){
+    if(user.status){
       window.localStorage.setItem('usuario',JSON.stringify(user));
       setUsuario(usuario)
       setUsername('')
@@ -29,9 +29,10 @@ export function LoginForm() {
             <div class="row justify-content-center">
             <div class="col-md-5">
              <div class="card">
-               <h2 class="card-title text-center">Registro</h2>
+               <h2 class="card-title text-center">Log In</h2>
                 <div class="card-body py-md-4">
-                 <form onSubmit={handleSubmit}>
+                 <form onSubmit={form}>
+                 
                     <div class="form-group">
                        <input type="text" class="form-control" required="required" id="username" value={username}  name="username" placeholder="Nombre de Usuario" onChange={(event)=>setUsername(event.target.value)}></input>
                   </div>
