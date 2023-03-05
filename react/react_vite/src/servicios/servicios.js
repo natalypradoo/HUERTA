@@ -20,6 +20,26 @@ export async function Login(datos){
     }
 }
 
+/// API REGISTRO///
+export async function Registro(datos){
+    const requestOptions={
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datos)
+    };
+    try{
+    const response = await fetch(`${API_URL}/registro`, requestOptions)
+    const data = await response.json();
+    console.log(data)
+    return data;
+    } catch(e){
+        // console.log('no funciona')
+    }
+}
+
+
 ///API USUARIOS///
 
 //Listar Usuarios

@@ -184,6 +184,7 @@ router.get('/huertas',(req,res)=>{
       });
    //})
  //});
+ 
 ///Muestra los usuarios de una huerta en particular con el id de la huerta
 router.put('/huertas/:id_huerta',(req,res)=>{
    jwt.verify(req.token,'huerta1Key',(err,valido)=>{
