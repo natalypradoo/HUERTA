@@ -113,7 +113,7 @@ export function Registro(){
                   <small id="helpId" className="text-muted">&nbsp;</small>
                 </div>
                 <div className="form-group">
-                    <button type="submit" className="btn btn-primary">Guardar</button>
+                    <button onClick={registroForm} type="button" className="btn btn-primary">Guardar</button>
                     <Link to={'/'}><button type="button" className="btn btn-secondary">Volver</button></Link>
                 </div>
                 </form>
