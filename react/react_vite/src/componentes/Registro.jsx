@@ -16,14 +16,14 @@ export function Registro(){
     const registroForm  = async (event)=>{
         event.preventDefault();
         const user = await API.Registro({username, password, nombre, apellido, email,contacto})
-        if(user.status){
-            setmensajeSuccess(user.mensaje)
+        if(user){
+            setmensajeSuccess(user)
             setTimeout(()=>{
                 setmensajeSuccess('');
             }, 4000)
             // window.location.reload(true)
         }else{
-            setmensajeError(user.mensaje)
+            setmensajeError(user)
             setTimeout(()=>{
                 setmensajeError('');
             }, 4000)

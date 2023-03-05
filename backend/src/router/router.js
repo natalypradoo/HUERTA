@@ -28,19 +28,12 @@ router.post('/registro',async(req,res)=>{
    mysqlConeccion.query(query,(err,rows)=>{
      //console.log(rows);
       if(!err){
-         res.json({
-            status: true,
-            mensaje:"El usuario se creo correctamente"
-        });
        //res.send('se insertó correctamente el usuario: '+username);
       }else{
          console.log(err);
-         res.json({
-            status: false,
-            mensaje:"Hubo un error en el servidor.La accion no se realizo"
-        });
-   }})
-});
+         res.send('ocurrió un error en el servidor');
+      }
+   });
    let query1=`INSERT INTO huerta.personas(nombre, apellido, fecha_nacimiento, email, contacto) VALUES ('${nombre}','${apellido}','${fecha_nacimiento}','${email}','${contacto}')`;
    mysqlConeccion.query(query1,(err,rows)=>{
       //console.log(rows);
@@ -84,6 +77,7 @@ router.post('/registro',async(req,res)=>{
          res.send('ocurrió un error en el servidor quiery2');
       }
    });   
+});
 
 //LOGIN DE USUARIOS
 router.post('/login', async(req,res)=>{
