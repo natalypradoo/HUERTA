@@ -290,6 +290,55 @@ router.put('/eliminarmihuerta/:id_huerta',(req,res)=>{
    });
 }
 );
+//Editar huerta desde la lista de huertas
+router.put('/editarmihuerta/:id_huerta',(req,res)=>{
+   //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
+   //      if(err){
+   //         res.sendStatus(403);
+   //      }else{
+      let id_huerta= req.params.id_huerta;
+      const {id_usuario,nombre,localidad}=req.body
+      let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}' AND estado='A';`;
+      mysqlConeccion.query(query,(err,registros)=>{
+         if(!err){
+            if(registros!=0){
+               if(nombre!=undefined && nombre!="" && localidad!=undefined && localidad!=""){
+                  let query1= `UPDATE huerta.huerta SET nombre='${nombre}',localidad='${localidad}' WHERE id_huerta='${id_huerta}'`;
+                  mysqlConeccion.query(query1,(err,registros)=>{
+                     if(!err){
+                        res.json({
+                           status: true,
+                           mensaje: "Se modifico correctamente"
+                        });
+                     }else{
+                        res.json({
+                           status: false,
+                           mensaje: "OCURRIO UN ERROR EN EL SERVIDOR"
+                        });
+                     }
+                  });
+                  }else{
+                     res.json({
+                        status: false,
+                        mensaje: "Faltan campos o debe completarlos correctamente"
+                     });
+                  }             
+            }else{
+               res.json({
+                  status: false,
+                  mensaje: "NO ERES COLABORADOR EN ESTA HUERTA"
+               });
+            }
+         }else{
+            res.json({
+               status: false,
+               mensaje: "OCURRIO UN ERROR EN EL SERVIDOR"
+            });
+         }
+      });     
+   });
+   //   });
+   // });
 
 
 
