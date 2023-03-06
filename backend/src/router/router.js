@@ -20,67 +20,97 @@ router.get('/',(req,res)=>{
 /////////REGISTROS Y LOGIN/////////////
 ///////////////////////////////////////
 
-// REGISTRO USUARIO, personas y generacion de la relacion en la tabla usuario_persona
+// REGISTRO USUARIO, personas y generacion de la relacion en la tabla usuario_persona//CONFIRMAR QUE EL EMAIL NO SE REPITA FALTA
 router.post('/registro',async(req,res)=>{
    const {username, password,nombre,apellido,fecha_nacimiento,email,contacto}=req.body
    let hash = bcrypt.hashSync(password,10);
-   let query=`INSERT INTO huerta.usuarios (username, password) VALUES ('${username}','${hash}');`
-   mysqlConeccion.query(query,(err,rows)=>{
-     //console.log(rows);
+   //pregunta si el usuario ya existe
+   let query5=`SELECT * FROM huerta.usuarios WHERE username='${username}';`;
+   mysqlConeccion.query(query5,(err,rows)=>{
       if(!err){
-       //res.send('se insertó correctamente el usuario: '+username);
-      }else{
-         console.log(err);
-         res.send('ocurrió un error en el servidor');
-      }
-   });
-   let query1=`INSERT INTO huerta.personas(nombre, apellido, fecha_nacimiento, email, contacto) VALUES ('${nombre}','${apellido}','${fecha_nacimiento}','${email}','${contacto}')`;
-   mysqlConeccion.query(query1,(err,rows)=>{
-      //console.log(rows);
-      if(!err){
-         res.send('Se insertó correctamente el usuario: '+username+' persona: '+nombre);
-      }else{
-         console.log(err);
-         res.send('ocurrió un error en el servidor');
-      }
-   });
-   let query2=`SELECT u.id_usuario FROM huerta.usuarios as u where username='${username}';`;
-   mysqlConeccion.query(query2,(err,rows)=>{
-      //console.log(rowss);
-      const {id_usuario}=rows[0];
-      //console.log(id_usuario);
-      if(!err){
-         let query3=`SELECT p.id_persona FROM huerta.personas as p where email='${email}';`;
-         mysqlConeccion.query(query3,(err,rows)=>{
-         //console.log(rowss);
-            const {id_persona}=rows[0];
-            //console.log(id_usuario);
-            if(!err){
-            //res.send('Tomo el id_upersona: ' +id_persona);
-               let query4=`INSERT INTO huerta.usuario_persona(id_usuario, id_persona) VALUES ('${id_usuario}','${id_persona}');`;
-               mysqlConeccion.query(query4,(err,rows)=>{
+         if(rows.length==0){
+            let query=`INSERT INTO huerta.usuarios (username, password) VALUES ('${username}','${hash}');`
+            mysqlConeccion.query(query,(err,rows)=>{
+              //console.log(rows);
+               if(!err){
+                //res.send('se insertó correctamente el usuario: '+username);
+               }else{
+                  console.log(err);
+                  res.send('ocurrió un error en el servidor');
+               }
+            });
+            let query1=`INSERT INTO huerta.personas(nombre, apellido, fecha_nacimiento, email, contacto) VALUES ('${nombre}','${apellido}','${fecha_nacimiento}','${email}','${contacto}')`;
+            mysqlConeccion.query(query1,(err,rows)=>{
                //console.log(rows);
+               if(!err){
+                  res.send('Se insertó correctamente el usuario: '+username+' persona: '+nombre);
+               }else{
+                  console.log(err);
+                  res.send('ocurrió un error en el servidor');
+               }});
+               let query2=`SELECT u.id_usuario FROM huerta.usuarios as u where username='${username}';`;
+               mysqlConeccion.query(query2,(err,rows)=>{
+                  //console.log(rowss);
+                  const {id_usuario}=rows[0];
+                  //console.log(id_usuario);
                   if(!err){
-                     //res.send('Se insertó correctamente la relación: '+id_usuario+id_persona);
+                     let query3=`SELECT p.id_persona FROM huerta.personas as p where email='${email}';`;
+                     mysqlConeccion.query(query3,(err,rows)=>{
+                     //console.log(rowss);
+                        const {id_persona}=rows[0];
+                        //console.log(id_usuario);
+                        if(!err){
+                        //res.send('Tomo el id_upersona: ' +id_persona);
+                           let query4=`INSERT INTO huerta.usuario_persona(id_usuario, id_persona) VALUES ('${id_usuario}','${id_persona}');`;
+                           mysqlConeccion.query(query4,(err,rows)=>{
+                           //console.log(rows);
+                              if(!err){
+                                 //res.send('Se insertó correctamente la relación: '+id_usuario+id_persona);
+                              }else{
+                                 console.log(err);
+                                 res.send('ocurrió un error en el servidor quiery4');
+                              }
+                           });
+                        }else{
+                           console.log(err);
+                           res.send('ocurrió un error en el servidor quiery3');
+                        };
+                     });
                   }else{
                      console.log(err);
-                     res.send('ocurrió un error en el servidor quiery4');
+                     res.send('ocurrió un error en el servidor quiery2');
                   }
-               });
-            }else{
-               console.log(err);
-               res.send('ocurrió un error en el servidor quiery3');
-            };
-         });
-      }else{
-         console.log(err);
-         res.send('ocurrió un error en el servidor quiery2');
-      }
-   });   
+               });   
+            
+
+
+
+            
+         }else{
+            res.json({
+               status: false,
+               mensaje:"El USERNAME Ingresado ya Existe Ingrese Otro"
+              });
+         }
+         //res.send('se insertó correctamente el usuario: '+username);
+        }else{
+           //console.log(err);
+           res.json({
+            status: false,
+            mensaje:"Ocurrio un error en el servidor"
+           });
+           
+        }
+   })
+
 });
 
+
+   
+   
+
 //LOGIN DE USUARIOS
-router.post('/login', async(req,res)=>{
+router.post('/login',(req,res)=>{
     const {username,password} = req.body
     if(username!=undefined && password!=undefined){
       mysqlConeccion.query('select u.id_usuario, u.username, u.password from huerta.usuarios as u where u.username=?;',[username],(err,rows)=>{
@@ -89,7 +119,7 @@ router.post('/login', async(req,res)=>{
         if(!err){
          //cuenta cantidad de registros que devuelve base de datos
             if(rows.length!=0){
-               console.log(rows);
+               //console.log(rows);
                //pregunto si password y comparo con lo encriptado si es true/false (si pertenece o no)
                const bcryptPassword = bcrypt.compareSync(password, rows[0].password);
             if(bcryptPassword){
@@ -101,29 +131,29 @@ router.post('/login', async(req,res)=>{
                //    });
                // })
              }else{
-               console.log(rows);
+               //console.log(rows);
                res.json({
                   status: false,
-                  mensaje: "contraseña incorrecta"
+                  mensaje: "La Contraseña Ingresada es Incorrecta"
                });
              }
             }else{
                res.json({
                   status: false,
-                  mensaje: "El usuario no existe"
+                  mensaje: "El Usuario NO Existe"
                });
             }
         }else{
          res.json({
          status: false,
-         mensaje: "Ocurrió un erorr"
+         mensaje: "ERROR en el servidor"
       });
         }
      });
    }else{
       res.json({
          status: false,
-         mensaje: "Falta completar datos"
+         mensaje: "Falta Completar Datos"
      });
    }
 });
@@ -213,6 +243,8 @@ router.get('/huertas/:id_huerta',(req,res)=>{
  //     }
  //   })
  });
+
+
 
 
 ///////////////////////////////
@@ -570,50 +602,62 @@ router.get('/mihuerta/:id_usuario/:id_huerta/listaUsuariosHuerta',(req,res)=>{
  //});
 
  //AGREGAR USUARIO-- boton((AGREGAR COLABORADOR)) //////NO ME TOMA EL BODY
- router.post('/mihuerta/:id_usuario/:id_huerta/listaUsuariosHuerta',async(req,res)=>{
-   //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
-   //      if(err){
-   //         res.sendStatus(403);
-   //      }else{
-            let id_usuario= req.params.id_usuario;
-            let id_huerta= req.params.id_huerta;
-            const {username}=req.body
+ router.post('/mihuerta/:id_usuario/:id_huerta/listaUsuariosHuerta/agregar',(req,res)=>{
+   let id_usuario= req.params.id_usuario;
+   let id_huerta= req.params.id_huerta;
+   const {username}=req.body
+   //console.log(username);
+   //console.log(id_usuario);
+   //console.log(id_huerta);
+ 
+//  router.post('/mihuerta/:id_usuario/:id_huerta/listaUsuariosHuerta',(req,res)=>{
+//    //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
+//    //      if(err){
+//    //         res.sendStatus(403);
+//    //      }else{
+//             let id_usuario= req.params.id_usuario;
+//             let id_huerta= req.params.id_huerta;
+//             const {username}=req.body
+//             console.log(username);
+//             console.log(id_usuario);
+//             console.log(id_huerta);
             let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}' AND estado='A';`;
             mysqlConeccion.query(query,(err,registros)=>{
-               if(!err){
-                  if(registros.length!=undefined){
-                        if(username!=undefined && username!=""){
-                        let query1=`SELECT id_usuario FROM huerta.usuarios WHERE username='${username}'`;
-                        //SELECT id_usuario FROM huerta.usuarios WHERE username='macrina'
-                        mysqlConeccion.query(query1,(err,registros)=>{
-                           if(registros!=undefined){
-                              const {id_usuario1}=registros[0];
-                              let query2=`INSERT INTO huerta.usuario_huerta (id_usuario, id_huerta) VALUES ('${id_usuario1}', '${id_huerta}')`;
-                              //INSERT INTO `huerta`.`usuario_huerta` (`id_usuario`, `id_huerta`) VALUES ('2', '5');
-                              mysqlConeccion.query(query2,(err,registros)=>{
-                                 if(!err){
-                                    res.send('Se agregó un correctamente el colaborador: '+id_usuario1+ ' a la huerta: '+id_huerta);
-                                 }else{
-                                    res.send('Ocurrió un error en el servidor 1');
-                                 };
-                              });
-                           }else{
-                              res.send('El usuario no existe')
-                           }
-                        })
-                     }else{
-                        res.send('Los datos se completaron incorrectamente')   
-                     };
-                  }else{
-                     res.send('No eres colaborador en esta huerta');
-                  };
-               }else{
-                  res.send('Ocurrió un error en el servidor ');
-               }
-            }); 
-          });
-   //   });
-   // });
+                 if(!err){
+                    if(registros.length!=undefined){
+                          if(username!=undefined && username!=""){
+                          let query1=`SELECT id_usuario FROM huerta.usuarios WHERE username='${username}'`;
+                          //SELECT id_usuario FROM huerta.usuarios WHERE username='macrina'
+                          mysqlConeccion.query(query1,(err,registros)=>{
+                             if(registros!=undefined){
+                                const {id_usuario}=registros[0];
+                                //console.log(id_usuario)
+                                 let query2=`INSERT INTO huerta.usuario_huerta (id_usuario, id_huerta) VALUES ('${id_usuario}', '${id_huerta}')`;
+                                 //INSERT INTO `huerta`.`usuario_huerta` (`id_usuario`, `id_huerta`) VALUES ('2', '5');
+                                 mysqlConeccion.query(query2,(err,registros)=>{
+                                    if(!err){
+                                       res.send('Se agregó un correctamente el colaborador: '+id_usuario+ ' a la huerta: '+id_huerta);
+                                    }else{
+                                       res.send('Ocurrió un error en el servidor 1');
+                                    };
+                                 });
+                             }else{
+                                res.send('El usuario no existe')
+                             }
+                          })
+                       }else{
+                          res.send('Los datos se completaron incorrectamente')   
+                       };
+                    }else{
+                       res.send('No eres colaborador en esta huerta');
+                    };
+                 }else{
+                    res.send('Ocurrió un error en el servidor ');
+                 }
+              }); 
+           });
+    //   });
+    // });
 
 
 
@@ -639,6 +683,33 @@ router.get('/plantas',(req,res)=>{
       });
   // })
  //});
+//AGREGAR PLANTAS A LA LISTA 
+router.post('/plantas',async(req,res)=>{
+   //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
+   //      if(err){
+   //         res.sendStatus(403);
+   //      }else{
+            const {nombre,comentario,epoca,luna,forma} = req.body
+            let query =`INSERT INTO huerta.plantas ( nombre, comentario, epoca, luna, forma, estado) VALUES ('${nombre}','${comentario}','${epoca}','${luna}','${forma}','A');`;
+//INSERT INTO `huerta`.`plantas` (`nombre`, `comentario`, `epoca`, `luna`, `forma`, `estado`) VALUES ('Papas', 'con la papa', 'VERANO', 'Luna Menguante', 'directa', 'A');
+            mysqlConeccion.query(query, (err,rows)=>{
+               if(!err){
+                  res.json({
+                     status: true,
+                     mensaje:"Se agrego correctamente la planta"
+                    });
+               }else{
+                  res.json({
+                     status: false,
+                     mensaje:"No hubo exito"
+                    });
+               };
+            });
+          });
+   //   });
+   // });
+//INSERT INTO `huerta`.`plantas` (`nombre`, `comentario`, `epoca`, `luna`, `forma`, `estado`) VALUES ('Papas', 'con la papa', 'VERANO', 'Luna Menguante', 'directa', 'A');
+
 
  //ruta de prueba de generación de TOKEN
  function verificarToken(req,res,next){
