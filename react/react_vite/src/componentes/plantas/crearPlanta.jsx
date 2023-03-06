@@ -1,74 +1,104 @@
-import React, { useRef } from "react";
-import {Link} from 'react-router-dom'
-// import * as API from '../../servicios/servicios'
-export function CrearPlanta(){
-    const nombre_planta=useRef();
-    const epoca=useRef();
-    const luna=useRef();
-    const forma=useRef();
-    const comentario=useRef();
-    const agregar= ()=>{
-        const {nombre_planta}= nombre_planta.current.value;
-        const {epoca}= epoca.current.value;
-        const {luna}= luna.current.value;
-        const {forma}= forma.current.value;
-        const {comentario}= comentario.current.value;
-        console.log('lo que esta ',nombre_planta)
-        const datos={
-            nombre:nombre_planta,
-            epoca:epoca,
-            luna:luna,
-            forma:forma,
-            comentario: comentario
-        };
-        API.SaveHuerta(datos);
-        // nombre_huerta.current.value=null,
-        alert('se guardo correctamente')
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
+import * as API from '../../servicios/servicios'
 
+export function CrearPlanta(){
+  
+    const [mensajeSuccess, setmensajeSuccess] = useState('')
+    const [epoca, setepoca] = useState('');
+    const [nombre, setNombre] = useState('');
+    const [luna, setluna] = useState('');
+    const [forma, setforma] = useState('');
+    const [comentario, setcomentario] = useState('');
+    
+    const crearPlanta = ()=>{
+        const datos_planta={
+            nombre: nombre,
+            epoca: epoca,
+            luna: luna,
+            forma: forma,
+            comentario:comentario
+        };
+        console.log(datos_planta)
+        API.SavePlanta(datos_planta);
+        setmensajeSuccess('Se agrego la planta correctamente')
+            setTimeout(()=>{
+                setmensajeSuccess('')
+                window.location.href('/plantas')
+            }, 2000)
     }
+
     return(
-        <>
         <div className="card">
             <div className="card-header">
-                Crear Huerta
+                DATOS PARA LA NUEVA PLANTA
             </div>
-                <div className="card-body">
-                <div className="form-group">
-                  <label for="">Nombre de la Huerta</label>
-                  <input type="text" ref= {nombre_planta} name="" id="" className="form-control" placeholder="" aria-describedby="helpId"/>
-                  <small id="helpId" className="text-muted">&nbsp;</small>
-                </div>
-                <div className="form-group">
-                  <label for="">Estacion del Año conveniente</label>
-                  <input type="text" ref= {epoca} name="" id="" className="form-control" placeholder="" aria-describedby="helpId"/>
-                  <small id="helpId" className="text-muted">&nbsp;</small>
-                </div>
-                <div className="form-group">
-                  <label for="">Fase Lunar para plantar</label>
-                  <input type="text" ref= {luna} name="" id="" className="form-control" placeholder="" aria-describedby="helpId"/>
-                  <small id="helpId" className="text-muted">&nbsp;</small>
-                </div>
-                <div className="form-group">
-                  <label for="">Forma de plantación (directa o germinación)</label>
-                  <input type="text" ref= {forma} name="" id="" className="form-control" placeholder="" aria-describedby="helpId"/>
-                  <small id="helpId" className="text-muted">&nbsp;</small>
-                </div>
-                <div className="form-group">
-                  <label for="">Comentarios Extras</label>
-                  <input type="text" ref= {comentario} name="" id="" className="form-control" placeholder="" aria-describedby="helpId"/>
-                  <small id="helpId" className="text-muted">&nbsp;</small>
-                </div>
-                <div className="form-group">
-                    <button onClick={agregar} type="button" className="btn btn-primary">Guardar</button>
-                    <Link to={'/listarPlantas'}><button type="button" className="btn btn-secondary">Volver al Listado</button></Link>
+            {
+                mensajeSuccess?
+                <div className="alert alert-success" role="alert">
+                    {mensajeSuccess}
+                </div>:''
+            }
+            <div className="card-body">
+                <div className='row'>
 
+                <div className="form-group" >
+                  <label for="">Nombre</label>
+                  <input 
+                  type="text"
+                   value={nombre} 
+                   onChange={(event)=>setNombre(event.target.value)}
+                  name="" id="" className="form-control" placeholder="" aria-describedby="helpId"/>
+                 
+                </div>
+                <div className="form-group">
+                  <label for="">Estación del Año conveniente</label>
+                  <select onChange={(event)=>setepoca(event.target.value)} className='form-control'>
+                        <option>Seleccionar filtro</option>
+                        <option value='VERANO'>Verano</option>
+                        <option value='OTOÑO'>Otoño</option>
+                        <option value='INVIERNO'>Invierno</option>
+                        <option value='PRIMAVERA'>Primavera</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                  <label for="">Forma de plantación</label>
+                  <select onChange={(event)=>setforma(event.target.value)} className='form-control'>
+                        <option>Seleccionar filtro</option>
+                        <option value='directa'>Directa</option>
+                        <option value='germinación'>Germinación</option>
+                    </select>
+                </div>
+                <div className="form-group">
+                  <label for="">Mejor Fase Lunar para plantar</label>
+                  <input 
+                  type="text"
+                   value={luna} 
+                   onChange={(event)=>setluna(event.target.value)}
+                  name="" id="" className="form-control" placeholder="" aria-describedby="helpId"/>
+                 
+                </div>
+                <div className="form-group" >
+                  <label for="">Comentario Extra</label>
+                  <input 
+                  type="text"
+                   value={comentario} 
+                   onChange={(event)=>setcomentario(event.target.value)}
+                  name="" id="" className="form-control" placeholder="" aria-describedby="helpId"/>
+                  <small id="helpId" className="text-muted">&nbsp;</small>
                 </div>
                 </div>
+                <div className="row">
+                    <div className='form-group'>
+                        <button  onClick={crearPlanta}  type="button" className="btn btn-success">Guardar</button>
+                        <small id="helpId" className="text-muted">&nbsp;</small>
+                        <Link to={'/listarPlantas'}><button type="button" className="btn btn-danger">Volver al listado</button></Link>
+                    </div>
+                </div>
+            </div>
             <div className="card-footer text-muted">
-                by Natalila
+               Mi Huerta
             </div>
         </div>
-        </>
-        
     )
 }

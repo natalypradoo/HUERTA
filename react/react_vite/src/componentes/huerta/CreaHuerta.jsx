@@ -34,7 +34,7 @@ export function CreaHuerta(){
                 </div>
                 </div>
             <div className="card-footer text-muted">
-                by Natalila
+                Mi Huerta
             </div>
         </div>
         </>

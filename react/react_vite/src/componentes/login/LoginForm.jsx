@@ -56,6 +56,8 @@ export function LoginForm() {
             </div>
           </div>
           </div>
+          <div className="card-footer text-muted">
+                Mi Huerta
+            </div>
           </div>
-          
     </>)};

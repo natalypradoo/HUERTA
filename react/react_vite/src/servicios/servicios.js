@@ -115,6 +115,19 @@ export async function getPlantas(){
     }catch(error){
         console.log('Nuestro error', error);
     }
+};
+
+//Crear Nuev Planta
+export function SaveAlumno(datos){
+    const requestOptions={
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datos)
+    };
+    fetch(`${API_URL}/plantas`, requestOptions)
+    
 }
 
 

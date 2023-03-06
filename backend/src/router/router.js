@@ -175,7 +175,7 @@ router.get('/huertas',(req,res)=>{
          let query= `SELECT * FROM huerta.huerta `;
       mysqlConeccion.query(query,(err,registros)=>{
          if(!err){
-            console.log(registros.lenght)
+            console.log(registros)
             res.json(registros);
          }else{
             console.log(err);
@@ -301,6 +301,32 @@ router.get('/plantas',(req,res)=>{
       });
   // })
  //});
+
+ //AGREGAR PLANTAS A LA LISTA 
+router.post('/plantas',async(req,res)=>{
+   //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
+   //      if(err){
+   //         res.sendStatus(403);
+   //      }else{
+            const {nombre,comentario,epoca,luna,forma} = req.body
+            let query =`INSERT INTO huerta.plantas ( nombre, comentario, epoca, luna, forma, estado) VALUES ('${nombre}','${comentario}','${epoca}','${luna}','${forma}','A');`;
+//INSERT INTO `huerta`.`plantas` (`nombre`, `comentario`, `epoca`, `luna`, `forma`, `estado`) VALUES ('Papas', 'con la papa', 'VERANO', 'Luna Menguante', 'directa', 'A');
+            mysqlConeccion.query(query, (err,rows)=>{
+               if(!err){
+                  res.json({
+                     status: true,
+                     mensaje:"Se agrego correctamente la planta"
+                    });
+               }else{
+                  res.json({
+                     status: false,
+                     mensaje:"No hubo exito"
+                    });
+               };
+            });
+          });
+   //   });
+   // });
 
  //ruta de prueba de generación de TOKEN
  function verificarToken(req,res,next){

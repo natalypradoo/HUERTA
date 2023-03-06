@@ -8,14 +8,14 @@ export function Registro(){
     const [nombre, setNombre] = useState('');
     const [apellido, setApellido] = useState('');
     const [email, setEmail] = useState('');
-    // const [fecha_nacimiento, setFechaNacimiento] = useState('');
+    const [fecha_nacimiento, setFechaNacimiento] = useState('');
     const [contacto, setContacto] = useState('');
     const [mensajeSuccess, setmensajeSuccess] = useState('');
     const [mensajeError, setmensajeError] = useState('');
 
     const registroForm  = async (event)=>{
         event.preventDefault();
-        const user = await API.Registro({username, password, nombre, apellido, email,contacto})
+        const user = await API.Registro({username, password, nombre, apellido, email, fecha_nacimiento, contacto})
         if(user){
             setmensajeSuccess(user)
             setTimeout(()=>{
@@ -103,6 +103,15 @@ export function Registro(){
                   <small id="helpId" className="text-muted">&nbsp;</small>
                 </div>
                 <div className="form-group">
+                  <label for="">Fecha Nacimiento</label>
+                  <input 
+                  type="date"
+                   value={fecha_nacimiento} 
+                   onChange={(event)=>setFechaN(event.target.value)}
+                  name="" id="" className="form-control" placeholder="" aria-describedby="helpId"/>
+                  <small id="helpId" className="text-muted">&nbsp;</small>
+                </div>
+                <div className="form-group">
                   <label for="">¿Quiere divulgar su email como contacto?</label>
                   <input required
                   type="contact" 
@@ -121,7 +130,7 @@ export function Registro(){
             </div>
             
             <div className="card-footer text-muted">
-               Silicon Misiones
+               Mi Huerta
             </div>
         </div>
         </div>
