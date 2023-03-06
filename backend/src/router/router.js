@@ -56,7 +56,7 @@ router.post('/registro',async(req,res)=>{
                            status: true,
                            mensaje:"se insertó correctamente el usuario"
                         });
-                        res.send('Se insertó correctamente el usuario: '+username+' persona: '+nombre);
+                        //res.send('Se insertó correctamente el usuario: '+username+' persona: '+nombre);
                      }else{
                         res.json({
                            status: false,
@@ -277,6 +277,19 @@ router.get('/huertas/:id_huerta',(req,res)=>{
  //   })
  });
 
+ //DAR BAJA HUERTA
+router.put('/eliminarmihuerta/:id_huerta',(req,res)=>{
+   let id_huerta= req.params.id_huerta;
+   let query= `UPDATE huerta SET estado='B' WHERE id_huerta='${id_huerta}'`;
+   mysqlConeccion.query(query,(err,registros)=>{
+      if(!err){
+       res.send('se eliminó la huerta exitosamente');
+      }else{
+         res.send('ocurrió un error en el servidor');
+      }
+   });
+}
+);
 
 
 
@@ -350,60 +363,356 @@ router.post('/mihuerta/:id_usuario',async(req,res)=>{
 //   });
 // });
 
-
-
 //Cambiar NOMBRE/LOCALIDAD DE LA HUERTA O ESTADO DEL USUARIO EN LA HUERTA ---boton((MODIFICAR))---boton((ELIMINAR)
 router.put('/mihuerta/:id_usuario/:id_huerta',(req,res)=>{
+   //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
+   //      if(err){
+   //         res.sendStatus(403);
+   //      }else{
+      let id_huerta= req.params.id_huerta;
+      let id_usuario= req.params.id_usuario;
+      const {nombre,localidad,estado}=req.body
+      if(estado!=undefined){
+         //Cambia la relacion, es decir, da de baja al usuario de la huerta
+         let query= `UPDATE huerta.usuario_huerta SET estado='${estado}' WHERE ( id_usuario='${id_usuario}' and id_huerta= '${id_huerta}')`;
+         mysqlConeccion.query(query, (err, registros)=>{
+            if(!err){
+               if(estado!="B"){
+                  res.send('El Usuario:'+id_usuario+ ' cambio de bajo a ALTO en la Huerta'+id_huerta);
+               }else{
+                  res.send('El Usuario:'+id_usuario+ ' cambio de alto a BAJO en la Huerta'+id_huerta);
+               };
+            }else{
+               console.log(err)
+            }
+        });
+      }else{
+         if(nombre!=undefined && nombre!="" && localidad!=undefined && localidad!=""){
+         let query1= `UPDATE huerta.huerta SET nombre='${nombre}',localidad='${localidad}' WHERE id_huerta='${id_huerta}'`;
+         mysqlConeccion.query(query1,(err,registros)=>{
+            if(!err){
+             res.send('Se cambió el Nombre de la Huerta a:'+nombre+' y la localidad a '+localidad);
+            }else{
+               res.send('ocurrió un error en el servidor');
+            }
+         });
+         }else{
+            res.send('Faltan campos o debe completarlos correctamente')
+         }
+      };
+   });
+   //   });
+   // });
+
+//MOSTRAR HUERTA CON ID HUERTA (Lista las plantas de una huerta en particular)-- boton para((VER))
+router.get('/mihuerta/:id_usuario/:id_huerta',(req,res)=>{
+   // jwt.verify(req.token,'huerta1Key',(err,valido)=>{
+   //    if(err){
+   //       res.sendStatus(403);
+   //    }else{
+         
+         let id_usuario= req.params.id_usuario;
+         let id_huerta= req.params.id_huerta;
+         let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}' AND estado='A';`;
+         mysqlConeccion.query(query,(err,registros)=>{
+            if(!err){
+               //console.log(registros.length)
+               if(registros.length!=undefined){
+               let query1= `SELECT p.id_planta,p.nombre,TT.Fecha_Plantado,TT.cantidad,TT.Comentarios  FROM(
+                  SELECT T.id_planta, chp.id_c_hp,chp.id_hp,T.fecha Fecha_Plantado,T.cantidad,count(chp.id_hp) Comentarios FROM (
+                  SELECT hp.id_planta,hp.id_hp,hp.fecha,hp.cantidad FROM huerta.huerta_planta AS hp WHERE hp.id_huerta='${id_huerta}' AND hp.estado='A') T 
+                  LEFT JOIN huerta.comentario_hp AS chp ON T.id_hp=chp.id_hp WHERE estado='A' GROUP BY id_hp) TT 
+                  INNER JOIN huerta.plantas AS p WHERE (TT.id_planta=p.id_planta AND p.estado='A') ORDER BY TT.Fecha_Plantado DESC; ;`;    
+                  //SELECT p.id_planta,p.nombre,TT.Fecha_Plantado,TT.cantidad,TT.Comentarios  FROM(SELECT T.id_planta, chp.id_c_hp,chp.id_hp,T.fecha Fecha_Plantado,T.cantidad,count(chp.id_hp) Comentarios FROM (SELECT hp.id_planta,hp.id_hp,hp.fecha,hp.cantidad FROM huerta.huerta_planta AS hp WHERE hp.id_huerta='1' AND hp.estado='A') T LEFT JOIN huerta.comentario_hp AS chp ON T.id_hp=chp.id_hp WHERE estado='A' GROUP BY id_hp) TT INNER JOIN huerta.plantas AS p WHERE TT.id_planta=p.id_planta AND p.estado='A' ;  
+                  mysqlConeccion.query(query1,(err,registros)=>{
+                     if(!err){
+                        res.send(registros);
+                     }else{
+                        res.send('Ocurrió un error en el servidor 1');
+                     }
+                  });
+               }else{
+                  res.send('No eres colaborador en esta huerta');
+               }
+            }else{
+               res.send('Ocurrió un error en el servidor ');
+            }
+         });
+ //     }
+ //   })
+ });
+
+//LISTA DE PLANTAS PARA AGREGAR ---boton ((AGREGAR)) OOO ((PLANTAS DISPONIBLES))
+router.get('/mihuerta/:id_usuario/:id_huerta/listaPlantas',(req,res)=>{
+   //jwt.verify(req.token,'huerta1Key',(err,valido)=>{
+    //  if(err){
+      //   res.sendStatus(403);
+    //  }else{
+         let query= `SELECT * FROM huerta.plantas AS p WHERE p.estado='A';`;
+         mysqlConeccion.query(query,(err,registros)=>{
+         if(!err){
+           //console.log(registros.length)
+            res.json(registros);
+          }else{
+            res.send('Ocurrió un error en el servidor')
+          }
+       })
+      });
+  // })
+ //});
+
+//AGREGAR PLANTA DE LA LISTA ---boton ((AGREGAR))
+router.post('/mihuerta/:id_usuario/:id_huerta/listaPlantas/:id_planta',async(req,res)=>{
+   //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
+   //      if(err){
+   //         res.sendStatus(403);
+   //      }else{
+            const {cantidad,fecha}=req.body
+            let id_usuario= req.params.id_usuario;
+            let id_huerta= req.params.id_huerta;
+            let id_planta= req.params.id_planta;
+            
+            let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}' AND estado='A';`;
+            mysqlConeccion.query(query,(err,registros)=>{
+               if(!err){
+                  //console.log(registros.length)
+                  if(registros.length!=undefined){
+                     if(fecha.length!=0 && fecha!="" && cantidad!=""){
+                        let query1= `INSERT INTO huerta.huerta_planta ( id_huerta, id_planta, cantidad, fecha) VALUES ('${id_huerta}','${id_planta}','${cantidad}','${fecha}');`;    
+                        //SELECT p.id_planta,p.nombre,TT.Fecha_Plantado,TT.cantidad,TT.Comentarios  FROM(SELECT T.id_planta, chp.id_c_hp,chp.id_hp,T.fecha Fecha_Plantado,T.cantidad,count(chp.id_hp) Comentarios FROM (SELECT hp.id_planta,hp.id_hp,hp.fecha,hp.cantidad FROM huerta.huerta_planta AS hp WHERE hp.id_huerta='1' AND hp.estado='A') T LEFT JOIN huerta.comentario_hp AS chp ON T.id_hp=chp.id_hp WHERE estado='A' GROUP BY id_hp) TT INNER JOIN huerta.plantas AS p WHERE TT.id_planta=p.id_planta AND p.estado='A' ;  
+                        mysqlConeccion.query(query1,(err,registros)=>{
+                           if(!err){
+                              res.send('Se agregó la planta id: '+id_planta+ ' a la huerta id: '+id_huerta);
+                           }else{
+                              res.send('Ocurrió un error en el servidor 1');
+                           };
+                        });
+                     };
+                     if(fecha==""){
+                        let query2= `INSERT INTO huerta.huerta_planta ( id_huerta, id_planta, cantidad, fecha) VALUES ('${id_huerta}','${id_planta}','${cantidad}',NOW());`;    
+                     //    //SELECT p.id_planta,p.nombre,TT.Fecha_Plantado,TT.cantidad,TT.Comentarios  FROM(SELECT T.id_planta, chp.id_c_hp,chp.id_hp,T.fecha Fecha_Plantado,T.cantidad,count(chp.id_hp) Comentarios FROM (SELECT hp.id_planta,hp.id_hp,hp.fecha,hp.cantidad FROM huerta.huerta_planta AS hp WHERE hp.id_huerta='1' AND hp.estado='A') T LEFT JOIN huerta.comentario_hp AS chp ON T.id_hp=chp.id_hp WHERE estado='A' GROUP BY id_hp) TT INNER JOIN huerta.plantas AS p WHERE TT.id_planta=p.id_planta AND p.estado='A' ;  
+                     //console.log("fehca")
+                        mysqlConeccion.query(query2,(err,registros)=>{
+                           if(!err){
+                              res.send('Se agregó la planta id: '+id_planta+ ' a la huerta id: '+id_huerta);
+                           }else{
+                              res.send('Ocurrió un error en el servidor 2');
+                           };
+                        });
+                     }
+                  }else{
+                     res.send('No eres colaborador en esta huerta')
+                  };
+               }else{
+                  res.send('Ocurrió un error en el servidor ');
+               }
+            }); 
+          });
+   //   });
+   // });
+
+//COMENTAR SOBRE LAS PLANTAS--- boton ((COMENTAR))
+router.post('/mihuerta/:id_usuario/:id_huerta/:id_hp',async(req,res)=>{
 //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
 //      if(err){
 //         res.sendStatus(403);
 //      }else{
-   let id_huerta= req.params.id_huerta;
-   let id_usuario= req.params.id_usuario;
-   const {nombre,localidad,estado}=req.body
-   if(estado!=undefined){
-      //Cambia la relacion, es decir, da de baja al usuario de la huerta
-      let query= `UPDATE huerta.usuario_huerta SET estado='${estado}' WHERE ( id_usuario='${id_usuario}' and id_huerta= '${id_huerta}')`;
-      mysqlConeccion.query(query, (err, registros)=>{
-         if(!err){
-            if(estado!="B"){
-               res.send('El Usuario:'+id_usuario+ ' cambio de bajo a ALTO en la Huerta'+id_huerta);
+         const {comentario,fecha} = req.body
+         let id_usuario= req.params.id_usuario;
+         let id_huerta= req.params.id_huerta;
+         let id_hp= req.params.id_hp;
+         let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}' AND estado='A';`;
+         mysqlConeccion.query(query,(err,registros)=>{
+            if(!err){
+               //console.log(registros.length)
+               if(registros.length!=undefined){
+                  if(comentario!=undefined && fecha!=undefined){
+                     if(comentario!="" && fecha!="" ){
+                        let query1= `INSERT INTO huerta.comentario_hp ( id_hp, comentario, fecha) VALUES ('${id_hp}','${comentario}','${fecha}');`;    
+                        //INSERT INTO `huerta`.`comentario_hp` (`id_hp`, `comentario`, `fecha`) VALUES ('10', 'lindo día', '2023-03-03 13:00:00');
+                        mysqlConeccion.query(query1,(err,registros)=>{
+                           if(!err){
+                              res.send('Se agregó un comentario a la planta con id_hp: '+id_hp+ ' comentario: '+comentario);
+                           }else{
+                              res.send('Ocurrió un error en el servidor 1');
+                           };
+                        });
+                     }                 
+                     if(comentario!="" && fecha=="" ){
+                        let query2= `INSERT INTO huerta.comentario_hp ( id_hp, comentario, fecha) VALUES ('${id_hp}','${comentario}',NOW());`;    
+                        mysqlConeccion.query(query2,(err,registros)=>{
+                           if(!err){
+                              res.send('Se agregó un comentario a la planta con id_hp: '+id_hp+ ' comentario: '+comentario);
+                           }else{
+                              res.send('Ocurrió un error en el servidor 2');
+                           };
+                        });
+                     }else{
+                        res.send('Debe completar el campo comentario') 
+                     };
+                  }else{
+                     res.send('Los datos se completaron incorrectamente')   
+                  };
+               }else{
+                  res.send('No eres colaborador en esta huerta');
+               };
             }else{
-               res.send('El Usuario:'+id_usuario+ ' cambio de alto a BAJO en la Huerta'+id_huerta);
-            };
-         }else{
-            console.log(err)
-         }
-     });
-   }else{
-      if(nombre!=undefined && nombre!="" && localidad!=undefined && localidad!=""){
-      let query1= `UPDATE huerta.huerta SET nombre='${nombre}',localidad='${localidad}' WHERE id_huerta='${id_huerta}'`;
-      mysqlConeccion.query(query1,(err,registros)=>{
-         if(!err){
-          res.send('Se cambió el Nombre de la Huerta a:'+nombre+' y la localidad a '+localidad);
-         }else{
-            res.send('ocurrió un error en el servidor');
-         }
-      });
-      }else{
-         res.send('Faltan campos o debe completarlos correctamente')
-      }
-   };
-});
+               res.send('Ocurrió un error en el servidor ');
+            }
+         }); 
+       });
+//   });
+// });
 
-//DAR BAJA HUERTA
-router.put('/eliminarmihuerta/:id_huerta',(req,res)=>{
+//BAJA DE LAS PLANTAS DE UNA HUERTA----boton ((BAJA)) o ((ELIMINAR))
+router.put('/mihuerta/:id_usuario/:id_huerta/:id_hp',async(req,res)=>{
+   //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
+   //      if(err){
+   //         res.sendStatus(403);
+   //      }else{
+         let id_usuario= req.params.id_usuario;
+         let id_huerta= req.params.id_huerta;
+         let id_hp= req.params.id_hp;
+         const {estado}=req.body
+         let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}' AND estado='A';`;
+         mysqlConeccion.query(query,(err,registros)=>{
+            if(!err){
+               if(registros!=undefined){
+               if(estado!=undefined && estado!=""){
+                  let query= `UPDATE huerta.huerta_planta SET estado='${estado}' WHERE ( id_hp='${id_hp}')`;
+                  //UPDATE `huerta`.`huerta_planta` SET `estado` = 'B' WHERE (`id_hp` = '10');
+                  mysqlConeccion.query(query, (err, registros)=>{
+                  if(!err){
+                     if(estado!="B"){
+                        res.send('El estado de la planta: '+id_hp+ ' cambio de bajo a ALTO');
+                     }else{
+                        res.send('El estado de la planta: '+id_hp+ ' cambio de alto a BAJO ');
+                     };
+                  }else{
+                     res.send('Ocurrio un error en el servidor')
+                  }
+                  });
+               }else{
+                  res.send('Faltan campos o debe completarlos correctamente')
+               };
+            }else{
+               res.send('No eres colaborador en esta huerta')
+            }  
+            }else{
+               res.send('Ocurrio un error en el servidor')
+               
+            } 
+         });
+      });
+   //   });
+   // });
+
+
+///////////////USUARIOS DE UNA HUERTA////////////////
+
+//Lista de usuarios de una huerta -- boton ((USUARIOS))   
+router.get('/mihuerta/:id_usuario/:id_huerta/listaUsuariosHuerta',(req,res)=>{
+   //jwt.verify(req.token,'huerta1Key',(err,valido)=>{
+    //  if(err){
+      //   res.sendStatus(403);
+    //  }else{
+         let id_usuario= req.params.id_usuario;
+         let id_huerta= req.params.id_huerta;
+         let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}' AND estado='A';`;
+         mysqlConeccion.query(query,(err,registros)=>{
+         
+            if(!err){
+               console.log(registros)
+               
+               if(registros.length!=undefined){
+               //SELECT uh.id_uh,u.username  FROM huerta.usuario_huerta AS uh INNER JOIN huerta.usuarios AS u WHERE uh.id_usuario=u.id_usuario AND uh.estado='A' AND id_huerta='1'
+               let query= `SELECT uh.id_uh,u.username  FROM huerta.usuario_huerta AS uh INNER JOIN huerta.usuarios AS u WHERE uh.id_usuario=u.id_usuario AND uh.estado='A' AND id_huerta='${id_huerta}'`;
+               mysqlConeccion.query(query,(err,registros)=>{
+               if(!err){
+                  res.json(registros);
+               }else{
+                  res.send('Ocurrió un error en el servidor')
+               }
+               })
+               }else{
+                  res.send('No eres colaborador en esta huerta')
+               }
+            };
+         });
+      });         
+  // })
+ //});
+
+ //AGREGAR USUARIO-- boton((AGREGAR COLABORADOR)) //////NO ME TOMA EL BODY
+ router.post('/mihuerta/:id_usuario/:id_huerta/listaUsuariosHuerta/agregar',(req,res)=>{
+   let id_usuario= req.params.id_usuario;
    let id_huerta= req.params.id_huerta;
-   let query= `UPDATE huerta SET estado='B' WHERE id_huerta='${id_huerta}'`;
-   mysqlConeccion.query(query,(err,registros)=>{
-      if(!err){
-       res.send('se eliminó la huerta exitosamente');
-      }else{
-         res.send('ocurrió un error en el servidor');
-      }
-   });
-}
-);
+   const {username}=req.body
+   //console.log(username);
+   //console.log(id_usuario);
+   //console.log(id_huerta);
+ 
+//  router.post('/mihuerta/:id_usuario/:id_huerta/listaUsuariosHuerta',(req,res)=>{
+//    //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
+//    //      if(err){
+//    //         res.sendStatus(403);
+//    //      }else{
+//             let id_usuario= req.params.id_usuario;
+//             let id_huerta= req.params.id_huerta;
+//             const {username}=req.body
+//             console.log(username);
+//             console.log(id_usuario);
+//             console.log(id_huerta);
+            let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}' AND estado='A';`;
+            mysqlConeccion.query(query,(err,registros)=>{
+                 if(!err){
+                    if(registros.length!=undefined){
+                          if(username!=undefined && username!=""){
+                          let query1=`SELECT id_usuario FROM huerta.usuarios WHERE username='${username}'`;
+                          //SELECT id_usuario FROM huerta.usuarios WHERE username='macrina'
+                          mysqlConeccion.query(query1,(err,registros)=>{
+                             if(registros!=undefined){
+                                const {id_usuario}=registros[0];
+                                //console.log(id_usuario)
+                                 let query2=`INSERT INTO huerta.usuario_huerta (id_usuario, id_huerta) VALUES ('${id_usuario}', '${id_huerta}')`;
+                                 //INSERT INTO `huerta`.`usuario_huerta` (`id_usuario`, `id_huerta`) VALUES ('2', '5');
+                                 mysqlConeccion.query(query2,(err,registros)=>{
+                                    if(!err){
+                                       res.send('Se agregó un correctamente el colaborador: '+id_usuario+ ' a la huerta: '+id_huerta);
+                                    }else{
+                                       res.send('Ocurrió un error en el servidor 1');
+                                    };
+                                 });
+                             }else{
+                                res.send('El usuario no existe')
+                             }
+                          })
+                       }else{
+                          res.send('Los datos se completaron incorrectamente')   
+                       };
+                    }else{
+                       res.send('No eres colaborador en esta huerta');
+                    };
+                 }else{
+                    res.send('Ocurrió un error en el servidor ');
+                 }
+              }); 
+           });
+    //   });
+    // });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ///////////////////////////
@@ -436,7 +745,7 @@ router.post('/plantas',async(req,res)=>{
    //      }else{
             const {nombre,comentario,epoca,luna,forma} = req.body
             let query =`INSERT INTO huerta.plantas ( nombre, comentario, epoca, luna, forma, estado) VALUES ('${nombre}','${comentario}','${epoca}','${luna}','${forma}','A');`;
-//INSERT INTO `huerta`.`plantas` (`nombre`, `comentario`, `epoca`, `luna`, `forma`, `estado`) VALUES ('Papas', 'con la papa', 'VERANO', 'Luna Menguante', 'directa', 'A');
+            //INSERT INTO `huerta`.`plantas` (`nombre`, `comentario`, `epoca`, `luna`, `forma`, `estado`) VALUES ('Papas', 'con la papa', 'VERANO', 'Luna Menguante', 'directa', 'A');
             mysqlConeccion.query(query, (err,rows)=>{
                if(!err){
                   res.json({
