@@ -35,6 +35,7 @@ export async function Registro(datos){
     console.log(data)
     return data;
     } catch(e){
+        console.log(e);
         // console.log('no funciona')
     }
 }

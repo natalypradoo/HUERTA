@@ -13,7 +13,7 @@ export function ListaUsuarios(){
             Listado de Usuarios
         </div>
         <div className="card-body">
-        <Link name="" id="" className="btn btn-primary" to={'/crearUsuario'} role="button">Nuevo Usuario</Link>
+        <Link name="" id="" className="btn btn-light" to={'/registro'} role="button">Nuevo Usuario</Link>
             <table className="table table-striped table-inverse table-responsive">
                 <thead className="thead-inverse">
                      <tr>

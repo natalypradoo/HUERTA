@@ -107,7 +107,7 @@ export function Registro(){
                   <input 
                   type="date"
                    value={fecha_nacimiento} 
-                   onChange={(event)=>setFechaN(event.target.value)}
+                   onChange={(event)=>setFechaNacimiento(event.target.value)}
                   name="" id="" className="form-control" placeholder="" aria-describedby="helpId"/>
                   <small id="helpId" className="text-muted">&nbsp;</small>
                 </div>
