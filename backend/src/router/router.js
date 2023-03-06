@@ -29,76 +29,89 @@ router.post('/registro',async(req,res)=>{
    mysqlConeccion.query(query5,(err,rows)=>{
       if(!err){
          if(rows.length==0){
-            let query=`INSERT INTO huerta.usuarios (username, password) VALUES ('${username}','${hash}');`
-            mysqlConeccion.query(query,(err,rows)=>{
-              //console.log(rows);
-               if(!err){
-                //res.send('se insertó correctamente el usuario: '+username);
-               }else{
-                  console.log(err);
-                  res.send('ocurrió un error en el servidor');
-               }
-            });
-            let query1=`INSERT INTO huerta.personas(nombre, apellido, fecha_nacimiento, email, contacto) VALUES ('${nombre}','${apellido}','${fecha_nacimiento}','${email}','${contacto}')`;
-            mysqlConeccion.query(query1,(err,rows)=>{
-               //console.log(rows);
-               if(!err){
-                  res.send('Se insertó correctamente el usuario: '+username+' persona: '+nombre);
-               }else{
-                  console.log(err);
-                  res.send('ocurrió un error en el servidor');
-               }});
-               let query2=`SELECT u.id_usuario FROM huerta.usuarios as u where username='${username}';`;
-               mysqlConeccion.query(query2,(err,rows)=>{
-                  //console.log(rowss);
-                  const {id_usuario}=rows[0];
-                  //console.log(id_usuario);
-                  if(!err){
-                     let query3=`SELECT p.id_persona FROM huerta.personas as p where email='${email}';`;
-                     mysqlConeccion.query(query3,(err,rows)=>{
-                     //console.log(rowss);
-                        const {id_persona}=rows[0];
+            let query5=`SELECT * FROM huerta.personas WHERE email='${email}'`;
+            mysqlConeccion.query(query5,(err,rows)=>{
+               if(rows.length==0){
+                  
+                  let query=`INSERT INTO huerta.usuarios (username, password) VALUES ('${username}','${hash}');`
+                  mysqlConeccion.query(query,(err,rows)=>{
+                    //console.log(rows);
+                     if(!err){
+                      //res.send('se insertó correctamente el usuario: '+username);
+                     }else{
+                        res.json({
+                           status: false,
+                           mensaje:"Ocurrio un error en el servidor"
+                        });
+                     };
+                  });
+                  let query1=`INSERT INTO huerta.personas(nombre, apellido, fecha_nacimiento, email, contacto) VALUES ('${nombre}','${apellido}','${fecha_nacimiento}','${email}','${contacto}')`;
+                  mysqlConeccion.query(query1,(err,rows)=>{
+                     //console.log(rows);
+                     if(!err){
+                        res.send('Se insertó correctamente el usuario: '+username+' persona: '+nombre);
+                     }else{
+                        res.json({
+                           status: false,
+                           mensaje:"Ocurrio un error en el servidor"
+                        });
+                     }});
+                     let query2=`SELECT u.id_usuario FROM huerta.usuarios as u where username='${username}';`;
+                     mysqlConeccion.query(query2,(err,rows)=>{
+                        //console.log(rowss);
+                        const {id_usuario}=rows[0];
                         //console.log(id_usuario);
                         if(!err){
-                        //res.send('Tomo el id_upersona: ' +id_persona);
-                           let query4=`INSERT INTO huerta.usuario_persona(id_usuario, id_persona) VALUES ('${id_usuario}','${id_persona}');`;
-                           mysqlConeccion.query(query4,(err,rows)=>{
-                           //console.log(rows);
+                           let query3=`SELECT p.id_persona FROM huerta.personas as p where email='${email}';`;
+                           mysqlConeccion.query(query3,(err,rows)=>{
+                           //console.log(rowss);
+                              const {id_persona}=rows[0];
+                              //console.log(id_usuario);
                               if(!err){
-                                 //res.send('Se insertó correctamente la relación: '+id_usuario+id_persona);
+                              //res.send('Tomo el id_upersona: ' +id_persona);
+                                 let query4=`INSERT INTO huerta.usuario_persona(id_usuario, id_persona) VALUES ('${id_usuario}','${id_persona}');`;
+                                 mysqlConeccion.query(query4,(err,rows)=>{
+                                 //console.log(rows);
+                                    if(!err){
+                                       //res.send('Se insertó correctamente la relación: '+id_usuario+id_persona);
+                                    }else{
+                                       console.log(err);
+                                       res.send('ocurrió un error en el servidor quiery4');
+                                    }
+                                 });
                               }else{
                                  console.log(err);
-                                 res.send('ocurrió un error en el servidor quiery4');
-                              }
+                                 res.send('ocurrió un error en el servidor quiery3');
+                              };
                            });
                         }else{
                            console.log(err);
-                           res.send('ocurrió un error en el servidor quiery3');
-                        };
-                     });
-                  }else{
-                     console.log(err);
-                     res.send('ocurrió un error en el servidor quiery2');
-                  }
-               });   
-            
+                           res.send('ocurrió un error en el servidor quiery2');
+                        }
+                     }); 
 
 
 
-            
+               }else{
+                  res.json({
+                     status: false,
+                     mensaje:"El email ingresado ya se encuentra registrado"
+                  });   
+               };
+            });            
          }else{
             res.json({
                status: false,
                mensaje:"El USERNAME Ingresado ya Existe Ingrese Otro"
-              });
+            });
          }
          //res.send('se insertó correctamente el usuario: '+username);
         }else{
            //console.log(err);
-           res.json({
-            status: false,
-            mensaje:"Ocurrio un error en el servidor"
-           });
+            res.json({
+               status: false,
+               mensaje:"Ocurrio un error en el servidor"
+            });
            
         }
    })
