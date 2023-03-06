@@ -36,10 +36,10 @@ router.post('/registro',async(req,res)=>{
                   mysqlConeccion.query(query,(err,rows)=>{
                     //console.log(rows);
                      if(!err){
-                        res.json({
-                           status: true,
-                           mensaje:"se insertó correctamente el usuario: '+username"
-                        });
+                        // res.json({
+                        //    status: true,
+                        //    mensaje:"se insertó correctamente el usuario: '+username"
+                        // });
                       //res.send('se insertó correctamente el usuario: '+username);
                      }else{
                         res.json({
@@ -52,10 +52,10 @@ router.post('/registro',async(req,res)=>{
                   mysqlConeccion.query(query1,(err,rows)=>{
                      //console.log(rows);
                      if(!err){
-                        res.json({
-                           status: true,
-                           mensaje:"se insertó correctamente el usuario"
-                        });
+                        // res.json({
+                        //    status: true,
+                        //    mensaje:"se insertó correctamente el usuario"
+                        // });
                         //res.send('Se insertó correctamente el usuario: '+username+' persona: '+nombre);
                      }else{
                         res.json({
@@ -80,33 +80,30 @@ router.post('/registro',async(req,res)=>{
                                  mysqlConeccion.query(query4,(err,rows)=>{
                                  //console.log(rows);
                                     if(!err){
-                                       console.log('funciono mi relación');
                                        //res.send('Se insertó correctamente la relación: '+id_usuario+id_persona);
                                     }else{
-                                       console.log(err);
+                                       //console.log(err);
                                        res.json({
                                           status: false,
                                           mensaje:"Ocurrio un error en el servidor"
                                        });
-                                       res.send('ocurrió un error en el servidor quiery4');
+                                       
                                     }
                                  });
                               }else{
-                                 console.log(err);
+                                 //console.log(err);
                                  res.json({
                                     status: false,
                                     mensaje:"Ocurrio un error en el servidor"
                                  });
-                                 res.send('ocurrió un error en el servidor quiery3');
                               };
                            });
                         }else{
-                           console.log(err);
+                           //console.log(err);
                            res.json({
                               status: false,
                               mensaje:"Ocurrio un error en el servidor"
                            });
-                           res.send('ocurrió un error en el servidor quiery2');
                         }
                      }); 
 
@@ -302,6 +299,7 @@ router.put('/editarmihuerta/:id_huerta',(req,res)=>{
       mysqlConeccion.query(query,(err,registros)=>{
          if(!err){
             if(registros!=0){
+               ///ACA PONEMOS LA VARIABLE EN ALTA
                if(nombre!=undefined && nombre!="" && localidad!=undefined && localidad!=""){
                   let query1= `UPDATE huerta.huerta SET nombre='${nombre}',localidad='${localidad}' WHERE id_huerta='${id_huerta}'`;
                   mysqlConeccion.query(query1,(err,registros)=>{
@@ -797,6 +795,20 @@ router.post('/plantas',async(req,res)=>{
             //INSERT INTO `huerta`.`plantas` (`nombre`, `comentario`, `epoca`, `luna`, `forma`, `estado`) VALUES ('Papas', 'con la papa', 'VERANO', 'Luna Menguante', 'directa', 'A');
             mysqlConeccion.query(query, (err,rows)=>{
                if(!err){
+                  let query1 =`SELECT id_planta FROM huerta.plantas ORDER BY id_planta desc limit 1`;
+                  mysqlConeccion.query(query1, (err,rows)=>{
+                     if(!err){
+                        const {id_planta}=rows[0]
+
+                     }else{
+
+                     }
+                  })
+
+                     
+
+
+
                   res.json({
                      status: true,
                      mensaje:"Se agrego correctamente la planta"
@@ -813,31 +825,7 @@ router.post('/plantas',async(req,res)=>{
    // });
 
 
- //AGREGAR PLANTAS A LA LISTA 
-router.post('/plantas',async(req,res)=>{
-   //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
-   //      if(err){
-   //         res.sendStatus(403);
-   //      }else{
-            const {nombre,comentario,epoca,luna,forma} = req.body
-            let query =`INSERT INTO huerta.plantas ( nombre, comentario, epoca, luna, forma, estado) VALUES ('${nombre}','${comentario}','${epoca}','${luna}','${forma}','A');`;
-//INSERT INTO `huerta`.`plantas` (`nombre`, `comentario`, `epoca`, `luna`, `forma`, `estado`) VALUES ('Papas', 'con la papa', 'VERANO', 'Luna Menguante', 'directa', 'A');
-            mysqlConeccion.query(query, (err,rows)=>{
-               if(!err){
-                  res.json({
-                     status: true,
-                     mensaje:"Se agrego correctamente la planta"
-                    });
-               }else{
-                  res.json({
-                     status: false,
-                     mensaje:"No hubo exito"
-                    });
-               };
-            });
-          });
-   //   });
-   // });
+
 
  //ruta de prueba de generación de TOKEN
  function verificarToken(req,res,next){

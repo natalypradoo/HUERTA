@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import * as API from '../servicios/servicios' 
+import * as API from '../../servicios/servicios' 
 
 export function Registro(){
     const [username, setUsername] = useState('');
@@ -16,14 +16,14 @@ export function Registro(){
     const registroForm  = async (event)=>{
         event.preventDefault();
         const user = await API.Registro({username, password, nombre, apellido, email, fecha_nacimiento, contacto})
-        if(user){
-            setmensajeSuccess(user)
+        if(user.status){
+            setmensajeSuccess(user.mensaje)
             setTimeout(()=>{
                 setmensajeSuccess('');
             }, 4000)
             // window.location.reload(true)
         }else{
-            setmensajeError(user)
+            setmensajeError(user.mensaje)
             setTimeout(()=>{
                 setmensajeError('');
             }, 4000)
