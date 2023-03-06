@@ -1,5 +1,21 @@
-import {Link} from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Routes, Route, Link } from 'react-router-dom'
+//import { Principal } from './Principal'
+
 export function Menu(){
+  const [usuario, setUsuario] =useState('')
+  const [nombre_usuario, setNombreUsuario] =useState('')
+  const logout  = async (event)=>{
+          setUsuario('')
+          window.localStorage.removeItem('usuario')
+          window.location.reload(true);
+  }
+  useEffect(()=>{
+    const usuarioLogueado = JSON.parse(localStorage.getItem('usuario'))
+    if(usuarioLogueado){
+      setNombreUsuario(usuarioLogueado.datos[0].nombre_usuario)
+    }
+  },[])
     return(
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
   <a className="navbar-brand" href="#">Huerta</a>
@@ -41,6 +57,10 @@ export function Menu(){
 
         </div>
       </li>
+      <li className="nav-item active">
+        {nombre_usuario}
+        <Link to={'/'}><button onClick={logout} className='btn btn-danger'> Salir</button></Link>
+                </li>
     </ul>
   </div>
 </nav>

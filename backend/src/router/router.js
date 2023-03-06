@@ -32,11 +32,14 @@ router.post('/registro',async(req,res)=>{
             let query5=`SELECT * FROM huerta.personas WHERE email='${email}'`;
             mysqlConeccion.query(query5,(err,rows)=>{
                if(rows.length==0){
-                  
                   let query=`INSERT INTO huerta.usuarios (username, password) VALUES ('${username}','${hash}');`
                   mysqlConeccion.query(query,(err,rows)=>{
                     //console.log(rows);
                      if(!err){
+                        res.json({
+                           status: true,
+                           mensaje:"se insertó correctamente el usuario: '+username"
+                        });
                       //res.send('se insertó correctamente el usuario: '+username);
                      }else{
                         res.json({
@@ -49,6 +52,10 @@ router.post('/registro',async(req,res)=>{
                   mysqlConeccion.query(query1,(err,rows)=>{
                      //console.log(rows);
                      if(!err){
+                        res.json({
+                           status: true,
+                           mensaje:"se insertó correctamente el usuario"
+                        });
                         res.send('Se insertó correctamente el usuario: '+username+' persona: '+nombre);
                      }else{
                         res.json({
@@ -73,19 +80,32 @@ router.post('/registro',async(req,res)=>{
                                  mysqlConeccion.query(query4,(err,rows)=>{
                                  //console.log(rows);
                                     if(!err){
+                                       console.log('funciono mi relación');
                                        //res.send('Se insertó correctamente la relación: '+id_usuario+id_persona);
                                     }else{
                                        console.log(err);
+                                       res.json({
+                                          status: false,
+                                          mensaje:"Ocurrio un error en el servidor"
+                                       });
                                        res.send('ocurrió un error en el servidor quiery4');
                                     }
                                  });
                               }else{
                                  console.log(err);
+                                 res.json({
+                                    status: false,
+                                    mensaje:"Ocurrio un error en el servidor"
+                                 });
                                  res.send('ocurrió un error en el servidor quiery3');
                               };
                            });
                         }else{
                            console.log(err);
+                           res.json({
+                              status: false,
+                              mensaje:"Ocurrio un error en el servidor"
+                           });
                            res.send('ocurrió un error en el servidor quiery2');
                         }
                      }); 
@@ -105,6 +125,10 @@ router.post('/registro',async(req,res)=>{
                mensaje:"El USERNAME Ingresado ya Existe Ingrese Otro"
             });
          }
+         res.json({
+            status: true,
+            mensaje:"se insertó correctamente el usuario y username en relación"
+         });
          //res.send('se insertó correctamente el usuario: '+username);
         }else{
            //console.log(err);
@@ -117,9 +141,6 @@ router.post('/registro',async(req,res)=>{
    })
 
 });
-
-
-   
    
 
 //LOGIN DE USUARIOS
@@ -187,7 +208,7 @@ router.put('/resetpassword/:id',(req,res)=>{
 });
 
 /////////////////////////////
-/////////USURIOS/////////////
+/////////USUARIOS/////////////
 ////////////////////////////
 
 //LISTAR USUARIOS

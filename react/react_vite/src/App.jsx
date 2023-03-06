@@ -26,7 +26,10 @@ function App() {
     {
       !usuario?
       <>
-        <LoginForm/>
+      <Routes>
+             <Route path='/' element={<LoginForm/>}></Route>
+             <Route path='/registro' element={<Registro/>}></Route>
+        </Routes>
       </>:
 <div className='container'>
 <Menu/>
