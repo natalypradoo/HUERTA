@@ -178,12 +178,12 @@ router.put('/resetpassword/:id',(req,res)=>{
 ////////////////////////////
 
 //LISTAR USUARIOS
-router.get('/usuarios', verificarToken, (req,res)=>{
+router.get('/usuarios', (req,res)=>{
  //  jwt.verify(req.token,'huerta1Key',(err,valido)=>{
  //     if(err){
  //        res.sendStatus(403);
   //    }else{
-         let query= `SELECT u.username, concat_ws(" ", p.nombre,p.apellido) Nombre, up.estado FROM huerta.usuarios as u 
+         let query= `SELECT u.id_usuario,u.username, concat_ws(" ", p.nombre,p.apellido) nombre, up.estado estado FROM huerta.usuarios as u 
          inner join huerta.usuario_persona as up
          inner join huerta.personas as p
          where (u.id_usuario=up.id_usuario and up.id_persona=p.id_persona and up.estado='A');`;
