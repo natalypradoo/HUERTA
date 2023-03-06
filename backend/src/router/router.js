@@ -708,7 +708,6 @@ router.post('/plantas',async(req,res)=>{
           });
    //   });
    // });
-//INSERT INTO `huerta`.`plantas` (`nombre`, `comentario`, `epoca`, `luna`, `forma`, `estado`) VALUES ('Papas', 'con la papa', 'VERANO', 'Luna Menguante', 'directa', 'A');
 
 
  //ruta de prueba de generación de TOKEN
