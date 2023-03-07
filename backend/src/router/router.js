@@ -106,14 +106,11 @@ router.post('/registro',async(req,res)=>{
                            });
                         }
                      }); 
-
-
-
                }else{
                   res.json({
                      status: false,
                      mensaje:"El email ingresado ya se encuentra registrado"
-                  });   
+                  });  
                };
             });            
          }else{
@@ -775,8 +772,10 @@ router.get('/plantas',(req,res)=>{
          LEFT JOIN comentario_planta AS cp ON pl.id_planta=cp.id_planta GROUP BY cp.id_planta;`;
       mysqlConeccion.query(query,(err,registros)=>{
           if(!err){
-           console.log(registros.length)
-             res.json(registros);
+            res.json({
+               status: true,
+               mensaje: registros
+              });
           }else{
              console.log(err);
           }
@@ -784,13 +783,13 @@ router.get('/plantas',(req,res)=>{
       });
   // })
  //});
-//AGREGAR PLANTAS A LA LISTA 
+//AGREGAR PLANTAS A LA LISTA ----((AGREGAR PLANTAS))
 router.post('/plantas',async(req,res)=>{
    //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
    //      if(err){
    //         res.sendStatus(403);
    //      }else{
-            const {nombre,comentario,epoca,luna,forma} = req.body
+            const {id_usuario,nombre,comentario,epoca,luna,forma} = req.body
             let query =`INSERT INTO huerta.plantas ( nombre, comentario, epoca, luna, forma, estado) VALUES ('${nombre}','${comentario}','${epoca}','${luna}','${forma}','A');`;
             //INSERT INTO `huerta`.`plantas` (`nombre`, `comentario`, `epoca`, `luna`, `forma`, `estado`) VALUES ('Papas', 'con la papa', 'VERANO', 'Luna Menguante', 'directa', 'A');
             mysqlConeccion.query(query, (err,rows)=>{
@@ -799,24 +798,32 @@ router.post('/plantas',async(req,res)=>{
                   mysqlConeccion.query(query1, (err,rows)=>{
                      if(!err){
                         const {id_planta}=rows[0]
-
+                        let query1 =`INSERT INTO huerta.plantas_usuarios (id_planta, id_usuario) VALUES ('${id_planta}', '${id_usuario}');`;
+                      //INSERT INTO `huerta`.`plantas_usuarios` (`id_planta`, `id_usuario`) VALUES ('1', '5');
+                        mysqlConeccion.query(query1, (err,rows)=>{
+                           if(!err){
+                              res.json({
+                                 status: true,
+                                 mensaje:"Se agrego correctamente la planta"
+                                });
+                           }else{
+                              res.json({
+                                 status: false,
+                                 mensaje:"Ocurrio un error en el servidor"
+                              });  
+                           }      
+                        });
                      }else{
-
+                        res.json({
+                           status: false,
+                           mensaje:"Ocurrio un error en el servidor"
+                        });
                      }
                   })
-
-                     
-
-
-
-                  res.json({
-                     status: true,
-                     mensaje:"Se agrego correctamente la planta"
-                    });
                }else{
                   res.json({
                      status: false,
-                     mensaje:"No hubo exito"
+                     mensaje:"Ocurrio un error en el servidor"
                     });
                };
             });
@@ -824,6 +831,59 @@ router.post('/plantas',async(req,res)=>{
    //   });
    // });
 
+//LISTA DE COMENTARIOS DE UNA PLANTA---((VER COMENTARIOS))
+router.get('/plantas/:id_planta',(req,res)=>{
+   //jwt.verify(req.token,'huerta1Key',(err,valido)=>{
+    //  if(err){
+      //   res.sendStatus(403);
+    //  }else{
+         let id_planta= req.params.id_planta;
+         let query= `SELECT * FROM huerta.comentario_planta WHERE id_planta='${id_planta}';`;
+      //SELECT * FROM huerta.comentario_planta WHERE id_planta='1';
+         mysqlConeccion.query(query,(err,registros)=>{
+          if(!err){
+            res.json({
+               status: true,
+               mensaje: registros
+              });
+          }else{
+             console.log(err);
+          }
+       })
+      });
+  // })
+ //});   
+
+//AGREGAR COMENTARIO A PLANTAS DE LA LISTA ---((COMENTAR))
+router.post('/plantas/:id_planta',async(req,res)=>{
+   //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
+   //      if(err){
+   //         res.sendStatus(403);
+   //      }else{
+            let id_planta= req.params.id_planta;
+            const {id_usuario,comentario} = req.body
+            let query =`INSERT INTO huerta.comentario_planta ( id_usuario, id_planta, comentario, fecha) VALUES ('${id_usuario}','${id_planta}','${comentario}',NOW());`;
+            //INSERT INTO `huerta`.`comentario_planta` (`id_usuario`, `id_planta`, `comentario`, `fecha`) VALUES ('2', '2', 'wep', '');            
+            mysqlConeccion.query(query, (err,rows)=>{
+               if(!err){
+                  res.json({
+                     status: true,
+                     mensaje:"El comentario se agrego exitosamente"
+                  });                 
+               }else{
+                  res.json({
+                     status: false,
+                     mensaje:"Ocurrio un error en el servidor"
+                  });
+               };
+            });
+          });
+   //   });
+   // });
+
+
+
+ 
 
 
 
