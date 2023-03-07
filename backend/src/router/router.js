@@ -80,7 +80,10 @@ router.post('/registro',async(req,res)=>{
                                  mysqlConeccion.query(query4,(err,rows)=>{
                                  //console.log(rows);
                                     if(!err){
-                                       //res.send('Se insertó correctamente la relación: '+id_usuario+id_persona);
+                                       res.json({
+                                          status: true,
+                                          mensaje:"se insertó correctamente el usuario y username en relación"
+                                       });
                                     }else{
                                        //console.log(err);
                                        res.json({
@@ -119,10 +122,7 @@ router.post('/registro',async(req,res)=>{
                mensaje:"El USERNAME Ingresado ya Existe Ingrese Otro"
             });
          }
-         res.json({
-            status: true,
-            mensaje:"se insertó correctamente el usuario y username en relación"
-         });
+
          //res.send('se insertó correctamente el usuario: '+username);
         }else{
            //console.log(err);
@@ -194,9 +194,15 @@ router.put('/resetpassword/:id',(req,res)=>{
    let query= `UPDATE huerta.usuarios SET password='${hash}' WHERE id_usuario='${id}'`;
    mysqlConeccion.query(query,(err,registros)=>{
       if(!err){
-       res.send('se cambió la constaseña');
+         res.json({
+            status: false,
+            mensaje: "Contraseña reestablecida CORRECTAMENTE"
+        });
       }else{
-         res.send('ocurrió un error en el servidor');
+         res.json({
+            status: false,
+            mensaje: "Ocurrio un ERROR en el servidor"
+        });
       }
    });
 });
