@@ -11,9 +11,9 @@ export function ListaPlantas(){
     },[])
 
     //baja de Plantas
-const bajaPlantas  = async(id_plantas)=>{
+const bajaPlantas  = async(id_planta)=>{
     //console.log('id_usu:', id_usuario)
-     const user = await API.BajaPlantas(id_plantas)
+     const user = await API.BajaPlantas(id_planta)
      // const user = await API.bajaUsuario(id)
      if(user.status){
         setmensajeError(user.mensaje)
@@ -31,13 +31,33 @@ const bajaPlantas  = async(id_plantas)=>{
 }
 
 
+//Alta Plantas
+const altaPlantas= async(id_planta)=>{
+    //console.log('id_usu:', id_usuario)
+     const user = await API.AltaPlantas(id_planta)
+     // const user = await API.bajaUsuario(id)
+     if(user.status){
+        setmensajeError(user.mensaje)
+          setTimeout(()=>{
+            setmensajeError('')
+             window.location.reload(true)
+
+          }, 4000)
+     }else{
+         setmensajeError(user.mensaje)
+         setTimeout(()=>{
+             setmensajeError('')
+         }, 4000)
+     }
+}
+
     return(
         <div className="card">
             <div className="card-header">
                 Listado de Plantas: los datos presentes refieren a las condiciones preferibles para el plantado.
             </div>
             <div className="card-body">
- {
+                {
                     mensajeError?
                         <div className="alert alert-success" role="alert">
                         {mensajeError}
@@ -49,7 +69,7 @@ const bajaPlantas  = async(id_plantas)=>{
                      <tr></tr>
                          <tr>
                             
-                            <th>Número</th>
+                            <th>ID</th>
                             <th>Nombre</th>
                             <th>Epoca</th>
                             <th>Fase Lunar</th>
@@ -80,7 +100,7 @@ const bajaPlantas  = async(id_plantas)=>{
                                 </>
                                 : 
                                 <>
-                                <button   type="button" className="btn btn-success"> Dar de Alta </button>
+                                <button onClick={() =>altaPlantas(plantas.id_planta)}  type="button" className="btn btn-success"> Dar de Alta </button>
 
                                 </>
                             }
@@ -95,7 +115,7 @@ const bajaPlantas  = async(id_plantas)=>{
                 </table>
             </div>
             <div className="card-footer text-muted">
-                Mi Huerta
+                Mi Huerta - Silicon Misiones
             </div>
         </div>
         

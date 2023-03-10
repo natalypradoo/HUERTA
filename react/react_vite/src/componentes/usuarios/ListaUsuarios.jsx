@@ -147,7 +147,7 @@ const altaUsuario  = async(id_usuario)=>{
             <table className="table table-striped table-inverse table-responsive">
                 <thead className="thead-inverse">
                      <tr>
-                        <th>id</th>
+                        <th>ID</th>
                         <th>Username</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
@@ -216,7 +216,7 @@ const altaUsuario  = async(id_usuario)=>{
         </div>
         </div>
         <div className="card-footer text-muted">
-            Mi huera
+        Mi Huerta - Silicon Misiones
         </div>
 
     </>

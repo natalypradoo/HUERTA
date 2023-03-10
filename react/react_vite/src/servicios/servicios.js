@@ -139,7 +139,27 @@ export async function BajaHuerta(id_huerta){
         }
     };
     try{
-        const response = await fetch(`${API_URL}/bajahuerta/${id_huerta}`, requestOptions)
+        const response = await fetch(`${API_URL}/bajaHuerta/${id_huerta}`, requestOptions)
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch(e){
+
+        alert('No se puede conectar con el servidor')
+    }
+}
+
+//Dar ALTA Huerta
+export async function AltaHuerta(id_huerta){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+
+        }
+    };
+    try{
+        const response = await fetch(`${API_URL}/altaHuerta/${id_huerta}`, requestOptions)
         const data = await response.json();
         console.log(data)
         return data;
@@ -249,6 +269,25 @@ export async function BajaPlantas(id_planta){
     };
     try{
         const response = await fetch(`${API_URL}/bajaPlanta/${id_planta}`, requestOptions)
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch(e){
+
+        alert('No se puede conectar con el servidor')
+    }
+}
+
+//Alta Plantas
+export async function AltaPlantas(id_planta){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+    try{
+        const response = await fetch(`${API_URL}/altaPlanta/${id_planta}`, requestOptions)
         const data = await response.json();
         console.log(data)
         return data;

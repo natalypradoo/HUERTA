@@ -6,7 +6,7 @@ import * as API from '../../servicios/servicios'
 export function ListaHuertas(){
     const [huertas,setHuertas]=useState([]);
     const [mensajeError, setmensajeError] = useState('')
-    const [mensajeSuccess] = useState('')
+
 
     useEffect(()=>{
         API.getHuertas().then(setHuertas)
@@ -14,7 +14,6 @@ export function ListaHuertas(){
 
     const bajaHuerta  = async(id_huerta)=>{
         const huerta = await API.BajaHuerta(id_huerta)
-        // const user = await API.bajaUsuario(id)
         if(huerta.status){
             
             setmensajeError(huerta.mensaje)
@@ -30,6 +29,26 @@ export function ListaHuertas(){
             }, 4000)
         }
     }
+    const altaHuerta  = async(id_huerta)=>{
+        const huerta = await API.AltaHuerta(id_huerta)
+        if(huerta.status){
+            
+            setmensajeError(huerta.mensaje)
+            setTimeout(()=>{
+                setmensajeError('')
+                window.location.reload(true)
+ 
+            }, 3000)
+        }else{
+            setmensajeError(huerta.mensaje)
+            setTimeout(()=>{
+                setmensajeError('')
+            }, 4000)
+        }
+    }
+
+
+
     return(
         <div className="card">
             <div className="card-header">
@@ -37,24 +56,18 @@ export function ListaHuertas(){
             </div>
             {
                     mensajeError?
-                    <div class="alert alert-warning" role="alert">
+                    <div class="alert alert-success" role="alert">
                      {mensajeError}
                     </div>:''
                 }
 
-                {
-                    mensajeSuccess?
-                    <div class="alert alert-success" role="alert">
-                     {mensajeSuccess}
-                    </div>:''
-                }
             <div className="card-body">
                 <Link name="" id="" className="btn btn-primary" to={'/crearHuerta'} role="button">Nueva Huerta</Link>
                 <table className="table table-striped table-inverse table-responsive">
                 <thead className="thead-inverse">
                      <tr></tr>
                          <tr>
-                            <th>Número</th>
+                            <th>ID</th>
                             <th>Nombre</th>
                             <th>Localidad</th>
                              <th>Acciones</th>
@@ -64,19 +77,27 @@ export function ListaHuertas(){
                     <tbody>
                         {huertas.map((huerta)=>(
                             <tr>
-                            <td scope="row">{huerta.id_huerta}</td>
-                            <td scope="row">{huerta.nombre}</td>
-                            <td scope="row">{huerta.localidad}</td>
+                                <td scope="row">{huerta.id_huerta}</td>
+                                <td scope="row">{huerta.nombre}</td>
+                                <td scope="row">{huerta.localidad}</td>
+                                <td>
+                                <div className="btn-group" role="group" aria-label="">
+                                { (huerta.estado=='A')?
+                                    <>
+                                        <button onClick={() =>bajaHuerta(huerta.id_huerta)} type="button" className="btn btn-danger"> Dar de Baja </button>
 
-                            <td>
-                            <div className="btn-group" role="group" aria-label="">
-                            
-                                <button onClick={() => bajaHuerta(huerta.id_huerta)} type="button" className="btn btn-danger">Dar de Baja</button>
-                                <button type="button" className="btn btn-success">Editar</button>
-                            
-                            </div>  
-                            </td>
-                        </tr>
+                                    </>
+                                    : 
+                                    <>
+                                        <button onClick={() =>altaHuerta(huerta.id_huerta)}  type="button" className="btn btn-success"> Dar de Alta </button>
+
+                                    </>
+                                }
+                                <button  type="button" className="btn btn-warning"> Modificar </button>
+
+                                </div>
+                                </td>
+                            </tr>
                         ))}
                     
                     </tbody>
