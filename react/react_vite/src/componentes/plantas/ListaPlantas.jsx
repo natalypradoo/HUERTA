@@ -5,16 +5,44 @@ import * as API from '../../servicios/servicios'
 
 export function ListaPlantas(){
     const [plantas,setPlantas]=useState([]);
+    const [mensajeError,setmensajeError]=useState('');
     useEffect(()=>{
         API.getPlantas().then(setPlantas)
     },[])
 
+    //baja de Plantas
+const bajaPlantas  = async(id_plantas)=>{
+    //console.log('id_usu:', id_usuario)
+     const user = await API.BajaPlantas(id_plantas)
+     // const user = await API.bajaUsuario(id)
+     if(user.status){
+        setmensajeError(user.mensaje)
+          setTimeout(()=>{
+            setmensajeError('')
+             window.location.reload(true)
+
+          }, 4000)
+     }else{
+         setmensajeError(user.mensaje)
+         setTimeout(()=>{
+             setmensajeError('')
+         }, 4000)
+     }
+}
+
+
     return(
         <div className="card">
             <div className="card-header">
-                Listado de Plantas
+                Listado de Plantas: los datos presentes refieren a las condiciones preferibles para el plantado.
             </div>
             <div className="card-body">
+ {
+                    mensajeError?
+                        <div className="alert alert-success" role="alert">
+                        {mensajeError}
+                     </div>:''
+                } 
                 <Link name="" id="" className="btn btn-primary" to={'/crearPlanta'} role="button">Nueva Planta</Link>
                 <table className="table table-striped table-inverse table-responsive">
                 <thead className="thead-inverse">
@@ -23,10 +51,11 @@ export function ListaPlantas(){
                             
                             <th>Número</th>
                             <th>Nombre</th>
-                            <th>Estación del Año</th>
+                            <th>Epoca</th>
                             <th>Fase Lunar</th>
-                            <th>Forma de Plantar</th>
-                            <th>Comentarios Extras</th>
+                            <th>Siembra</th>
+                            <th>Extra</th>
+                            <th>Comentarios</th>
 
             
                          </tr>
@@ -44,10 +73,22 @@ export function ListaPlantas(){
 
                             <td>
                             <div className="btn-group" role="group" aria-label="">
-                            <Link name="" id="" className="btn btn-success" to={'/editarPlanta'} role="button">Editar</Link>
-                                <Link name="" id="" className="btn btn-danger" to={'/'} role="button">Eliminar</Link>                                
-                            </div> 
-                         </td>
+                            { (plantas.estado=='A')?
+                                <>
+                                <button onClick={() =>bajaPlantas(plantas.id_planta)} type="button" className="btn btn-danger"> Dar de Baja </button>
+
+                                </>
+                                : 
+                                <>
+                                <button   type="button" className="btn btn-success"> Dar de Alta </button>
+
+                                </>
+                            }
+                            <button  type="button" className="btn btn-warning"> Modificar </button>
+
+                        
+                            </div>
+                            </td>
                         </tr>
                         ))} 
                     </tbody>

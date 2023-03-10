@@ -9,7 +9,10 @@ import { CreaHuerta } from './componentes/huerta/CreaHuerta'
 import { ListaUsuarios } from './componentes/usuarios/ListaUsuarios'
 import { ListaPlantas } from './componentes/plantas/ListaPlantas'
 import { CrearPlanta } from './componentes/plantas/crearPlanta'
-import { AgregarComentario } from './componentes/plantas/agregarComentario'
+import { ListaComentario } from './componentes/plantas/Comentarios'
+//import { AgregarComentario } from './componentes/plantas/agregarComentario'
+// import {Contacto} from './componentes/usuarios/Contacto'
+//import "./componentes/login/loginn.css";
 // import { Login } from './servicios/servicios'
 
 function App() {
@@ -42,7 +45,10 @@ function App() {
         <Route path='/listarUsuarios' element={<ListaUsuarios/>}> </Route>
         <Route path='/listarPlantas' element={<ListaPlantas/>}> </Route>
         <Route path='/crearPlanta' element={<CrearPlanta/>}> </Route>
-        <Route path='/comentar' element={<AgregarComentario/>}> </Route>
+        <Route path='/comentarios' element={<ListaComentario/>}></Route>
+        <Route path='/crearPlanta' element={<CrearPlanta/>}> </Route>
+        {/* <Route path='/comentar' element={<AgregarComentario/>}> </Route> */}
+        {/* <Route path='/contacto' element={<Contacto/>}> </Route> */}
         
        
       </Routes>

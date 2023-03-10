@@ -67,6 +67,43 @@ export async function BuscarUsuarios(filtros){
     return data;
 }
 
+//BAja usuarios
+export async function BajaUsuarios(id_usuarios){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+    try{
+        const response = await fetch(`${API_URL}/bajaUsuario/${id_usuarios}`, requestOptions)
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch(e){
+
+        alert('No se puede conectar con el servidor')
+    }
+}
+//ALTA usuarios
+export async function AltaUsuarios(id_usuarios){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+    try{
+        const response = await fetch(`${API_URL}/altaUsuario/${id_usuarios}`, requestOptions)
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch(e){
+
+        alert('No se puede conectar con el servidor')
+    }
+}
+
 //API HUERTAS///
 
 // Listar Huertas
@@ -202,5 +239,23 @@ export async function BajaComentario(id_cp){
     }
 }
 
+//Baja Plantas
+export async function BajaPlantas(id_planta){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+    try{
+        const response = await fetch(`${API_URL}/bajaPlanta/${id_planta}`, requestOptions)
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch(e){
+
+        alert('No se puede conectar con el servidor')
+    }
+}
 
 

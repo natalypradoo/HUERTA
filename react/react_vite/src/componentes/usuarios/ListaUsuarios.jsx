@@ -10,6 +10,7 @@ export function ListaUsuarios(){
     const [username, setUsername]=useState('');
     const [nombre, setNombre]=useState('');
     const [apellido,setApellido]=useState('');
+    const [mensajeError,setmensajeError]=useState('');
 
     
     useEffect(()=>{
@@ -37,14 +38,45 @@ const limpiar_filtros = ()=>{
    
 }
 
-// //contacto
-// const trae_contacto= async(id_usuario)=>{
-//  //    setContacto(id_usuario)
-//      const user= await API.getUsuariosContactoById(id_usuario)
-// console.log('El id del contacto es: ',id_usuario)
+//baja de Usuarios
+const bajaUsuario  = async(id_usuario)=>{
+    //console.log('id_usu:', id_usuario)
+     const user = await API.BajaUsuarios(id_usuario)
+     // const user = await API.bajaUsuario(id)
+     if(user.status){
+        setmensajeError(user.mensaje)
+          setTimeout(()=>{
+            setmensajeError('')
+             window.location.reload(true)
 
-    
-// }
+          }, 4000)
+     }else{
+         setmensajeError(user.mensaje)
+         setTimeout(()=>{
+             setmensajeError('')
+         }, 4000)
+     }
+}
+//dar de alta
+const altaUsuario  = async(id_usuario)=>{
+    //console.log('id_usu:', id_usuario)
+     const user = await API.AltaUsuarios(id_usuario)
+     // const user = await API.bajaUsuario(id)
+     if(user.status){
+        setmensajeError(user.mensaje)
+          setTimeout(()=>{
+            setmensajeError('')
+             window.location.reload(true)
+
+          }, 4000)
+     }else{
+         setmensajeError(user.mensaje)
+         setTimeout(()=>{
+             setmensajeError('')
+         }, 4000)
+     }
+}
+
 
 
 
@@ -105,6 +137,12 @@ const limpiar_filtros = ()=>{
             Listado de Usuarios
         </div>
         <div className="card-body">
+                {
+                    mensajeError?
+                        <div className="alert alert-success" role="alert">
+                        {mensajeError}
+                     </div>:''
+                }
         <Link name="" id="" className="btn btn-light" to={'/registro'} role="button">Nuevo Usuario</Link>
             <table className="table table-striped table-inverse table-responsive">
                 <thead className="thead-inverse">
@@ -114,6 +152,7 @@ const limpiar_filtros = ()=>{
                         <th>Nombre</th>
                         <th>Apellido</th>
                          <th>Email</th> 
+                         <th>Acciones</th>
                      </tr>
                 </thead>
                 <tbody>
@@ -135,12 +174,30 @@ const limpiar_filtros = ()=>{
                             } 
                              
                             <td>
+                            <td>
+                            <div className="btn-group" role="group" aria-label="">
+                            { (usuario.estado=='A')?
+                                <>
+                                <button onClick={() =>bajaUsuario(usuario.id_usuario)} type="button" className="btn btn-danger"> Dar de Baja </button>
+
+                                </>
+                                : 
+                                <>
+                                <button  onClick={() =>altaUsuario(usuario.id_usuario)} type="button" className="btn btn-success"> Dar de Alta </button>
+
+                                </>
+                            }
+                            <button  type="button" className="btn btn-warning"> Modificar </button>
+
+                        
+                            </div>
+                            </td>
                             {/* <div className="btn-group" role="group" aria-label="">
                                                     
                                                     { (usuario.contacto=='SI')?
                                                          <>
                                                          <Link to={'/contacto'}>
-                                                            <button onClick={() =>trae_contacto(usuario.id_usuario)} type="button" className="btn btn-secondary"> Contacto </button>
+                                                            <button onClick={() =>bajaUsuario(usuario.id_usuario)} type="button" className="btn btn-secondary"> Contacto </button>
                                                          </Link> 
                                                           </> 
                                                           :
