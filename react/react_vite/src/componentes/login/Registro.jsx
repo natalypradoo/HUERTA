@@ -14,42 +14,67 @@ export function Registro(){
     const [mensajeError, setmensajeError] = useState('');
 
     const registroForm  = async (event)=>{
-        event.preventDefault();
-        const user = await API.Registro({username, password, nombre, apellido, email, fecha_nacimiento, contacto})
-        if(user.status){
-            setmensajeSuccess(user.mensaje)
-            setTimeout(()=>{
-                setmensajeSuccess('');
-            }, 4000)
-            // window.location.reload(true)
-        }else{
-            setmensajeError(user.mensaje)
-            setTimeout(()=>{
-                setmensajeError('');
-            }, 4000)
-        }
-    }
+      event.preventDefault();
+      const user = await API.Registro({username, password, nombre, apellido, email, fecha_nacimiento, contacto})     
+      if(user.status){    
+        setmensajeSuccess(user.mensaje)
+          setTimeout(()=>{
+              setmensajeSuccess('');
+          }, 4000)
+          // window.location.reload(true)
+      }else{
+          setmensajeError(user.mensaje)
+          setTimeout(()=>{
+              setmensajeError('');
+          }, 4000)
+      }
+  
+
+
+    // const registroForm  = async (event)=>{
+    //   event.preventDefault();
+    //   const user = await API.Registro({username, password, nombre, apellido, email, fecha_nacimiento, contacto})
+    //   if(user.status){
+    //       setmensajeSuccess(user.mensaje)
+    //   if(user.rows!=0){
+    //       Swal.fire('Usuario Creado');
+    //       setmensajeSuccess(user)
+    //       setTimeout(()=>{
+    //           setmensajeSuccess('');
+    //       }, 4000)
+         
+    //       // window.location.reload(true)
+    //   }else{
+    //       setmensajeError(user.mensaje)
+    //       setmensajeError(user)
+    //       setTimeout(()=>{
+    //           setmensajeError('');
+    //       }, 4000)
+         
+    //   }
+  
     return(
         <>
         <div className="container">
-        {
-            mensajeSuccess?
-            <div className="alert alert-success" role="alert">
-                {mensajeSuccess}
-            </div>:''
-        }
-        {
-            mensajeError?
-            <div className="alert alert-danger" role="alert">
-                {mensajeError}
-            </div>:''
-        }
         <div className="card">
             <div className="card-header">
                 Crear Usuario
             </div>
             <div className="card-body">
                 <form onSubmit={registroForm}> 
+                {
+                    mensajeSuccess?
+                    <div className="alert alert-success" role="alert">
+                    {mensajeSuccess}
+                    </div>:''
+                }
+                {
+                    mensajeError?
+                        <div className="alert alert-danger" role="alert">
+                        {mensajeError}
+                     </div>:''
+                }
+
                 <div className="form-group">
                   <label for="">Nombre Usuario</label>
                   <input required
@@ -113,17 +138,20 @@ export function Registro(){
                 </div>
                 <div className="form-group">
                   <label for="">¿Quiere divulgar su email como contacto?</label>
-                  <input required
-                  type="contact" 
-                  value={contacto} 
-                  className="form-control" 
-                  placeholder="SI/NO" 
-                  onChange={(event)=>setContacto(event.target.value)} />
+
+                        <select 
+                        onChange={(event)=>setContacto(event.target.value)} 
+                        className='form-control'>
+                        <option>Seleccionar filtro</option>
+                        <option value='SI'>SI</option>
+                        <option value='NO'>NO</option>
+                        </select>
+
+
                   <small id="helpId" className="text-muted">&nbsp;</small>
                 </div>
                 <div className="form-group">
                    <Link to={"/login"}><button onClick={registroForm} type="button" className="btn btn-primary">Guardar</button></Link> 
-                   
                     <Link to={'/'}><button type="button" className="btn btn-secondary">Volver</button></Link>
                 </div>
                 </form>
@@ -137,4 +165,4 @@ export function Registro(){
         </div>
         </>
     )
-}
+}};

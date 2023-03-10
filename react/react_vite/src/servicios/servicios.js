@@ -53,9 +53,21 @@ return data;
 console.log('Nuestro error',error);
 }
 };
+//buscarUsuarios
+export async function BuscarUsuarios(filtros){
+    const requestOptions={
+        method:'POST',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(filtros)
+    };
+    const response = await fetch(`${API_URL}/buscar_usuarios`, requestOptions);
+    const data= await response.json()
+    return data;
+}
 
-
-///API HUERTAS///
+//API HUERTAS///
 
 // Listar Huertas
 export async function getHuertas(){
@@ -118,6 +130,29 @@ export async function getPlantas(){
     }
 };
 
+//Editar info de Plantas
+export async function getPlantabyId(id_planta){
+    try{
+        const response = await fetch(`${API_URL}/plantas/${id_planta}`);
+        const data = await response.json();
+        return data[0];
+    }catch(error){
+        console.log('Nuestro error', error);
+    }
+}
+
+export function UpdatePlanta(id_planta, datos){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datos)
+    };
+    fetch(`${API_URL}/plantas/${id_planta}`, requestOptions)
+    
+}
+
 //Crear Nuev Planta
 export function SaveAlumno(datos){
     const requestOptions={
@@ -131,6 +166,41 @@ export function SaveAlumno(datos){
     
 }
 
+//Listar Comentarios
+export async function getComentario(){
+    const requestOptions = {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      };
+    try{
+        const response = await fetch(`${API_URL}/comentarios`, requestOptions);
+        const data = await response.json();
+        return data;
+    }catch(error){
+        console.log('Nuestro error', error);
+    }
+};
+
+//Dar baja comentario
+export async function BajaComentario(id_cp){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+
+        }
+    };
+    try{
+        const response = await fetch(`${API_URL}/bajacomentario/${id_cp}`, requestOptions)
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch(e){
+
+        alert('No se puede conectar con el servidor')
+    }
+}
 
 
 

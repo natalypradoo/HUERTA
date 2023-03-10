@@ -25,6 +25,8 @@ export function CreaHuerta(){
                 <div className="form-group">
                   <label for="">Nombre de la Huerta</label>
                   <input type="text" ref= {nombre_huerta} name="" id="" className="form-control" placeholder="" aria-describedby="helpId"/>
+                  
+                  
                   <small id="helpId" className="text-muted">&nbsp;</small>
                 </div>
                 <div className="form-group">

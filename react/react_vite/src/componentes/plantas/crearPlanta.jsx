@@ -28,6 +28,8 @@ export function CrearPlanta(){
             }, 2000)
     }
 
+    
+
     return(
         <div className="card">
             <div className="card-header">
@@ -44,7 +46,7 @@ export function CrearPlanta(){
 
                 <div className="form-group" >
                   <label for="">Nombre</label>
-                  <input 
+                  <input required
                   type="text"
                    value={nombre} 
                    onChange={(event)=>setNombre(event.target.value)}
@@ -71,16 +73,18 @@ export function CrearPlanta(){
                 </div>
                 <div className="form-group">
                   <label for="">Mejor Fase Lunar para plantar</label>
-                  <input 
-                  type="text"
-                   value={luna} 
-                   onChange={(event)=>setluna(event.target.value)}
-                  name="" id="" className="form-control" placeholder="" aria-describedby="helpId"/>
-                 
+                  <select onChange={(event)=>setforma(event.target.value)} className='form-control'>
+                        <option>Seleccionar filtro</option>
+                        <option value='Cuarto Creciente'>Cuarto Creciente</option>
+                        <option value='Luna Llena'>Luna Llena</option>
+                        <option value='Cuarto Menguante'>Cuarto Menguante</option>
+                        <option value='Luna Nueva'>Luna Nueva</option>
+                    </select>
+
                 </div>
                 <div className="form-group" >
                   <label for="">Comentario Extra</label>
-                  <input 
+                  <input required
                   type="text"
                    value={comentario} 
                    onChange={(event)=>setcomentario(event.target.value)}

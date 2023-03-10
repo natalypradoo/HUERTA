@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from 'react-router-dom'
 import * as API from '../../servicios/servicios'
 import "./login.css";
 
@@ -29,11 +30,12 @@ export function LoginForm() {
           <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/sign-in/"/>
          <link href="C:\Users\Nataly\huerta\react\react_vite\src\componentes\styles.css\bootstrap.min.css" rel="stylesheet"/>
         <link href="C:\Users\Nataly\react\silicon_react_vite\src\styles.css\registrostyle.css" rel="stylesheet"/>
-        <div className="container" name="login">
+      {/* <body className="login">  */}
+        <div className="container" >
             <div className="row justify-content-center">
             <div className="col-md-5">
              <div className="card">
-               <h2 className="card-title text-center">Log In</h2>
+               <h2 className="card-title text-center">Mi Huerta</h2>
                 <div className="card-body py-md-4">
                  <form onSubmit={form}>
                  {
@@ -49,15 +51,35 @@ export function LoginForm() {
                   <div className="form-group">
                     <input type="password" className="form-control" required="required" id="password" value={password} name="password" placeholder="Password" onChange={(event)=>setPassword(event.target.value)}></input>
                   </div>     
-                  <button className="w-100 btn btn-lg btn-danger" type="submit">Ingresar
+
+                    <div className="d-grid gap-2">
+                    <div className="form-group">
+                  <button className="w-100 btn btn-lg btn-primary" type="submit">Ingresar
                 </button>
-                 </form>
+                  </div>
+
+                <div className="form-group"> <Link to={'/registro'}> <button className="w-100 btn btn-lg btn-primary" type="buttom">Registrarse
+                </button></Link></div> </div>
+                {/* <button className="w-50  btn-lg btn-green" type="buttom">
+                  <span1>
+                    Ingresar
+                  </span1>
+                </button> */}
+               </form>
                </div>
+  {/* <Link to={'/registro'}>
+                <button type="button">
+                  <span>
+                    Registrarse
+                  </span>
+                </button> </Link>  */}
             </div>
           </div>
           </div>
+          
           <div className="card-footer text-muted">
-                Mi Huerta
+
             </div>
           </div>
+           {/* </body>  */}
     </>)};
