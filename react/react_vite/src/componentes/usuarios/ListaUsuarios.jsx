@@ -142,7 +142,7 @@ return(
                      {mensajeSuccess}
                     </div>:''
                 }
-        <Link name="" id="" className="btn btn-light" to={'/registro'} role="button">Nuevo Usuario</Link>
+        <Link name="" id="" className="btn btn-primary" to={'/registro'} role="button">Nuevo Usuario</Link>
             <table className="table table-striped table-inverse table-responsive">
                 <thead className="thead-inverse">
                     <tr>

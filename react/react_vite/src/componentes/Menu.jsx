@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
+import icono from './styles.css/icono.png'
 //import { Principal } from './Principal'
 //import "./login/login.css";
 
@@ -19,26 +20,41 @@ export function Menu(){
   },[]);
     return(
       <>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-  <a className="navbar-brand" href="#">Huerta</a>
-  <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-    <span className="navbar-toggler-icon"></span>
-  </button>
-  <div className="collapse navbar-collapse" id="navbarNavDropdown">
-    <ul className="navbar-nav">
-      <li className="nav-item active">
-      <Link className="nav-link" to={'/'}>Inicio</Link>
+      <div className='row'>
        
-      </li>
-      <li className="nav-item dropdown">
-        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Huertas
-        </a>
-        <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <Link className="dropdown-item" to={'/listarHuertas'}>Lista de Huertas</Link>
-          <Link className="dropdown-item" to={'/crearHuerta'}> Crear Huerta</Link> 
+       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+
+        <div>
+          <a className="navbar-brand" href="#"><img src={icono} width="50" height="50" /></a> 
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
+            </button>
         </div>
-      </li>
+
+        <div className="collapse navbar-collapse" id="navbarNavDropdown">
+  
+          <ul className="navbar-nav">
+
+        <div className='col-3'>
+          <li className="nav-item active">
+          <Link className="nav-link" to={'/'}>Inicio</Link>
+          </li>
+        </div>
+
+        <div className='col-4'>
+          <li className="nav-item dropdown">
+            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Huertas
+            </a>
+          <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <Link className="dropdown-item" to={'/listarHuertas'}>Lista de Huertas</Link>
+           {/* <Link className="dropdown-item" to={'/crearHuerta'}> Crear Huerta</Link>  */}
+          </div>
+          </li>
+        </div>
+
+
+      <div className='col-4'>
       <li className="nav-item dropdown">
         <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Plantas
@@ -46,27 +62,37 @@ export function Menu(){
         <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <Link className="dropdown-item" to={'/listarPlantas'}>Lista de Plantas</Link>
           <Link className="dropdown-item" to={'/crearPlanta'}>Agregar Planta</Link> 
-          <Link className="dropdown-item" to={'/comentarios'}>Comentarios</Link> 
+          {/* <Link className="dropdown-item" to={'/comentarios'}>Comentarios</Link>  */}
         </div>
       </li>
-      <li className="nav-item dropdown">
+      </div>
+
+<div className='col-7'>
+<li className="nav-item dropdown">
         <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Usuarios
         </a>
         <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <Link className="dropdown-item" to={'/listarUsuarios'}>Lista de Usuarios</Link>
           <Link className="dropdown-item" to={'/Registro'}> Agregar Usuario</Link> 
-          <Link className="dropdown-item" to={'/contacto'}> Contactos</Link>
+          {/* <Link className="dropdown-item" to={'/contacto'}> Contactos</Link> */}
         </div>
-      </li>
-      <li className="nav-item active">
+</li>
+</div>
+ <div className='col-1'>
+ <li className="nav-item active">
         {nombre_usuario}
 
-        <Link to={'/'}><button onClick={logout} className='btn btn-danger btn-sm'> Salir</button></Link>
+        <Link to={'/'}><button onClick={logout} className='btn btn-outline-danger'> Salir</button></Link>
       </li>
+
+ </div>
+
     </ul>
   </div>
 </nav>
+
+</div>
 {/* <Principal/> */}
 </>
     )

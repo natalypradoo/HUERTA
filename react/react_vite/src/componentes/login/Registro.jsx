@@ -19,9 +19,6 @@ export function Registro(){
       const user = await API.Registro({username, password, nombre, apellido, email, fecha_nacimiento, contacto})
   if(user.status){
           setmensajeSuccess(user.mensaje)
-    if(user.rows!=0){
-       Swal.fire('Usuario Creado');
-        setmensajeSuccess(user)
          setTimeout(()=>{
                setmensajeSuccess('');
          }, 4000)
@@ -35,6 +32,7 @@ export function Registro(){
           }, 4000)
          
      }
+   }
   
     return(
         <>
@@ -148,4 +146,4 @@ export function Registro(){
         </div>
         </>
     )
-}}};
+};

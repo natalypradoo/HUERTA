@@ -103,14 +103,17 @@ const altaPlantas= async(id_planta)=>{
                             <div className="btn-group" role="group" aria-label="">
                             { (planta.estado=='A')?
                                 <>
-                                <button onClick={() =>bajaPlantas(planta.id_planta)} type="button" className="btn btn-danger"> Dar de Baja </button>
+                                <button onClick={() =>bajaPlantas(planta.id_planta)} type="button" className="btn btn-danger"> Baja </button>
                                 <Link to={`/editar_planta/${planta.id_planta}`}>
                                 <button  type="button" className="btn btn-warning"> Modificar </button>                       
                                 </Link>
+                                {/* <Link to={`/crear_comentario/${planta.id_planta}`}>
+                                <button  type="button" className="btn btn-primary"> Comentar </button>                       
+                                </Link> */}
                                 </>
                                 : 
                                 <>
-                                <button onClick={() =>altaPlantas(planta.id_planta)}  type="button" className="btn btn-success"> Dar de Alta </button>
+                                <button onClick={() =>altaPlantas(planta.id_planta)}  type="button" className="btn btn-success"> Alta </button>
 
                                 </>
                             }

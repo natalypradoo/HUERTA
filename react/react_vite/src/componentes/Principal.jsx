@@ -1,9 +1,14 @@
 // import React from 'react';
-import logo from './styles.css/logo.png'
+import portada from './styles.css/portada.png'
 export function Principal(){
     return(
-        <div>
-        <img src={logo} />
+        <div className='row'>
+            <div className='col-1'></div>
+            <div className='col-1'>
+            <img src={portada} />
+
+            </div>
+        
         </div>
     )
 }
