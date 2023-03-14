@@ -6,6 +6,7 @@ import * as API from '../../servicios/servicios'
 export function ListaHuertas(){
     const [huertas,setHuertas]=useState([]);
     const [mensajeError, setmensajeError] = useState('')
+    const [mensajeSuccess, setmensajeSuccess] = useState('')
 
 
     useEffect(()=>{
@@ -33,9 +34,9 @@ export function ListaHuertas(){
         const huerta = await API.AltaHuerta(id_huerta)
         if(huerta.status){
             
-            setmensajeError(huerta.mensaje)
+            setmensajeSuccess(huerta.mensaje)
             setTimeout(()=>{
-                setmensajeError('')
+                setmensajeSuccess('')
                 window.location.reload(true)
  
             }, 3000)
@@ -56,8 +57,15 @@ export function ListaHuertas(){
             </div>
             {
                     mensajeError?
-                    <div class="alert alert-success" role="alert">
+                    <div className="alert alert-warning" role="alert">
                      {mensajeError}
+                    </div>:''
+                }
+
+                {
+                    mensajeSuccess?
+                    <div className="alert alert-success" role="alert">
+                     {mensajeSuccess}
                     </div>:''
                 }
 
@@ -76,7 +84,7 @@ export function ListaHuertas(){
                     </thead>
                     <tbody>
                         {huertas.map((huerta)=>(
-                            <tr>
+                            <tr key={huerta.id_huerta}>
                                 <td scope="row">{huerta.id_huerta}</td>
                                 <td scope="row">{huerta.nombre}</td>
                                 <td scope="row">{huerta.localidad}</td>
@@ -85,7 +93,9 @@ export function ListaHuertas(){
                                 { (huerta.estado=='A')?
                                     <>
                                         <button onClick={() =>bajaHuerta(huerta.id_huerta)} type="button" className="btn btn-danger"> Dar de Baja </button>
-
+                                        <Link to={`/editar_huerta/${huerta.id_huerta}`}>
+                                        <button  type="button" className="btn btn-warning"> Modificar </button>                       
+                                        </Link>
                                     </>
                                     : 
                                     <>
@@ -93,7 +103,6 @@ export function ListaHuertas(){
 
                                     </>
                                 }
-                                <button  type="button" className="btn btn-warning"> Modificar </button>
 
                                 </div>
                                 </td>

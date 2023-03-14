@@ -6,6 +6,7 @@ import * as API from '../../servicios/servicios'
 export function ListaPlantas(){
     const [plantas,setPlantas]=useState([]);
     const [mensajeError,setmensajeError]=useState('');
+    const [mensajeSuccess, setmensajeSuccess] = useState('')
     useEffect(()=>{
         API.getPlantas().then(setPlantas)
     },[])
@@ -37,9 +38,9 @@ const altaPlantas= async(id_planta)=>{
      const user = await API.AltaPlantas(id_planta)
      // const user = await API.bajaUsuario(id)
      if(user.status){
-        setmensajeError(user.mensaje)
+        setmensajeSuccess(user.mensaje)
           setTimeout(()=>{
-            setmensajeError('')
+            setmensajeSuccess('')
              window.location.reload(true)
 
           }, 4000)
@@ -57,12 +58,19 @@ const altaPlantas= async(id_planta)=>{
                 Listado de Plantas: los datos presentes refieren a las condiciones preferibles para el plantado.
             </div>
             <div className="card-body">
-                {
+            {
                     mensajeError?
-                        <div className="alert alert-success" role="alert">
-                        {mensajeError}
-                     </div>:''
-                } 
+                    <div className="alert alert-warning" role="alert">
+                     {mensajeError}
+                    </div>:''
+                }
+
+                {
+                    mensajeSuccess?
+                    <div className="alert alert-success" role="alert">
+                     {mensajeSuccess}
+                    </div>:''
+                }
                 <Link name="" id="" className="btn btn-primary" to={'/crearPlanta'} role="button">Nueva Planta</Link>
                 <table className="table table-striped table-inverse table-responsive">
                 <thead className="thead-inverse">
@@ -81,30 +89,31 @@ const altaPlantas= async(id_planta)=>{
                          </tr>
                     </thead>
                     <tbody>
-                         {plantas.map((plantas)=>(
-                            <tr>
-                            <td scope="row">{plantas.id_planta}</td>
-                            <td>{plantas.nombre}</td>
-                            <td>{plantas.epoca}</td>
-                            <td>{plantas.luna}</td>
-                            <td>{plantas.forma}</td>
-                            <td>{plantas.comentario}</td>
-                            <td>{plantas.Comentarios}</td>
+                         {plantas.map((planta)=>(
+                            <tr key={planta.id_planta}>
+                            <td scope="row">{planta.id_planta}</td>
+                            <td>{planta.nombre}</td>
+                            <td>{planta.epoca}</td>
+                            <td>{planta.luna}</td>
+                            <td>{planta.forma}</td>
+                            <td>{planta.comentario}</td>
+                            <td>{planta.Comentarios}</td>
 
                             <td>
                             <div className="btn-group" role="group" aria-label="">
-                            { (plantas.estado=='A')?
+                            { (planta.estado=='A')?
                                 <>
-                                <button onClick={() =>bajaPlantas(plantas.id_planta)} type="button" className="btn btn-danger"> Dar de Baja </button>
-
+                                <button onClick={() =>bajaPlantas(planta.id_planta)} type="button" className="btn btn-danger"> Dar de Baja </button>
+                                <Link to={`/editar_planta/${planta.id_planta}`}>
+                                <button  type="button" className="btn btn-warning"> Modificar </button>                       
+                                </Link>
                                 </>
                                 : 
                                 <>
-                                <button onClick={() =>altaPlantas(plantas.id_planta)}  type="button" className="btn btn-success"> Dar de Alta </button>
+                                <button onClick={() =>altaPlantas(planta.id_planta)}  type="button" className="btn btn-success"> Dar de Alta </button>
 
                                 </>
                             }
-                            <button  type="button" className="btn btn-warning"> Modificar </button>
 
                         
                             </div>

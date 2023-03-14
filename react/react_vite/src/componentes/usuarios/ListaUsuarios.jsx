@@ -4,15 +4,14 @@ import * as API from '../../servicios/servicios'
 
 export function ListaUsuarios(){
     const [usuarios,setUsuarios]=useState([]);
-    
 //para buscar usuaario
-
     const [username, setUsername]=useState('');
     const [nombre, setNombre]=useState('');
     const [apellido,setApellido]=useState('');
     const [mensajeError,setmensajeError]=useState('');
-
-    
+    const [mensajeSuccess, setmensajeSuccess] = useState('')
+   
+   
     useEffect(()=>{
         API.getUsuarios().then(setUsuarios)
     },[])
@@ -27,15 +26,14 @@ const buscar_usuario = ()=>{
     };
    // console.log('le manda los filtros',filtros)
     API.BuscarUsuarios(filtros).then(setUsuarios);
-   
 }
+
 const limpiar_filtros = ()=>{
     setApellido('');
     setNombre('');
     setUsername('');
 
-    API.getUsuarios().then(setUsuarios)
-   
+    API.getUsuarios().then(setUsuarios)   
 }
 
 //baja de Usuarios
@@ -63,9 +61,9 @@ const altaUsuario  = async(id_usuario)=>{
      const user = await API.AltaUsuarios(id_usuario)
      // const user = await API.bajaUsuario(id)
      if(user.status){
-        setmensajeError(user.mensaje)
+        setmensajeSuccess(user.mensaje)
           setTimeout(()=>{
-            setmensajeError('')
+            setmensajeSuccess('')
              window.location.reload(true)
 
           }, 4000)
@@ -80,56 +78,50 @@ const altaUsuario  = async(id_usuario)=>{
 
 
 
-    return(
+return(
     <>
-            <div className="card">
-                <div className="card-header">
-                    Filtros de busqueda
-                </div>
-                <div className="card-body">
-                    <div className='row'>
-                        <div className='col-2'>
-                            <label>Username </label>
+        <div className="card">
+            <div className="card-header">
+                Filtros de busqueda
+            </div>
+            <div className="card-body">
+                <div className='row'>
+                    <div className='col-2'>
+                        <label>Username </label>
                             <input 
                              id='username'
                              className='form-control'
                              value={username} 
                              onChange={(event)=>setUsername(event.target.value)}
                             />
-                        </div>
-                        <div className='col-2'>
-                            <label>Nombre</label>
-                            <input 
-                             id='nombre'
-                             className='form-control'
-                             value={nombre} 
-                             onChange={(event)=>setNombre(event.target.value)}
-                            />
-
-                        </div>
-                        <div className='col-2'>
-                            <label>Apellido </label>
+                    </div>
+                    <div className='col-2'>
+                        <label>Nombre</label>
+                        <input 
+                            id='nombre'
+                            className='form-control'
+                            value={nombre} 
+                            onChange={(event)=>setNombre(event.target.value)}
+                        />
+                    </div>
+                    <div className='col-2'>
+                        <label>Apellido </label>
                             <input 
                             id='apellido'
                              className='form-control'
                             value={apellido} 
                             onChange={(event)=>setApellido(event.target.value)}
                             />
-
-                        </div>
-                        <div className='col-1'>
-                        </div>
-                        <div className='col-2'>
-                            <button onClick={buscar_usuario} className='btn btn-primary'>Buscar</button>
-                        </div>
-                        <div className='col-2'>
-                            <button  onClick={limpiar_filtros} className='btn btn-dark'>Limpiar Filtros</button>                    
-                        </div> 
-
-                        
                     </div>
-
-                    
+                    <div className='col-1'>
+                    </div>
+                    <div className='col-2'>
+                        <button onClick={buscar_usuario} className='btn btn-primary'>Buscar</button>
+                    </div>
+                    <div className='col-2'>
+                        <button  onClick={limpiar_filtros} className='btn btn-dark'>Limpiar Filtros</button>                    
+                    </div>
+                </div>                   
                 </div>
             </div> 
             <div className="card">
@@ -137,88 +129,75 @@ const altaUsuario  = async(id_usuario)=>{
             Listado de Usuarios
         </div>
         <div className="card-body">
-                {
+        {
                     mensajeError?
-                        <div className="alert alert-success" role="alert">
-                        {mensajeError}
-                     </div>:''
+                    <div className="alert alert-warning" role="alert">
+                     {mensajeError}
+                    </div>:''
+                }
+
+                {
+                    mensajeSuccess?
+                    <div className="alert alert-success" role="alert">
+                     {mensajeSuccess}
+                    </div>:''
                 }
         <Link name="" id="" className="btn btn-light" to={'/registro'} role="button">Nuevo Usuario</Link>
             <table className="table table-striped table-inverse table-responsive">
                 <thead className="thead-inverse">
-                     <tr>
+                    <tr>
                         <th>ID</th>
                         <th>Username</th>
                         <th>Nombre</th>
                         <th>Apellido</th>
-                         <th>Email</th> 
-                         <th>Acciones</th>
-                     </tr>
+                        <th>Email</th> 
+                        <th>Acciones</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {usuarios.map((usuario)=>(
-                            <tr>
-                            <td scope="row">{usuario.id_usuario}</td>
-                            <td scope="row">{usuario.username}</td>
-                            <td scope="row"> {usuario.nombre}</td>
-                            <td scope="row">{usuario.apellido}</td>
-
-                            {(usuario.contacto=='SI')?
+                        <tr key={usuario.id_usuario}>
+                        <td scope="row">{usuario.id_usuario}</td>
+                        <td scope="row">{usuario.username}</td>
+                        <td scope="row"> {usuario.nombre}</td>
+                        <td scope="row">{usuario.apellido}</td>
+                        {(usuario.contacto=='SI')?
                             <>
                                 <td scope="row">{usuario.email}</td>
-                                </>
-                                :
-                                <>
+                            </>
+                            :
+                            <>
                                 <td scope="row">&nbsp;</td>
-                                </> 
-                            } 
-                             
-                            <td>
-                            <td>
+                            </> 
+                        }                              
+                        
+                        <td>
                             <div className="btn-group" role="group" aria-label="">
-                            { (usuario.estado=='A')?
+                                { (usuario.estado=='A')?
                                 <>
                                 <button onClick={() =>bajaUsuario(usuario.id_usuario)} type="button" className="btn btn-danger"> Dar de Baja </button>
+                                <Link to={`/editar_usuario/${usuario.id_usuario}`}>
+                                <button  type="button" className="btn btn-warning"> Modificar </button>                       
+                                </Link>
 
                                 </>
                                 : 
                                 <>
-                                <button  onClick={() =>altaUsuario(usuario.id_usuario)} type="button" className="btn btn-success"> Dar de Alta </button>
-
+                                <button  onClick={() =>altaUsuario(usuario.id_usuario)} type="button" className="btn btn-outline-success"> Dar de Alta </button>
                                 </>
-                            }
-                            <button  type="button" className="btn btn-warning"> Modificar </button>
-
-                        
+                                }
                             </div>
                             </td>
-                            {/* <div className="btn-group" role="group" aria-label="">
-                                                    
-                                                    { (usuario.contacto=='SI')?
-                                                         <>
-                                                         <Link to={'/contacto'}>
-                                                            <button onClick={() =>bajaUsuario(usuario.id_usuario)} type="button" className="btn btn-secondary"> Contacto </button>
-                                                         </Link> 
-                                                          </> 
-                                                          :
-                                                          <>
-                                                         </> 
-                                                          }
-
-
-                                                </div> */}
-                                                </td>
-                                                </tr>
-                                                ))}
-                    
+                            </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
         </div>
-        <div className="card-footer text-muted">
+    <div className="card-footer text-muted ">
         Mi Huerta - Silicon Misiones
-        </div>
+    </div>
 
-    </>
-    )
+        </>
+        )
 };

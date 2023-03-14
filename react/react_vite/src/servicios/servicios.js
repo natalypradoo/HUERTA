@@ -53,6 +53,8 @@ return data;
 console.log('Nuestro error',error);
 }
 };
+
+
 //buscarUsuarios
 export async function BuscarUsuarios(filtros){
     const requestOptions={
@@ -103,6 +105,34 @@ export async function AltaUsuarios(id_usuarios){
         alert('No se puede conectar con el servidor')
     }
 }
+//editar
+export async function getUsuariosbyId(id_usuarios){
+    try{
+const response = await fetch(`${API_URL}/usuarios/${id_usuarios}`);
+const data= await response.json();
+console.log(data)
+return data[0];
+}catch(error){
+console.log('Nuestro error',error);
+}
+};
+
+export function UpdateUsuario(id_usuario, datos){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datos)
+    };
+    fetch(`${API_URL}/usuarios/${id_usuario}`, requestOptions)
+
+}
+
+
+
+
+
 
 //API HUERTAS///
 
@@ -124,7 +154,7 @@ export function SaveHuerta(datos){
         headers:{
             'Content-Type':'application/json'
         },
-        body:JSON.stringify(datos)
+        body: JSON.stringify(datos)
     };
     fetch(`${API_URL}/huertas`, requestOptions)
 }
@@ -169,6 +199,32 @@ export async function AltaHuerta(id_huerta){
     }
 }
 
+//Editar info de HUERTA
+//editar
+export async function getHuertabyId(id_huerta){
+    try{
+const response = await fetch(`${API_URL}/huertas/${id_huerta}`);
+const data= await response.json();
+console.log(data)
+return data[0];
+}catch(error){
+console.log('Nuestro error',error);
+}
+};
+
+export function UpdateHuerta(id_huerta, datos){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datos)
+    };
+    fetch(`${API_URL}/huertas/${id_huerta}`, requestOptions)
+
+}
+
+
 ///API PLANTAS///
 
 //Listar Plantas
@@ -188,17 +244,19 @@ export async function getPlantas(){
 };
 
 //Editar info de Plantas
-export async function getPlantabyId(id_planta){
+//editar
+export async function getPlantasbyId(id_planta){
     try{
-        const response = await fetch(`${API_URL}/plantas/${id_planta}`);
-        const data = await response.json();
-        return data[0];
-    }catch(error){
-        console.log('Nuestro error', error);
-    }
+const response = await fetch(`${API_URL}/plantas/${id_planta}`);
+const data= await response.json();
+console.log(data)
+return data[0];
+}catch(error){
+console.log('Nuestro error',error);
 }
+};
 
-export function UpdatePlanta(id_planta, datos){
+export function UpdatePlantas(id_planta, datos){
     const requestOptions={
         method: 'PUT',
         headers: {
@@ -207,11 +265,11 @@ export function UpdatePlanta(id_planta, datos){
         body: JSON.stringify(datos)
     };
     fetch(`${API_URL}/plantas/${id_planta}`, requestOptions)
-    
+
 }
 
 //Crear Nuev Planta
-export function SaveAlumno(datos){
+export function SavePlanta(datos){
     const requestOptions={
         method: 'POST',
         headers: {
@@ -239,8 +297,23 @@ export async function getComentario(){
     }
 };
 
+//Crear Nuevo Comentario
+export function SaveComentario(id_planta,datos_comentario){
+    const requestOptions={
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datos_comentario)
+    };
+    fetch(`${API_URL}/comentarios/${id_planta}`, requestOptions)
+    
+}
+
+
+
 //Dar baja comentario
-export async function BajaComentario(id_cp){
+export async function BajaComentario(id_pc){
     const requestOptions={
         method: 'PUT',
         headers: {
@@ -249,7 +322,7 @@ export async function BajaComentario(id_cp){
         }
     };
     try{
-        const response = await fetch(`${API_URL}/bajacomentario/${id_cp}`, requestOptions)
+        const response = await fetch(`${API_URL}/bajacomentario/${id_pc}`, requestOptions)
         const data = await response.json();
         console.log(data)
         return data;

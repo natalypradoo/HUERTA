@@ -10,7 +10,10 @@ import { ListaUsuarios } from './componentes/usuarios/ListaUsuarios'
 import { ListaPlantas } from './componentes/plantas/ListaPlantas'
 import { CrearPlanta } from './componentes/plantas/crearPlanta'
 import { ListaComentario } from './componentes/plantas/Comentarios'
-//import { AgregarComentario } from './componentes/plantas/agregarComentario'
+import { EditarUsuario } from './componentes/usuarios/EditarUsuario'
+import { EditarPlanta } from './componentes/plantas/EditarPlanta'
+import { EditarHuerta } from './componentes/huerta/EditarHuerta'
+import { AgregarComentario } from './componentes/plantas/agregarComentario'
 // import {Contacto} from './componentes/usuarios/Contacto'
 //import "./componentes/login/loginn.css";
 // import { Login } from './servicios/servicios'
@@ -47,7 +50,12 @@ function App() {
         <Route path='/crearPlanta' element={<CrearPlanta/>}> </Route>
         <Route path='/comentarios' element={<ListaComentario/>}></Route>
         <Route path='/crearPlanta' element={<CrearPlanta/>}> </Route>
-        {/* <Route path='/comentar' element={<AgregarComentario/>}> </Route> */}
+        <Route path='/editar_usuario/:id_usuario' element={<EditarUsuario/>}></Route> 
+        <Route path='/editar_planta/:id_planta' element={<EditarPlanta/>}> </Route>
+        <Route path='/editar_huerta/:id_huerta' element={<EditarHuerta/>}> </Route>
+        <Route path='/contacto' element={<contactos/>}> </Route>
+      
+        <Route path='/comentar' element={<AgregarComentario/>}> </Route> 
         {/* <Route path='/contacto' element={<Contacto/>}> </Route> */}
         
        

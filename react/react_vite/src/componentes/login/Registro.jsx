@@ -13,45 +13,28 @@ export function Registro(){
     const [mensajeSuccess, setmensajeSuccess] = useState('');
     const [mensajeError, setmensajeError] = useState('');
 
-    const registroForm  = async (event)=>{
-      event.preventDefault();
-      const user = await API.Registro({username, password, nombre, apellido, email, fecha_nacimiento, contacto})     
-      if(user.status){    
-        setmensajeSuccess(user.mensaje)
-          setTimeout(()=>{
-              setmensajeSuccess('');
-          }, 4000)
-          // window.location.reload(true)
-      }else{
-          setmensajeError(user.mensaje)
-          setTimeout(()=>{
-              setmensajeError('');
-          }, 4000)
-      }
-  
 
-
-    // const registroForm  = async (event)=>{
-    //   event.preventDefault();
-    //   const user = await API.Registro({username, password, nombre, apellido, email, fecha_nacimiento, contacto})
-    //   if(user.status){
-    //       setmensajeSuccess(user.mensaje)
-    //   if(user.rows!=0){
-    //       Swal.fire('Usuario Creado');
-    //       setmensajeSuccess(user)
-    //       setTimeout(()=>{
-    //           setmensajeSuccess('');
-    //       }, 4000)
+   const registroForm  = async (event)=>{
+    event.preventDefault();
+      const user = await API.Registro({username, password, nombre, apellido, email, fecha_nacimiento, contacto})
+  if(user.status){
+          setmensajeSuccess(user.mensaje)
+    if(user.rows!=0){
+       Swal.fire('Usuario Creado');
+        setmensajeSuccess(user)
+         setTimeout(()=>{
+               setmensajeSuccess('');
+         }, 4000)
          
-    //       // window.location.reload(true)
-    //   }else{
-    //       setmensajeError(user.mensaje)
-    //       setmensajeError(user)
-    //       setTimeout(()=>{
-    //           setmensajeError('');
-    //       }, 4000)
+         // window.location.reload(true)
+     }else{
+       setmensajeError(user.mensaje)
+          setmensajeError(user)
+         setTimeout(()=>{
+               setmensajeError('');
+          }, 4000)
          
-    //   }
+     }
   
     return(
         <>
@@ -165,4 +148,4 @@ export function Registro(){
         </div>
         </>
     )
-}};
+}}};

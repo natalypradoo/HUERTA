@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+import { Link, useParams} from 'react-router-dom';
 import * as API from '../../servicios/servicios'
 
 export function CrearPlanta(){
-  
+    const {id_usuario} = useParams();
     const [mensajeSuccess, setmensajeSuccess] = useState('')
     const [epoca, setepoca] = useState('');
     const [nombre, setNombre] = useState('');
@@ -11,7 +11,12 @@ export function CrearPlanta(){
     const [forma, setforma] = useState('');
     const [comentario, setcomentario] = useState('');
     
-    const crearPlanta = ()=>{
+    useEffect(()=>{
+        crearPlanta(id_usuario)
+    },[])
+
+    const crearPlanta = async (event)=>{
+        event.preventDefault();
         const datos_planta={
             nombre: nombre,
             epoca: epoca,
@@ -19,16 +24,16 @@ export function CrearPlanta(){
             forma: forma,
             comentario:comentario
         };
+
         console.log(datos_planta)
         API.SavePlanta(datos_planta);
         setmensajeSuccess('Se agrego la planta correctamente')
             setTimeout(()=>{
                 setmensajeSuccess('')
-                window.location.href('/plantas')
-            }, 2000)
+         //       window.location.href('/plantas')
+            }, 2000)            
     }
-
-    
+        
 
     return(
         <div className="card">
@@ -41,6 +46,7 @@ export function CrearPlanta(){
                     {mensajeSuccess}
                 </div>:''
             }
+
             <div className="card-body">
                 <div className='row'>
 
@@ -73,7 +79,7 @@ export function CrearPlanta(){
                 </div>
                 <div className="form-group">
                   <label for="">Mejor Fase Lunar para plantar</label>
-                  <select onChange={(event)=>setforma(event.target.value)} className='form-control'>
+                  <select onChange={(event)=>setluna(event.target.value)} className='form-control'>
                         <option>Seleccionar filtro</option>
                         <option value='Cuarto Creciente'>Cuarto Creciente</option>
                         <option value='Luna Llena'>Luna Llena</option>

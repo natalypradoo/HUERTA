@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Routes, Route, Link } from 'react-router-dom'
-import { Principal } from './Principal'
+//import { Principal } from './Principal'
 //import "./login/login.css";
 
 export function Menu(){
@@ -56,7 +56,7 @@ export function Menu(){
         <div className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <Link className="dropdown-item" to={'/listarUsuarios'}>Lista de Usuarios</Link>
           <Link className="dropdown-item" to={'/Registro'}> Agregar Usuario</Link> 
-
+          <Link className="dropdown-item" to={'/contacto'}> Contactos</Link>
         </div>
       </li>
       <li className="nav-item active">
