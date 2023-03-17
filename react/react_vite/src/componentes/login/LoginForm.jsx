@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from 'react-router-dom'
 import * as API from '../../servicios/servicios'
+import icono from '../styles.css/icono.png'
 import "./login.css";
 
 export function LoginForm() {
@@ -33,9 +34,18 @@ export function LoginForm() {
 {/* <body className="login">  */}
   <div className="container" >
       <div className="row justify-content-center">
-      <div className="col-md-5">
-       <div className="card">
-         <h2 className="card-title text-center">Mi Huerta</h2>
+      <div className="col-md-4">
+       <div className="card bg-success">
+
+      
+        <div className="card-title text-center">
+        <h2>Mi Huerta</h2>
+        <img src={icono} width="80" height="80" />
+        
+        </div>
+
+
+
           <div className="card-body py-md-4">
            <form onSubmit={form}>
            {
