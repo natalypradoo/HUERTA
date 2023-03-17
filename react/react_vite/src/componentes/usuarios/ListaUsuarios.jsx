@@ -1,6 +1,8 @@
 import React, { useEffect,useState } from "react";
-import {Link} from 'react-router-dom'
-import * as API from '../../servicios/servicios'
+import {Link} from 'react-router-dom';
+import  {} from '../../styles.css/plantilla.css';
+import * as API from '../../servicios/servicios';
+//import plantilla from '../../styles.css/plantilla.css';
 
 export function ListaUsuarios(){
     const [usuarios,setUsuarios]=useState([]);
@@ -95,7 +97,7 @@ return(
                              onChange={(event)=>setUsername(event.target.value)}
                             />
                     </div>
-                    <div className='col-2'>
+                    <div className='col-3'>
                         <label>Nombre</label>
                         <input 
                             id='nombre'
@@ -104,7 +106,7 @@ return(
                             onChange={(event)=>setNombre(event.target.value)}
                         />
                     </div>
-                    <div className='col-2'>
+                    <div className='col-3'>
                         <label>Apellido </label>
                             <input 
                             id='apellido'
@@ -115,15 +117,23 @@ return(
                     </div>
                     <div className='col-1'>
                     </div>
-                    <div className='col-2'>
+                    <div className='col-1'>
+                    <small id="helpId" className="text-muted">&nbsp;</small>
+
                         <button onClick={buscar_usuario} className='btn btn-primary'>Buscar</button>
                     </div>
                     <div className='col-2'>
+                    <small id="helpId" className="text-muted">&nbsp;</small>
+                    <small id="helpId" className="text-muted">&nbsp;</small>
+
                         <button  onClick={limpiar_filtros} className='btn btn-dark'>Limpiar Filtros</button>                    
                     </div>
                 </div>                   
                 </div>
             </div> 
+
+            <small id="helpId" className="text-muted">&nbsp;</small>
+
             <div className="card">
         <div className="card-header">
             Listado de Usuarios

@@ -25,6 +25,9 @@ export function Menu(){
        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
 
         <div>
+        <small id="helpId" className="text-muted">&nbsp;</small>
+        <small id="helpId" className="text-muted">&nbsp;</small>
+        <small id="helpId" className="text-muted">&nbsp;</small>
           <a className="navbar-brand" href="#"><img src={icono} width="50" height="50" /></a> 
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
@@ -91,7 +94,7 @@ export function Menu(){
     </ul>
   </div>
 </nav>
-
+<small id="helpId" className="text-muted">&nbsp;</small>
 </div>
 {/* <Principal/> */}
 </>

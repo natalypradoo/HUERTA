@@ -53,7 +53,9 @@ const altaPlantas= async(id_planta)=>{
 }
 
     return(
+        
         <div className="card">
+            
             <div className="card-header">
                 Listado de Plantas: los datos presentes refieren a las condiciones preferibles para el plantado.
             </div>
@@ -97,7 +99,7 @@ const altaPlantas= async(id_planta)=>{
                             <td>{planta.luna}</td>
                             <td>{planta.forma}</td>
                             <td>{planta.comentario}</td>
-                            <td>{planta.Comentarios}</td>
+                            <td><span class="badge bg-primary rounded-pill">{planta.Comentarios}</span></td>
 
                             <td>
                             <div className="btn-group" role="group" aria-label="">
