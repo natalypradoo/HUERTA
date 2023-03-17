@@ -5,17 +5,21 @@ import icono from './styles.css/icono.png'
 //import "./login/login.css";
 
 export function Menu(){
+  const[id_usuario,setIdUsuario]=useState('')
   const [usuario, setUsuario] =useState('');
   const [nombre_usuario, setNombreUsuario] =useState('')
   const logout  = async (event)=>{
           setUsuario('')
-          window.localStorage.removeItem('usuario')
+          window.localStorage.removeItem('username')
           window.location.reload(true);
   }
   useEffect(()=>{
-    const usuarioLogueado = JSON.parse(localStorage.getItem('usuario'))
+    const usuarioLogueado = JSON.parse(localStorage.getItem('username'))
+    //console.log(usuarioLogueado.datos[0].username)
     if(usuarioLogueado){
-      setNombreUsuario(usuarioLogueado.datos[0].nombre_usuario)
+      setIdUsuario(usuarioLogueado.datos[0].id_usuario);
+      setNombreUsuario(usuarioLogueado.datos[0].username);
+  
     }
   },[]);
     return(
@@ -24,7 +28,7 @@ export function Menu(){
        
        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
 
-        <div>
+        <div className='col-1'>
         <small id="helpId" className="text-muted">&nbsp;</small>
         <small id="helpId" className="text-muted">&nbsp;</small>
         <small id="helpId" className="text-muted">&nbsp;</small>
@@ -34,17 +38,23 @@ export function Menu(){
             </button>
         </div>
 
-        <div className="collapse navbar-collapse" id="navbarNavDropdown">
-  
-          <ul className="navbar-nav">
+        <div className="collapse navbar-collapse row" id="navbarNavDropdown">
+        <ul className="navbar-nav">
 
-        <div className='col-3'>
+        <div className='col-1'>
           <li className="nav-item active">
           <Link className="nav-link" to={'/'}>Inicio</Link>
           </li>
         </div>
 
-        <div className='col-4'>
+        <div className='col-2'>
+          <li className="nav-item active">
+          <Link className="nav-link" to={'/MisHuertas'}>Mi Huerta</Link>
+          </li>
+        </div>
+
+
+        <div className='col-2'>
           <li className="nav-item dropdown">
             <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Huertas
@@ -57,7 +67,7 @@ export function Menu(){
         </div>
 
 
-      <div className='col-4'>
+      <div className='col-2'>
       <li className="nav-item dropdown">
         <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Plantas
@@ -70,7 +80,7 @@ export function Menu(){
       </li>
       </div>
 
-<div className='col-7'>
+<div className='col-2'>
 <li className="nav-item dropdown">
         <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Usuarios
@@ -82,14 +92,20 @@ export function Menu(){
         </div>
 </li>
 </div>
- <div className='col-1'>
- <li className="nav-item active">
-        {nombre_usuario}
 
+  <div className='col-2'>
+    <li className="nav-item active">
+      <a href="">Hola, {nombre_usuario}!</a>
+    </li> 
+  </div>  
+
+          <small id="helpId" className="text-muted">&nbsp;</small>
+          <small id="helpId" className="text-muted">&nbsp;</small>
+  <div className='col-1'>
+      <li className="nav-item active">
         <Link to={'/'}><button onClick={logout} className='btn btn-outline-danger'> Salir</button></Link>
       </li>
-
- </div>
+  </div>
 
     </ul>
   </div>

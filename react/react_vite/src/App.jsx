@@ -14,6 +14,7 @@ import { EditarUsuario } from './componentes/usuarios/EditarUsuario'
 import { EditarPlanta } from './componentes/plantas/EditarPlanta'
 import { EditarHuerta } from './componentes/huerta/EditarHuerta'
 import { AgregarComentario } from './componentes/plantas/agregarComentario'
+import { MisHuertas } from './componentes/miHuerta/MisHuertas'
 // import {Contacto} from './componentes/usuarios/Contacto'
 //import "./componentes/login/loginn.css";
 // import { Login } from './servicios/servicios'
@@ -39,7 +40,7 @@ function App() {
       </>:
 <div className='container'>
 <Menu/>
-<Routes>
+  <Routes>
         <Route path='/' element={<Principal/>}></Route>
         <Route path='/login' element={<LoginForm/>}></Route>  
         <Route path='/registro' element={<Registro/>}></Route>
@@ -55,11 +56,12 @@ function App() {
         <Route path='/editar_huerta/:id_huerta' element={<EditarHuerta/>}> </Route>
         <Route path='/contacto' element={<contactos/>}> </Route>
       
-        <Route path='/comentar' element={<AgregarComentario/>}> </Route> 
+        <Route path='/comentar' element={<AgregarComentario/>}> </Route>
+        <Route path='/MisHuertas' elemnet={<MisHuertas/>}> </Route> 
         {/* <Route path='/contacto' element={<Contacto/>}> </Route> */}
         
        
-      </Routes>
+  </Routes>
 </div>
     }    
     </>

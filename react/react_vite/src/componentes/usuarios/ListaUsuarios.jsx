@@ -12,10 +12,19 @@ export function ListaUsuarios(){
     const [apellido,setApellido]=useState('');
     const [mensajeError,setmensajeError]=useState('');
     const [mensajeSuccess, setmensajeSuccess] = useState('')
+    const [nombre_usuario, setNombreUsuario] =useState('')
+    const[id_usuario,setIdUsuario]=useState('')
    
    
     useEffect(()=>{
         API.getUsuarios().then(setUsuarios)
+            const usuarioLogueado = JSON.parse(localStorage.getItem('username'))
+            console.log(usuarioLogueado.datos[0].username)
+            if(usuarioLogueado){
+              setIdUsuario(usuarioLogueado.datos[0].id_usuario);
+              setNombreUsuario(usuarioLogueado.datos[0].username);
+          
+            }
     },[])
 
 //funcion para buscar usuario
@@ -185,7 +194,8 @@ return(
                             <div className="btn-group" role="group" aria-label="">
                                 { (usuario.estado=='A')?
                                 <>
-                                <button onClick={() =>bajaUsuario(usuario.id_usuario)} type="button" className="btn btn-danger"> Dar de Baja </button>
+                                <button onClick={() =>bajaUsuario(usuario.id_usuario)} type="button" className="btn btn-outline-danger"> Baja </button>
+                                <small id="helpId" className="text-muted">&nbsp;</small>
                                 <Link to={`/editar_usuario/${usuario.id_usuario}`}>
                                 <button  type="button" className="btn btn-warning"> Modificar </button>                       
                                 </Link>
@@ -193,7 +203,7 @@ return(
                                 </>
                                 : 
                                 <>
-                                <button  onClick={() =>altaUsuario(usuario.id_usuario)} type="button" className="btn btn-outline-success"> Dar de Alta </button>
+                                <button  onClick={() =>altaUsuario(usuario.id_usuario)} type="button" className="btn btn-outline-success"> Alta </button>
                                 </>
                                 }
                             </div>
