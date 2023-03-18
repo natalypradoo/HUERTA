@@ -40,7 +40,7 @@ function App() {
       </>:
 <div className='container'>
 <Menu/>
-  <Routes>
+<Routes>
         <Route path='/' element={<Principal/>}></Route>
         <Route path='/login' element={<LoginForm/>}></Route>  
         <Route path='/registro' element={<Registro/>}></Route>
@@ -57,11 +57,12 @@ function App() {
         <Route path='/contacto' element={<contactos/>}> </Route>
       
         <Route path='/comentar' element={<AgregarComentario/>}> </Route>
-        <Route path='/MisHuertas' elemnet={<MisHuertas/>}> </Route> 
+         
+        <Route path='/mihuerta' element={<MisHuertas/>}> </Route>
         {/* <Route path='/contacto' element={<Contacto/>}> </Route> */}
         
        
-  </Routes>
+      </Routes>
 </div>
     }    
     </>

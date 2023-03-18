@@ -14,7 +14,8 @@ export function Principal(){
         
         </div>
 
+
         </div>
 
-    )
+    );
 }

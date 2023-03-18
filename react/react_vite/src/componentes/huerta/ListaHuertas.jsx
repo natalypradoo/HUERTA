@@ -113,7 +113,7 @@ export function ListaHuertas(){
                 </table>
             </div>
             <div className="card-footer text-muted">
-                by Natalila
+                Mi Huerta - Silicon Misiones
             </div>
         </div>
         

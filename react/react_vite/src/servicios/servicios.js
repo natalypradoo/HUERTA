@@ -131,9 +131,6 @@ export function UpdateUsuario(id_usuario, datos){
 
 
 
-
-
-
 //API HUERTAS///
 
 // Listar Huertas
@@ -371,3 +368,16 @@ export async function AltaPlantas(id_planta){
 }
 
 
+//API MIS HUERTAS
+
+//Listado de HUERTAS DE UN USUARIOS
+export async function getMisHuertas(id_usuario){
+    try{
+const response = await fetch(`${API_URL}/mihuerta/${id_usuario}`);
+const data= await response.json();
+console.log(data)
+return data[0];
+}catch(error){
+console.log('Nuestro error',error);
+}
+};

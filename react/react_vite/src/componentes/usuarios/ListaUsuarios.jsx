@@ -18,13 +18,13 @@ export function ListaUsuarios(){
    
     useEffect(()=>{
         API.getUsuarios().then(setUsuarios)
-            const usuarioLogueado = JSON.parse(localStorage.getItem('username'))
-            console.log(usuarioLogueado.datos[0].username)
-            if(usuarioLogueado){
-              setIdUsuario(usuarioLogueado.datos[0].id_usuario);
-              setNombreUsuario(usuarioLogueado.datos[0].username);
+            const usuarioLogueado = JSON.parse(localStorage.getItem('usuario'))
+            console.log(usuarioLogueado)
+             if(usuarioLogueado){
+               setIdUsuario(usuarioLogueado.datos[0].id_usuario);
+               setNombreUsuario(usuarioLogueado.datos[0].username);
           
-            }
+             }
     },[])
 
 //funcion para buscar usuario
@@ -195,7 +195,7 @@ return(
                                 { (usuario.estado=='A')?
                                 <>
                                 <button onClick={() =>bajaUsuario(usuario.id_usuario)} type="button" className="btn btn-outline-danger"> Baja </button>
-                                <small id="helpId" className="text-muted">&nbsp;</small>
+                                
                                 <Link to={`/editar_usuario/${usuario.id_usuario}`}>
                                 <button  type="button" className="btn btn-warning"> Modificar </button>                       
                                 </Link>

@@ -10,11 +10,11 @@ export function Menu(){
   const [nombre_usuario, setNombreUsuario] =useState('')
   const logout  = async (event)=>{
           setUsuario('')
-          window.localStorage.removeItem('username')
+          window.localStorage.removeItem('usuario')
           window.location.reload(true);
   }
   useEffect(()=>{
-    const usuarioLogueado = JSON.parse(localStorage.getItem('username'))
+    const usuarioLogueado = JSON.parse(localStorage.getItem('usuario'))
     //console.log(usuarioLogueado.datos[0].username)
     if(usuarioLogueado){
       setIdUsuario(usuarioLogueado.datos[0].id_usuario);
@@ -49,7 +49,7 @@ export function Menu(){
 
         <div className='col-2'>
           <li className="nav-item active">
-          <Link className="nav-link" to={'/MisHuertas'}>Mi Huerta</Link>
+          <Link className="nav-link" to={'/mihuerta'}>Mi Huerta</Link>
           </li>
         </div>
 
