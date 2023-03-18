@@ -49,7 +49,7 @@ export function Menu(){
 
         <div className='col-2'>
           <li className="nav-item active">
-          <Link className="nav-link" to={'/mihuerta'}>Mi Huerta</Link>
+          <Link className="nav-link" to={`/mihuerta/${id_usuario}`}>Mi Huerta</Link>
           </li>
         </div>
 

@@ -372,11 +372,12 @@ export async function AltaPlantas(id_planta){
 
 //Listado de HUERTAS DE UN USUARIOS
 export async function getMisHuertas(id_usuario){
+
     try{
 const response = await fetch(`${API_URL}/mihuerta/${id_usuario}`);
 const data= await response.json();
-console.log(data)
-return data[0];
+//console.log(data)
+return data;
 }catch(error){
 console.log('Nuestro error',error);
 }

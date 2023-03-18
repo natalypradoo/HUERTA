@@ -58,7 +58,7 @@ function App() {
       
         <Route path='/comentar' element={<AgregarComentario/>}> </Route>
          
-        <Route path='/mihuerta' element={<MisHuertas/>}> </Route>
+        <Route path='/mihuerta/:id_usuario' element={<MisHuertas/>}> </Route>
         {/* <Route path='/contacto' element={<Contacto/>}> </Route> */}
         
        
