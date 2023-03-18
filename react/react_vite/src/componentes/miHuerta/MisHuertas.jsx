@@ -88,6 +88,10 @@ return(
                                 <Link to={`/mihuerta/${id_usuario}/${mis_huertas.id_huerta}`}>
                                 <button  type="button" className="btn btn-primary"> Ver </button>
                                 </Link>
+                                <small id="helpId" className="text-muted">&nbsp;</small>
+                                <Link name="" id="" className="btn btn-primary" to={`/mihuerta/${id_usuario}/${mis_huertas.id_huerta}/listaUsuariosHuerta`} role="button">
+                                Colaboradores
+                                </Link>
 
 
                                 </>

@@ -15,6 +15,9 @@ import { EditarPlanta } from './componentes/plantas/EditarPlanta'
 import { EditarHuerta } from './componentes/huerta/EditarHuerta'
 import { AgregarComentario } from './componentes/plantas/agregarComentario'
 import { MisHuertas } from './componentes/miHuerta/MisHuertas'
+import { MisPlantas } from './componentes/miHuerta/MisPlantas'
+import { MisUsuarios } from './componentes/miHuerta/MisUsuarios'
+import { MisComentarios} from './componentes/miHuerta/MisComentarios'
 // import {Contacto} from './componentes/usuarios/Contacto'
 //import "./componentes/login/loginn.css";
 // import { Login } from './servicios/servicios'
@@ -59,6 +62,9 @@ function App() {
         <Route path='/comentar' element={<AgregarComentario/>}> </Route>
          
         <Route path='/mihuerta/:id_usuario' element={<MisHuertas/>}> </Route>
+        <Route path='/mihuerta/:id_usuario/:id_huerta' element={<MisPlantas/>}> </Route>
+        <Route path='/mihuerta/:id_usuario/:id_huerta/listaUsuariosHuerta' element={<MisUsuarios/>}> </Route>
+        <Route path='/mihuerta_comentarios/:id_usuario/:id_huerta/:id_hp' element={<MisComentarios/>}> </Route>
         {/* <Route path='/contacto' element={<Contacto/>}> </Route> */}
         
        

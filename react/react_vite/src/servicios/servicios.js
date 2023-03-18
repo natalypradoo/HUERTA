@@ -368,7 +368,7 @@ export async function AltaPlantas(id_planta){
 }
 
 
-//API MIS HUERTAS
+//API MI HUERTA
 
 //Listado de HUERTAS DE UN USUARIOS
 export async function getMisHuertas(id_usuario){
@@ -377,6 +377,50 @@ export async function getMisHuertas(id_usuario){
 const response = await fetch(`${API_URL}/mihuerta/${id_usuario}`);
 const data= await response.json();
 //console.log(data)
+return data;
+}catch(error){
+console.log('Nuestro error',error);
+}
+};
+
+
+//Lista las PLANTAS de una HUERTA
+export async function getMisPlantas(id_usuario,id_huerta){
+
+    try{
+const response = await fetch(`${API_URL}/mihuerta/${id_usuario}/${id_huerta}`);
+const data= await response.json();
+console.log(data)
+return data;
+}catch(error){
+console.log('Nuestro error',error);
+}
+};
+
+
+//Lista los USUARIOS de una HUERTA
+export async function getMisUsuarios(id_usuario,id_huerta){
+
+    try{
+const response = await fetch(`${API_URL}/mihuerta/${id_usuario}/${id_huerta}/listaUsuariosHuerta`);
+const data= await response.json();
+console.log(data)
+return data;
+}catch(error){
+console.log('Nuestro error',error);
+}
+};
+
+
+
+//Lista COMENTARIOS de una PLANTA
+
+export async function getMisComentarios(id_usuario,id_huerta,id_hp){
+
+    try{
+const response = await fetch(`${API_URL}/mihuerta_comentarios/${id_usuario}/${id_huerta}/${id_hp}`);
+const data= await response.json();
+console.log(data)
 return data;
 }catch(error){
 console.log('Nuestro error',error);
