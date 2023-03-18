@@ -656,9 +656,9 @@ router.get('/mihuerta/:id_usuario',(req,res)=>{
    //       res.sendStatus(403);
    //    }else{
          let id_usuario= req.params.id_usuario;
-         let query= `SELECT T.id_huerta, hh.nombre,hh.localidad,T.Tipos_de_Plantas FROM (
-         SELECT uh.id_usuario, uh.id_huerta,count(hp.id_huerta) Tipos_de_Plantas FROM huerta.usuario_huerta AS uh 
-         LEFT JOIN huerta.huerta_planta AS hp ON uh.id_huerta=hp.id_huerta WHERE (uh.id_usuario='${id_usuario}' AND uh.estado='A') GROUP BY id_huerta) AS T 
+         let query= `SELECT T.id_huerta, hh.nombre,hh.localidad,T.Tipos_de_Plantas, T.estado FROM (
+         SELECT uh.id_usuario, uh.id_huerta,count(hp.id_huerta) Tipos_de_Plantas, uh.estado FROM huerta.usuario_huerta AS uh 
+         LEFT JOIN huerta.huerta_planta AS hp ON uh.id_huerta=hp.id_huerta WHERE (uh.id_usuario='${id_usuario}') GROUP BY id_huerta) AS T 
          INNER JOIN huerta.huerta AS hh WHERE hh.id_huerta=T.id_huerta;`;
          // SELECT T.id_huerta, hh.nombre,hh.localidad,T.Tipos_de_Plantas FROM (
          //    SELECT uh.id_usuario, uh.id_huerta,count(hp.id_huerta) Tipos_de_Plantas FROM huerta.usuario_huerta AS uh 
@@ -799,11 +799,11 @@ router.get('/mihuerta/:id_usuario/:id_huerta',(req,res)=>{
             if(!err){
                //console.log(registros.length)
                if(registros.length!=undefined){
-                  let query1= `SELECT p.id_planta,p.nombre,TT.Fecha_Plantado,TT.cantidad,TT.Comentarios  FROM(
-                     SELECT T.id_planta, chp.id_c_hp,chp.id_hp,T.fecha Fecha_Plantado,T.cantidad,count(chp.id_hp) Comentarios FROM (
-                     SELECT hp.id_planta,hp.id_hp,hp.fecha,hp.cantidad FROM huerta.huerta_planta AS hp WHERE hp.id_huerta='${id_huerta}' AND hp.estado='A') T 
-                     LEFT JOIN huerta.comentario_hp AS chp ON T.id_hp=chp.id_hp WHERE estado='A' GROUP BY id_hp) TT 
-                     INNER JOIN huerta.plantas AS p WHERE (TT.id_planta=p.id_planta AND p.estado='A') ORDER BY TT.Fecha_Plantado DESC; ;`;    
+                  let query1= `SELECT p.id_planta,p.nombre,TT.fecha,TT.estado,TT.id_hp FROM(SELECT T.id_hp,T.id_planta,T.cantidad,T.fecha,T.estado FROM 
+                     (SELECT hp.id_hp,hp.id_huerta,hp.id_planta,hp.cantidad,hp.fecha,hp.estado 
+                     FROM huerta.huerta_planta AS hp where hp.id_huerta='${id_huerta}' ) AS T 
+                     LEFT JOIN huerta.comentario_hp AS chp ON T.id_hp=chp.id_hp group by T.id_hp) 
+                     TT INNER JOIN huerta.plantas AS p WHERE TT.id_planta=p.id_planta;;`;    
                      //SELECT p.id_planta,p.nombre,TT.Fecha_Plantado,TT.cantidad,TT.Comentarios  FROM(SELECT T.id_planta, chp.id_c_hp,chp.id_hp,T.fecha Fecha_Plantado,T.cantidad,count(chp.id_hp) Comentarios FROM (SELECT hp.id_planta,hp.id_hp,hp.fecha,hp.cantidad FROM huerta.huerta_planta AS hp WHERE hp.id_huerta='1' AND hp.estado='A') T LEFT JOIN huerta.comentario_hp AS chp ON T.id_hp=chp.id_hp WHERE estado='A' GROUP BY id_hp) TT INNER JOIN huerta.plantas AS p WHERE TT.id_planta=p.id_planta AND p.estado='A' ;  
                   mysqlConeccion.query(query1,(err,registros)=>{
                      if(!err){
@@ -1070,7 +1070,7 @@ router.get('/mihuerta/:id_usuario/:id_huerta/listaUsuariosHuerta',(req,res)=>{
     //  }else{
          let id_usuario= req.params.id_usuario;
          let id_huerta= req.params.id_huerta;
-         let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}' AND estado='A';`;
+         let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}';`;
          mysqlConeccion.query(query,(err,registros)=>{
             if(!err){
                console.log(registros)
@@ -1175,8 +1175,44 @@ router.get('/mihuerta/:id_usuario/:id_huerta/listaUsuariosHuerta',(req,res)=>{
     //   });
     // });
 
+////////////COMENTARIOS DE UNA PLANTA/////////////
 
-
+router.get('/mihuerta_comentarios/:id_usuario/:id_huerta/:id_hp',(req,res)=>{
+   //jwt.verify(req.token,'huerta1Key',(err,valido)=>{
+    //  if(err){
+      //   res.sendStatus(403);
+    //  }else{
+         let id_usuario= req.params.id_usuario;
+         let id_huerta= req.params.id_huerta;
+         let id_planta= req.params.id_planta;
+         let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}';`;
+         mysqlConeccion.query(query,(err,registros)=>{
+            if(!err){
+               console.log(registros)
+               if(registros.length!=undefined){
+               //SELECT uh.id_uh,u.username  FROM huerta.usuario_huerta AS uh INNER JOIN huerta.usuarios AS u WHERE uh.id_usuario=u.id_usuario AND uh.estado='A' AND id_huerta='1'
+               let query= `SELECT * FROM huerta.comentario_hp WHERE id_hp='10' ORDER BY fecha desc;`;
+               mysqlConeccion.query(query,(err,registros)=>{
+               if(!err){
+                  res.json(registros);
+               }else{
+                  res.json({
+                     status: false,
+                     mensaje: "Ocurrio un error en el servidor"
+                  });
+               }
+               })
+               }else{
+                  res.json({
+                     status: false,
+                     mensaje: "No eres colaborador en esta huerta"
+                  });
+               }
+            };
+         });
+      });         
+  // })
+ //});
 
 
 
