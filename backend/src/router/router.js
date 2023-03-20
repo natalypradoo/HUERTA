@@ -318,13 +318,25 @@ router.put('/bajaUsuario/:id_usuario',(req,res)=>{
    mysqlConeccion.query(query,(err,registros)=>{
       if(!err){
          let query= `UPDATE huerta.usuario_huerta SET estado='B' WHERE id_usuario='${id_usuario}'`;
+         //UPDATE `huerta`.`usuario_huerta` SET `estado` = 'B' WHERE (`id_uh` = '7');
          mysqlConeccion.query(query,(err,registros)=>{
             if(!err){
-               res.json({
-                  status: true,
-                  mensaje: 'La baja fue realizada correctamente'
-              });
-            }else{
+               let query= `UPDATE huerta.usuarios SET estado='B' WHERE id_usuario='${id_usuario}'`;
+               //UPDATE `huerta`.`usuario_huerta` SET `estado` = 'B' WHERE (`id_uh` = '7');
+               mysqlConeccion.query(query,(err,registros)=>{
+                  if(!err){
+                     res.json({
+                        status: true,
+                        mensaje: 'La baja fue realizada correctamente'
+                    });
+                  }else{
+                     res.json({
+                        status: false,
+                        mensaje: "Ocurrio un ERROR en el servidor"
+                     });
+                  }   
+               })
+                  }else{
                res.json({
                   status: false,
                   mensaje: "Ocurrio un ERROR en el servidor"
@@ -351,10 +363,20 @@ router.put('/altaUsuario/:id_usuario',(req,res)=>{
          let query= `UPDATE huerta.usuario_huerta SET estado='A' WHERE id_usuario='${id_usuario}'`;
          mysqlConeccion.query(query,(err,registros)=>{
             if(!err){
-               res.json({
-                  status: true,
-                  mensaje: 'La ALTA fue realizada correctamente'
-              });
+               let query= `UPDATE huerta.usuarios SET estado='A' WHERE id_usuario='${id_usuario}'`;
+               mysqlConeccion.query(query,(err,registros)=>{
+                  if(!err){
+                     res.json({
+                        status: true,
+                        mensaje: 'La ALTA fue realizada correctamente'
+                    });
+                  }else{
+                     res.json({
+                        status: false,
+                        mensaje: "Ocurrio un ERROR en el servidor"
+                     });
+                  }   
+               })
             }else{
                res.json({
                   status: false,
@@ -656,8 +678,8 @@ router.get('/mihuerta/:id_usuario',(req,res)=>{
    //       res.sendStatus(403);
    //    }else{
          let id_usuario= req.params.id_usuario;
-         let query= `SELECT T.id_huerta, hh.nombre,hh.localidad,T.Tipos_de_Plantas, T.estado FROM (
-         SELECT uh.id_usuario, uh.id_huerta,count(hp.id_huerta) Tipos_de_Plantas, uh.estado FROM huerta.usuario_huerta AS uh 
+         let query= `SELECT T.id_huerta, hh.nombre,hh.localidad,T.Tipos_de_Plantas, T.estado,T.id_uh FROM (
+         SELECT uh.id_usuario, uh.id_huerta,count(hp.id_huerta) Tipos_de_Plantas, uh.estado, uh.id_uh FROM huerta.usuario_huerta AS uh 
          LEFT JOIN huerta.huerta_planta AS hp ON uh.id_huerta=hp.id_huerta WHERE (uh.id_usuario='${id_usuario}') GROUP BY id_huerta) AS T 
          INNER JOIN huerta.huerta AS hh WHERE hh.id_huerta=T.id_huerta;`;
          // SELECT T.id_huerta, hh.nombre,hh.localidad,T.Tipos_de_Plantas FROM (
@@ -832,6 +854,52 @@ router.get('/mihuerta/:id_usuario/:id_huerta',(req,res)=>{
  //   })
  });
 
+///ALTA BAJA HUERTA
+//BAJA HUERTA
+router.put('/mihuerta_huerta_baja/:id_uh',(req,res)=>{
+   let id_uh= req.params.id_uh;
+   let query= `UPDATE huerta.usuario_huerta SET estado='B' WHERE id_uh='${id_uh}'`;
+   //UPDATE `huerta`.`usuario_huerta` SET `estado` = 'B' WHERE (`id_uh` = '7');
+;
+   mysqlConeccion.query(query,(err,registros)=>{
+      if(!err){
+         res.json({
+            status: true,
+            mensaje: 'La baja fue realizada correctamente'
+         });
+      }else{
+         res.json({
+            status: false,
+            mensaje: "Ocurrio un ERROR en el servidor"
+         });
+      }
+   });
+});
+
+//ALTA HUERTA
+router.put('/mihuerta_huerta_alta/:id_uh',(req,res)=>{
+   let id_uh= req.params.id_uh;
+   let query= `UPDATE huerta.usuario_huerta SET estado='A' WHERE id_uh='${id_uh}'`;
+   
+   mysqlConeccion.query(query,(err,registros)=>{
+      if(!err){
+         res.json({
+            status: true,
+            mensaje: 'El ALTA fue realizada correctamente'
+         });
+      }else{
+         console.log(err)
+         res.json({
+            status: false,
+            mensaje: "Ocurrio un ERROR en el servidor"
+         });
+      }
+   });
+});
+
+
+
+
 //LISTA DE PLANTAS PARA AGREGAR ---boton ((AGREGAR)) OOO ((PLANTAS DISPONIBLES))
 router.get('/mihuerta/:id_usuario/:id_huerta/listaPlantas',(req,res)=>{
    //jwt.verify(req.token,'huerta1Key',(err,valido)=>{
@@ -999,6 +1067,47 @@ router.post('/mihuerta/:id_usuario/:id_huerta/:id_hp',async(req,res)=>{
 // });
 
 //BAJA DE LAS PLANTAS DE UNA HUERTA----boton ((BAJA)) o ((ELIMINAR))
+
+//BAJA PLANTAS
+router.put('/mihuerta_plantas_baja/:id_hp',(req,res)=>{
+   let id_hp= req.params.id_hp;
+   let query= `UPDATE huerta.huerta_planta SET estado='B' WHERE id_hp='${id_hp}'`;
+   //UPDATE `huerta`.`huerta_planta` SET `estado` = 'B' WHERE (`id_hp` = '7');
+   mysqlConeccion.query(query,(err,registros)=>{
+      if(!err){
+         res.json({
+            status: true,
+            mensaje: 'La baja fue realizada correctamente'
+         });
+      }else{
+         res.json({
+            status: false,
+            mensaje: "Ocurrio un ERROR en el servidor"
+         });
+      }
+   });
+});
+
+//ALTA PLANTAS
+router.put('/mihuerta_plantas_alta/:id_hp',(req,res)=>{
+   let id_hp= req.params.id_hp;
+   let query= `UPDATE huerta.huerta_planta SET estado='A' WHERE id_hp='${id_hp}'`;
+   
+   mysqlConeccion.query(query,(err,registros)=>{
+      if(!err){
+         res.json({
+            status: true,
+            mensaje: 'El ALTA fue realizada correctamente'
+         });
+      }else{
+         res.json({
+            status: false,
+            mensaje: "Ocurrio un ERROR en el servidor"
+         });
+      }
+   });
+});
+
 router.put('/mihuerta/:id_usuario/:id_huerta/:id_hp',async(req,res)=>{
    //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
    //      if(err){
@@ -1073,10 +1182,10 @@ router.get('/mihuerta/:id_usuario/:id_huerta/listaUsuariosHuerta',(req,res)=>{
          let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}';`;
          mysqlConeccion.query(query,(err,registros)=>{
             if(!err){
-               console.log(registros)
+               //console.log(registros)
                if(registros.length!=undefined){
                //SELECT uh.id_uh,u.username  FROM huerta.usuario_huerta AS uh INNER JOIN huerta.usuarios AS u WHERE uh.id_usuario=u.id_usuario AND uh.estado='A' AND id_huerta='1'
-               let query= `SELECT uh.id_uh,u.username  FROM huerta.usuario_huerta AS uh INNER JOIN huerta.usuarios AS u WHERE uh.id_usuario=u.id_usuario AND uh.estado='A' AND id_huerta='${id_huerta}'`;
+               let query= `SELECT uh.id_uh,u.username,uh.estado  FROM huerta.usuario_huerta AS uh INNER JOIN huerta.usuarios AS u WHERE uh.id_usuario=u.id_usuario AND u.estado='A' AND id_huerta='${id_huerta}'`;
                mysqlConeccion.query(query,(err,registros)=>{
                if(!err){
                   res.json(registros);
@@ -1174,6 +1283,54 @@ router.get('/mihuerta/:id_usuario/:id_huerta/listaUsuariosHuerta',(req,res)=>{
            });
     //   });
     // });
+      
+///ALTA BAJA Usuario de una HUERTA
+//BAJA Usuario de una HUERTA
+router.put('/mihuerta_usuario_baja/:id_uh',(req,res)=>{
+   let id_uh= req.params.id_uh;
+   let query= `UPDATE huerta.usuario_huerta SET estado='B' WHERE id_uh='${id_uh}'`;
+   //UPDATE `huerta`.`usuario_huerta` SET `estado` = 'B' WHERE (`id_uh` = '7');
+;
+   mysqlConeccion.query(query,(err,registros)=>{
+      if(!err){
+         res.json({
+            status: true,
+            mensaje: 'La baja fue realizada correctamente'
+         });
+      }else{
+         res.json({
+            status: false,
+            mensaje: "Ocurrio un ERROR en el servidor"
+         });
+      }
+   });
+});
+
+//ALTA Usuario de una HUERTA
+router.put('/mihuerta_usuario_alta/:id_uh',(req,res)=>{
+   let id_uh= req.params.id_uh;
+   let query= `UPDATE huerta.usuario_huerta SET estado='A' WHERE id_uh='${id_uh}'`;
+   
+   mysqlConeccion.query(query,(err,registros)=>{
+      if(!err){
+         res.json({
+            status: true,
+            mensaje: 'El ALTA fue realizada correctamente'
+         });
+      }else{
+         console.log(err)
+         res.json({
+            status: false,
+            mensaje: "Ocurrio un ERROR en el servidor"
+         });
+      }
+   });
+});
+
+
+
+
+
 
 ////////////COMENTARIOS DE UNA PLANTA/////////////
 
@@ -1184,14 +1341,14 @@ router.get('/mihuerta_comentarios/:id_usuario/:id_huerta/:id_hp',(req,res)=>{
     //  }else{
          let id_usuario= req.params.id_usuario;
          let id_huerta= req.params.id_huerta;
-         let id_planta= req.params.id_planta;
+         let id_hp= req.params.id_hp;
          let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}';`;
          mysqlConeccion.query(query,(err,registros)=>{
             if(!err){
                console.log(registros)
                if(registros.length!=undefined){
                //SELECT uh.id_uh,u.username  FROM huerta.usuario_huerta AS uh INNER JOIN huerta.usuarios AS u WHERE uh.id_usuario=u.id_usuario AND uh.estado='A' AND id_huerta='1'
-               let query= `SELECT * FROM huerta.comentario_hp WHERE id_hp='10' ORDER BY fecha desc;`;
+               let query= `SELECT * FROM huerta.comentario_hp WHERE id_hp='${id_hp}' ORDER BY fecha desc;`;
                mysqlConeccion.query(query,(err,registros)=>{
                if(!err){
                   res.json(registros);
@@ -1213,6 +1370,52 @@ router.get('/mihuerta_comentarios/:id_usuario/:id_huerta/:id_hp',(req,res)=>{
       });         
   // })
  //});
+
+///BAJA DE UN COMENTARIO EN MI HUERTA
+//BAJA COMENTARIO
+router.put('/mihuerta_comentarios_baja/:id_c_hp',(req,res)=>{
+   let id_c_hp= req.params.id_c_hp;
+   let query= `UPDATE huerta.comentario_hp SET estado='B' WHERE id_c_hp='${id_c_hp}'`;
+   //UPDATE `huerta`.`comentario_hp` SET `estado` = 'B' WHERE (`id_c_hp` = '7');
+   mysqlConeccion.query(query,(err,registros)=>{
+      if(!err){
+         res.json({
+            status: true,
+            mensaje: 'La baja fue realizada correctamente'
+         });
+      }else{
+         res.json({
+            status: false,
+            mensaje: "Ocurrio un ERROR en el servidor"
+         });
+      }
+   });
+});
+
+//ALTA COMENTARIO
+router.put('/mihuerta_comentarios_alta/:id_c_hp',(req,res)=>{
+   let id_c_hp= req.params.id_c_hp;
+   let query= `UPDATE huerta.comentario_hp SET estado='A' WHERE id_c_hp='${id_c_hp}'`;
+   //UPDATE `huerta`.`comentario_hp` SET `estado` = 'B' WHERE (`id_c_hp` = '7');
+   mysqlConeccion.query(query,(err,registros)=>{
+      if(!err){
+         res.json({
+            status: true,
+            mensaje: 'El ALTA fue realizada correctamente'
+         });
+      }else{
+         res.json({
+            status: false,
+            mensaje: "Ocurrio un ERROR en el servidor"
+         });
+      }
+   });
+});
+
+
+
+
+
 
 
 
