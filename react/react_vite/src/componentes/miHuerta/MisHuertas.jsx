@@ -22,17 +22,45 @@ export function MisHuertas(){
        
      useEffect(()=>{
        API.getMisHuertas(id_usuario).then(setMisHuertas)
-    //     //console.log(mis_huertas)
-    //     // const usuarioLogueado = JSON.parse(localStorage.getItem('usuario'))
-    //     // console.log(usuarioLogueado.datos[0].id_usuario)
-    //     //     if(usuarioLogueado){
-    //     //         setIdUsuario(usuarioLogueado.datos[0].id_usuario);
-    //     //         setNombreUsuario(usuarioLogueado.datos[0].username);
-              
-    //     //     }
-    //     //     API.getMisHuertas(id_usuario).then(setMisHuertas)
      },[]);
+//baja de Huerta
+const bajaMisHuertas  = async(id_uh)=>{
+    //console.log('id_usu:', id_usuario)
+        const user = await API.BajaMisHuertas(id_uh)
+     // const user = await API.bajaUsuario(id)
+        if(user.status){
+            setmensajeError(user.mensaje)
+            setTimeout(()=>{
+                setmensajeError('')
+                window.location.reload(true)
+            }, 4000)
+        }else{
+            setmensajeError(user.mensaje)
+            setTimeout(()=>{
+                setmensajeError('')
+            }, 4000)
+        }
+    }  
 
+    //alta de Huerta
+    const altaMisHuertas = async(id_uh)=>{
+        //console.log('id_usu:', id_usuario)
+         const user = await API.AltaMisHuertas(id_uh)
+         // const user = await API.bajaUsuario(id)
+         if(user.status){
+            setmensajeError(user.mensaje)
+              setTimeout(()=>{
+                setmensajeError('')
+                 window.location.reload(true)
+    
+              }, 4000)
+         }else{
+             setmensajeError(user.mensaje)
+             setTimeout(()=>{
+                 setmensajeError('')
+             }, 4000)
+         } 
+    }
 
 
 
@@ -84,7 +112,7 @@ return(
                             <div className="btn-group" role="group" aria-label="">
                                 { (mis_huertas.estado=='A')?
                                 <>
-                                <button  type="button" className="btn btn-outline-danger"> Baja </button>
+                                <button  onClick={() =>bajaMisHuertas(mis_huertas.id_uh)} type="button" className="btn btn-outline-danger"> Baja </button>
                                 <Link to={`/mihuerta/${id_usuario}/${mis_huertas.id_huerta}`}>
                                 <button  type="button" className="btn btn-primary"> Ver </button>
                                 </Link>
@@ -97,7 +125,7 @@ return(
                                 </>
                                 : 
                                 <>
-                                <button  type="button" className="btn btn-outline-success"> Alta </button>
+                                <button  onClick={() =>altaMisHuertas(mis_huertas.id_uh)} type="button" className="btn btn-outline-success"> Alta </button>
                                 </>
                                 }
                             </div>

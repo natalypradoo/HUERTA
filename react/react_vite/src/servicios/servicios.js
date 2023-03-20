@@ -382,6 +382,42 @@ return data;
 console.log('Nuestro error',error);
 }
 };
+//Baja Usuario de una HUERTA
+export async function BajaMisHuertas(id_uh){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+    try{
+        const response = await fetch(`${API_URL}/mihuerta_huerta_baja/${id_uh}`, requestOptions)
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch(e){
+
+        alert('No se puede conectar con el servidor')
+    }
+}
+//Alta Usuario de una HUERTA
+export async function AltaMisHuertas(id_uh){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+    try{
+        const response = await fetch(`${API_URL}/mihuerta_huerta_alta/${id_uh}`, requestOptions)
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch(e){
+
+        alert('No se puede conectar con el servidor')
+    }
+}
 
 
 //Lista las PLANTAS de una HUERTA
@@ -396,6 +432,42 @@ return data;
 console.log('Nuestro error',error);
 }
 };
+//Baja PLANTAS de una HUERTA
+export async function BajaMisPlantas(id_hp){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+    try{
+        const response = await fetch(`${API_URL}/mihuerta_plantas_baja/${id_hp}`, requestOptions)
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch(e){
+
+        alert('No se puede conectar con el servidor')
+    }
+}
+//Alta PLANTAS de una HUERTA
+export async function AltaMisPlantas(id_hp){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+    try{
+        const response = await fetch(`${API_URL}/mihuerta_plantas_alta/${id_hp}`, requestOptions)
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch(e){
+
+        alert('No se puede conectar con el servidor')
+    }
+}
 
 
 //Lista los USUARIOS de una HUERTA
@@ -410,6 +482,42 @@ return data;
 console.log('Nuestro error',error);
 }
 };
+//Baja Usuario de una HUERTA
+export async function BajaMisUsuarios(id_uh){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+    try{
+        const response = await fetch(`${API_URL}/mihuerta_usuario_baja/${id_uh}`, requestOptions)
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch(e){
+
+        alert('No se puede conectar con el servidor')
+    }
+}
+//Alta Usuario de una HUERTA
+export async function AltaMisUsuarios(id_uh){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+    try{
+        const response = await fetch(`${API_URL}/mihuerta_usuario_alta/${id_uh}`, requestOptions)
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch(e){
+
+        alert('No se puede conectar con el servidor')
+    }
+}
 
 
 
@@ -426,3 +534,39 @@ return data;
 console.log('Nuestro error',error);
 }
 };
+//Baja Comentarios en mis plantas
+export async function BajaMisComentarios(id_c_hp){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+    try{
+        const response = await fetch(`${API_URL}/mihuerta_comentarios_baja/${id_c_hp}`, requestOptions)
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch(e){
+
+        alert('No se puede conectar con el servidor')
+    }
+}
+//Alta Comentarios en mis plantas
+export async function AltaMisComentarios(id_c_hp){
+    const requestOptions={
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    };
+    try{
+        const response = await fetch(`${API_URL}/mihuerta_comentarios_alta/${id_c_hp}`, requestOptions)
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch(e){
+
+        alert('No se puede conectar con el servidor')
+    }
+}

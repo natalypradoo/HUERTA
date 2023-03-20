@@ -21,7 +21,46 @@ export function MisUsuarios(){
         API.getMisUsuarios(id_usuario,id_huerta).then(setMisUsuarios)
         console.log(mis_usuarios)
 
-      },[]);
+    },[]);
+
+//baja de Usuario
+const bajaMisUsuarios  = async(id_uh)=>{
+    //console.log('id_usu:', id_usuario)
+        const user = await API.BajaMisUsuarios(id_uh)
+     // const user = await API.bajaUsuario(id)
+        if(user.status){
+            setmensajeError(user.mensaje)
+            setTimeout(()=>{
+                setmensajeError('')
+                window.location.reload(true)
+            }, 4000)
+        }else{
+            setmensajeError(user.mensaje)
+            setTimeout(()=>{
+                setmensajeError('')
+            }, 4000)
+        }
+    }  
+
+    //alta de Huerta
+    const altaMisUsuarios = async(id_uh)=>{
+        //console.log('id_usu:', id_usuario)
+         const user = await API.AltaMisUsuarios(id_uh)
+         // const user = await API.bajaUsuario(id)
+         if(user.status){
+            setmensajeError(user.mensaje)
+              setTimeout(()=>{
+                setmensajeError('')
+                 window.location.reload(true)
+    
+              }, 4000)
+         }else{
+             setmensajeError(user.mensaje)
+             setTimeout(()=>{
+                 setmensajeError('')
+             }, 4000)
+         } 
+    }
 
     return(
         <>
@@ -61,12 +100,11 @@ export function MisUsuarios(){
                         <tr key={mis_usuarios.id_uh}>
                         <td scope="row">{mis_usuarios.id_uh}</td>
                         <td scope="row">{mis_usuarios.username}</td>
-                        
                         <td>
                             <div className="btn-group" role="group" aria-label="">
                                 { (mis_usuarios.estado=='A')?
                                 <>
-                                <button  type="button" className="btn btn-outline-danger"> Baja </button>
+                                <button onClick={() =>bajaMisUsuarios(mis_usuarios.id_uh)}  type="button" className="btn btn-outline-danger"> Baja </button>
                                 <Link to={`/mihuerta/${id_usuario}/${id_huerta}`}>
                                 <button  type="button" className="btn btn-primary"> Comentarios </button>
                                 </Link>
@@ -75,7 +113,7 @@ export function MisUsuarios(){
                                 </>
                                 : 
                                 <>
-                                <button  type="button" className="btn btn-outline-success"> Alta </button>
+                                <button onClick={() =>altaMisUsuarios(mis_usuarios.id_uh)} type="button" className="btn btn-outline-success"> Alta </button>
                                 </>
                                 }
                             </div>

@@ -23,6 +23,47 @@ export function MisPlantas(){
         console.log(mis_plantas)
 
       },[]);
+
+//baja de Plantas
+const bajaMisPlantas  = async(id_hp)=>{
+    //console.log('id_usu:', id_usuario)
+        const user = await API.BajaMisPlantas(id_hp)
+     // const user = await API.bajaUsuario(id)
+        if(user.status){
+            setmensajeError(user.mensaje)
+            setTimeout(()=>{
+                setmensajeError('')
+                window.location.reload(true)
+            }, 4000)
+        }else{
+            setmensajeError(user.mensaje)
+            setTimeout(()=>{
+                setmensajeError('')
+            }, 4000)
+        }
+    }  
+
+    //alta de Plantas
+    const altaMisPlantas  = async(id_hp)=>{
+        //console.log('id_usu:', id_usuario)
+         const user = await API.AltaMisPlantas(id_hp)
+         // const user = await API.bajaUsuario(id)
+         if(user.status){
+            setmensajeError(user.mensaje)
+              setTimeout(()=>{
+                setmensajeError('')
+                 window.location.reload(true)
+    
+              }, 4000)
+         }else{
+             setmensajeError(user.mensaje)
+             setTimeout(()=>{
+                 setmensajeError('')
+             }, 4000)
+         } 
+    }   
+    
+    
     return(
         <>
         <div className="card-body">
@@ -73,7 +114,7 @@ export function MisPlantas(){
                             <div className="btn-group" role="group" aria-label="">
                                 { (mis_plantas.estado=='A')?
                                 <>
-                                <button  type="button" className="btn btn-outline-danger"> Baja </button>
+                                <button onClick={() =>bajaMisPlantas(mis_plantas.id_hp)} type="button" className="btn btn-outline-danger"> Baja </button>
                                 <Link to={`/mihuerta_comentarios/${id_usuario}/${id_huerta}/${mis_plantas.id_hp}`}>
                                 <button  type="button" className="btn btn-primary"> Comentarios </button>
                                 </Link>
@@ -82,7 +123,7 @@ export function MisPlantas(){
                                 </>
                                 : 
                                 <>
-                                <button  type="button" className="btn btn-outline-success"> Alta </button>
+                                <button onClick={() =>altaMisPlantas(mis_plantas.id_hp)} type="button" className="btn btn-outline-success"> Alta </button>
                                 </>
                                 }
                             </div>

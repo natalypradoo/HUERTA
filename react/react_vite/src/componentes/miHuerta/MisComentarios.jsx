@@ -23,7 +23,46 @@ export function MisComentarios(){
         API.getMisComentarios(id_usuario,id_huerta,id_hp).then(setMisComentarios)
         console.log(mis_comentarios)
 
-      },[]);
+    },[]);
+
+    //baja de Cmentarios
+    const bajaMisComentarios  = async(id_c_hp)=>{
+    //console.log('id_usu:', id_usuario)
+        const user = await API.BajaMisComentarios(id_c_hp)
+     // const user = await API.bajaUsuario(id)
+        if(user.status){
+            setmensajeError(user.mensaje)
+            setTimeout(()=>{
+                setmensajeError('')
+                window.location.reload(true)
+            }, 4000)
+        }else{
+            setmensajeError(user.mensaje)
+            setTimeout(()=>{
+                setmensajeError('')
+            }, 4000)
+        }
+    }  
+
+    //alta de Comentarios
+    const altaMisComentarios  = async(id_c_hp)=>{
+        //console.log('id_usu:', id_usuario)
+         const user = await API.AltaMisComentarios(id_c_hp)
+         // const user = await API.bajaUsuario(id)
+         if(user.status){
+            setmensajeError(user.mensaje)
+              setTimeout(()=>{
+                setmensajeError('')
+                 window.location.reload(true)
+    
+              }, 4000)
+         }else{
+             setmensajeError(user.mensaje)
+             setTimeout(()=>{
+                 setmensajeError('')
+             }, 4000)
+         } 
+    }   
 
     return(
         <>
@@ -64,7 +103,7 @@ export function MisComentarios(){
                     {mis_comentarios.map((mis_comentarios)=>(
  
                         <tr key={mis_comentarios.id_c_hp}>
-                        <td scope="row">{mis_comentarios.id_planta}</td>
+                        <td scope="row">{mis_comentarios.id_c_hp}</td>
                         <td scope="row">{mis_comentarios.comentario}</td>
                         <td scope="row">{mis_comentarios.fecha}</td>
 
@@ -75,7 +114,7 @@ export function MisComentarios(){
                             <div className="btn-group" role="group" aria-label="">
                                 { (mis_comentarios.estado=='A')?
                                 <>
-                                <button  type="button" className="btn btn-outline-danger"> Baja </button>
+                                <button onClick={() =>bajaMisComentarios(mis_comentarios.id_c_hp)} type="button" className="btn btn-outline-danger"> Baja </button>
                                 <Link >
                                 <button  type="button" className="btn btn-primary"> Modificar </button>
                                 </Link>
@@ -84,7 +123,7 @@ export function MisComentarios(){
                                 </>
                                 : 
                                 <>
-                                <button  type="button" className="btn btn-outline-success"> Alta </button>
+                                <button onClick={() =>altaMisComentarios(mis_comentarios.id_c_hp)} type="button" className="btn btn-outline-success"> Alta </button>
                                 </>
                                 }
                             </div>
