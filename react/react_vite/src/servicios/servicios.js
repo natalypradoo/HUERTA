@@ -468,6 +468,27 @@ export async function AltaMisPlantas(id_hp){
         alert('No se puede conectar con el servidor')
     }
 }
+//Agregar PLANTAS en una HUERTA
+export async function AgregarPlantasHuerta(id_huerta,id_planta,datos){
+    const requestOptions={
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datos)
+    };
+    try{
+    const response = await fetch(`${API_URL}/mihuerta_agregarPlanta/${id_huerta}/${id_planta}`, requestOptions)
+    const data = await response.json();
+    console.log(data)
+    return data;
+    } catch(e){
+        console.log(e);
+        // console.log('no funciona')
+    }
+}
+
+
 
 
 //Lista los USUARIOS de una HUERTA
