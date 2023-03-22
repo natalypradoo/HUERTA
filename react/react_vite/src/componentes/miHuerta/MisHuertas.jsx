@@ -70,7 +70,8 @@ const bajaMisHuertas  = async(id_uh)=>{
 
 return(
     <>
-        <div className="card-body">
+    <div className="card">
+        
         <div className="card-header">
                 Las Huertas en las que participas son:
             </div>
@@ -87,7 +88,12 @@ return(
                      {mensajeSuccess}
                     </div>:''
                 } 
-        <Link name="" id="" className="btn btn-primary" to={'/'} role="button">Agregar Huerta</Link>
+                <div className="col-2">
+
+                <Link name="" id="" className="btn btn-primary" to={'/crearHuerta'} role="button">Agregar Huerta</Link>
+                <small id="helpId" className="text-muted">&nbsp;</small>
+                </div>
+        
             <table className="table table-striped table-inverse table-responsive">
                 <thead className="thead-inverse">
                     <tr>
@@ -120,6 +126,9 @@ return(
                                 <Link name="" id="" className="btn btn-primary" to={`/mihuerta/${id_usuario}/${mis_huertas.id_huerta}/listaUsuariosHuerta`} role="button">
                                 Colaboradores
                                 </Link>
+                                <Link to={`/editar_huerta/${mis_huertas.id_huerta}`}>
+                                        <button  type="button" className="btn btn-warning">Editar</button>                       
+                                </Link>
                                 </>
                                 : 
                                 <>
@@ -132,12 +141,13 @@ return(
                     ))}
                 </tbody>
             </table>
-        </div>
-        
+
      <div className="card-footer text-muted ">
          Mi Huerta - Silicon Misiones
      </div>
-    
+
+     </div>
+     <small id="helpId" className="text-muted">&nbsp;</small>
 </>
 
 )    

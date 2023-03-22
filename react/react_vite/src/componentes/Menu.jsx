@@ -103,7 +103,7 @@ export function Menu(){
           <small id="helpId" className="text-muted">&nbsp;</small>
   <div className='col-1'>
       <li className="nav-item active">
-        <Link to={'/'}><button onClick={logout} className='btn btn-outline-danger'> Salir</button></Link>
+        <Link to={'/login'}><button onClick={logout} className='btn btn-outline-danger'> Salir</button></Link>
       </li>
   </div>
 

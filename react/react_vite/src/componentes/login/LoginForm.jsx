@@ -37,15 +37,11 @@ export function LoginForm() {
       <div className="col-md-4">
        <div className="card bg-success">
 
-      
         <div className="card-title text-center">
         <h2>Mi Huerta</h2>
         <img src={icono} width="80" height="80" />
         
         </div>
-
-
-
           <div className="card-body py-md-4">
            <form onSubmit={form}>
            {
@@ -61,7 +57,7 @@ export function LoginForm() {
             <div className="form-group">
               <input type="password" className="form-control" required="required" id="password" value={password} name="password" placeholder="Password" onChange={(event)=>setPassword(event.target.value)}></input>
             </div>     
-            <button className="w-100 btn btn-lg btn-danger" type="submit">Ingresar</button>
+            <button className="w-100 btn btn-lg btn-success" type="submit">Ingresar</button>
             <Link to={'/registro'}><button type="button" className="btn btn-link">¿No tiene un usuario? Registrate acá </button></Link>
             </form>
          </div>
@@ -80,4 +76,5 @@ export function LoginForm() {
       </div>
     </div>
      {/* </body>  */}
-     </>)};
+     </>
+     )};

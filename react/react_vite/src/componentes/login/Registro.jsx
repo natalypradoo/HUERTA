@@ -37,12 +37,13 @@ export function Registro(){
     return(
         <>
         <div className="container">
+          
         <div className="card">
             <div className="card-header">
                 Crear Usuario
             </div>
             <div className="card-body">
-                <form onSubmit={registroForm}> 
+              <form onSubmit={registroForm}> 
                 {
                     mensajeSuccess?
                     <div className="alert alert-success" role="alert">
@@ -56,7 +57,10 @@ export function Registro(){
                      </div>:''
                 }
 
-                <div className="form-group">
+
+                  <div className='row'>
+                  <div className='col-6'>
+                  <div className="form-group">
                   <label for="">Nombre Usuario</label>
                   <input required
                   type="text" 
@@ -64,11 +68,12 @@ export function Registro(){
                   className="form-control" 
                   placeholder="Nombre del Usuario" 
                   onChange={(event)=>setUsername(event.target.value)} />
-                  
-                  <small id="helpId" className="text-muted">&nbsp;</small>
+
                 </div>
 
-                <div className="form-group">
+                  </div>
+                  <div className='col-6'>
+                  <div className="form-group">
                   <label for="">Password</label>
                   <input required
                   type="password" 
@@ -76,8 +81,11 @@ export function Registro(){
                   className="form-control" 
                   placeholder="Password" 
                   onChange={(event)=>setPassword(event.target.value)} />
-                  <small id="helpId" className="text-muted">&nbsp;</small>
                 </div>
+
+                  </div>
+                </div>
+
                 <div className="form-group">
                   <label for="">Email</label>
                   <input required
@@ -86,9 +94,13 @@ export function Registro(){
                   className="form-control" 
                   placeholder="Correo Electronico" 
                   onChange={(event)=>setEmail(event.target.value)} />
-                  <small id="helpId" className="text-muted">&nbsp;</small>
                 </div>
-                <div className="form-group">
+
+
+
+                <div className='row'>
+                  <div className='col-6'>
+                  <div className="form-group">
                   <label for="">Nombre</label>
                   <input 
                   type="text" required
@@ -96,9 +108,10 @@ export function Registro(){
                   className="form-control" 
                   placeholder="Nombre" 
                   onChange={(event)=>setNombre(event.target.value)} />
-                  <small id="helpId" className="text-muted">&nbsp;</small>
                 </div>
-                <div className="form-group">
+                  </div>
+                  <div className='col-6'>
+                  <div className="form-group">
                   <label for="">Apellido</label>
                   <input required
                   type="apellido" 
@@ -106,20 +119,26 @@ export function Registro(){
                   className="form-control" 
                   placeholder="Apellido" 
                   onChange={(event)=>setApellido(event.target.value)} />
-                  <small id="helpId" className="text-muted">&nbsp;</small>
                 </div>
-                <div className="form-group">
+                  </div>
+                </div>
+
+
+                <div className='row'>
+                  <div className='col-6'>
+                  <div className="form-group">
                   <label for="">Fecha Nacimiento</label>
                   <input 
                   type="date"
                    value={fecha_nacimiento} 
                    onChange={(event)=>setFechaNacimiento(event.target.value)}
                   name="" id="" className="form-control" placeholder="" aria-describedby="helpId"/>
-                  <small id="helpId" className="text-muted">&nbsp;</small>
-                </div>
-                <div className="form-group">
-                  <label for="">¿Quiere divulgar su email como contacto?</label>
 
+                  </div>
+                  </div>
+                  <div className='col-6'>
+                  <div className="form-group">
+                  <label for="">¿Quiere divulgar su email como contacto?</label>
                         <select 
                         onChange={(event)=>setContacto(event.target.value)} 
                         className='form-control'>
@@ -128,14 +147,20 @@ export function Registro(){
                         <option value='NO'>NO</option>
                         </select>
 
-
-                  <small id="helpId" className="text-muted">&nbsp;</small>
+                  </div>
+                  </div>
                 </div>
+
+
+
+
                 <div className="form-group">
                    <Link to={"/login"}><button onClick={registroForm} type="button" className="btn btn-primary">Guardar</button></Link> 
-                    <Link to={'/'}><button type="button" className="btn btn-secondary">Volver</button></Link>
+                   <small id="helpId" className="text-muted">&nbsp;</small>
+                   <small id="helpId" className="text-muted">&nbsp;</small>
+                    <Link to={'/'}><button type="button" className="btn btn-dark">Volver</button></Link>
                 </div>
-                </form>
+              </form>
                 
             </div>
             
@@ -143,6 +168,7 @@ export function Registro(){
                Mi Huerta
             </div>
         </div>
+        <small id="helpId" className="text-muted">&nbsp;</small>
         </div>
         </>
     )

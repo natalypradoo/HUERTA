@@ -701,7 +701,7 @@ router.get('/mihuerta/:id_usuario',(req,res)=>{
  });
 
 //AGREGAR HUERTA ---boton ((AGREGAR))
-router.post('/mihuerta/:id_usuario',async(req,res)=>{
+router.post('/mihuerta_crearHuerta/:id_usuario',async(req,res)=>{
 //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
 //      if(err){
 //         res.sendStatus(403);

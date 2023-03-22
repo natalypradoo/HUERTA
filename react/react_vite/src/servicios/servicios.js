@@ -145,15 +145,23 @@ console.log('Nuestro error',error);
 };
 
 //Crear Huerta nueva
-export function SaveHuerta(datos){
+export function CrearHuerta(id_usuario,datos){
     const requestOptions={
-        method:'POST',
-        headers:{
-            'Content-Type':'application/json'
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify(datos)
     };
-    fetch(`${API_URL}/huertas`, requestOptions)
+    try{
+    const response =  fetch(`${API_URL}/mihuerta_crearHuerta/${id_usuario}`, requestOptions)
+    const data =  response.json();
+    console.log(data)
+    return data;
+    } catch(e){
+        console.log(e);
+        // console.log('no funciona')
+    }
 }
 
 //Dar baja Huerta
