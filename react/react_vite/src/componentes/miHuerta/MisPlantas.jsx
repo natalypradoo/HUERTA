@@ -83,13 +83,19 @@ const bajaMisPlantas  = async(id_hp)=>{
                      {mensajeSuccess}
                     </div>:''
                 } 
-        <Link name="" id="" className="btn btn-primary" to={'/'} role="button">Agregar Planta</Link>
-        <small id="helpId" className="text-muted">&nbsp;</small>
+        {/* <small id="helpId" className="text-muted">&nbsp;</small>
         <Link name="" id="" className="btn btn-primary" to={`/mihuerta/${id_usuario}/${id_huerta}/listaUsuariosHuerta`} role="button">Colaboradores</Link>
-        <small id="helpId" className="text-muted">&nbsp;</small>
-        <Link name="" id="" className="btn btn-primary" to={`/mihuerta/${id_usuario}`} role="button">
-         Volver 
-        </Link>
+        <small id="helpId" className="text-muted">&nbsp;</small> */}
+
+        <div className="row">
+                    <div className="col-10">
+                    <Link name="" id="" className="btn btn-primary" to={`/mihuerta_listaPlantas/${id_huerta}`} role="button">Agregar Planta</Link>
+                    </div>
+  
+                    <div className="col-2">
+                    <Link name="" id="" className="btn btn-dark" to={`/mihuerta/${id_usuario}`} role="button">Volver</Link>
+                    </div>
+                </div>
             <table className="table table-striped table-inverse table-responsive">
                 <thead className="thead-inverse">
                     <tr>

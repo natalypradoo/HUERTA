@@ -419,6 +419,40 @@ export async function AltaMisHuertas(id_uh){
     }
 }
 
+//Listar Usuarios a AGREGAR
+export async function getListaMisUsuariosAgregar(id_huerta){
+    try{
+const response = await fetch(`${API_URL}/mihuerta_agregarUsuario/${id_huerta}`);
+const data= await response.json();
+return data;
+}catch(error){
+console.log('Nuestro error',error);
+}
+};
+
+//Agregar USUARIO en una HUERTA
+export async function AgregarUsuariosHuerta(id_huerta,id_usuario){
+    //console.log(datos)
+    const requestOptions={
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        //body: JSON.stringify(datos)
+        
+    };
+    try{
+        
+    const response = await fetch(`${API_URL}/mihuerta_agregarUsuario/${id_huerta}/${id_usuario}`, requestOptions)
+    const data = await response.json();
+    //console.log(data)
+    return data;
+    } catch(e){
+        console.log(e);
+        // console.log('no funciona')
+    }
+}
+
 
 //Lista las PLANTAS de una HUERTA
 export async function getMisPlantas(id_usuario,id_huerta){
@@ -426,7 +460,7 @@ export async function getMisPlantas(id_usuario,id_huerta){
     try{
 const response = await fetch(`${API_URL}/mihuerta/${id_usuario}/${id_huerta}`);
 const data= await response.json();
-console.log(data)
+//console.log(data)
 return data;
 }catch(error){
 console.log('Nuestro error',error);
@@ -443,7 +477,7 @@ export async function BajaMisPlantas(id_hp){
     try{
         const response = await fetch(`${API_URL}/mihuerta_plantas_baja/${id_hp}`, requestOptions)
         const data = await response.json();
-        console.log(data)
+        //console.log(data)
         return data;
     } catch(e){
 

@@ -81,9 +81,9 @@ const bajaMisUsuarios  = async(id_uh)=>{
                      {mensajeSuccess}
                     </div>:''
                 } 
-        <Link name="" id="" className="btn btn-primary" to={'/'} role="button">Agregar Colaborador</Link>
+        <Link name="" id="" className="btn btn-primary" to={`/mihuerta_agregarUsuario/${id_usuario}/${id_huerta}`} role="button">Agregar Colaborador</Link>
         <small id="helpId" className="text-muted">&nbsp;</small>
-        <Link name="" id="" className="btn btn-primary" to={`/mihuerta/${id_usuario}`} role="button">
+        <Link name="" id="" className="btn btn-primary" to={`/mihuerta/${id_usuario}/${id_huerta}`} role="button">
          Volver 
         </Link>
             <table className="table table-striped table-inverse table-responsive">
@@ -105,9 +105,9 @@ const bajaMisUsuarios  = async(id_uh)=>{
                                 { (mis_usuarios.estado=='A')?
                                 <>
                                 <button onClick={() =>bajaMisUsuarios(mis_usuarios.id_uh)}  type="button" className="btn btn-outline-danger"> Baja </button>
-                                {/* <Link to={`/mihuerta/${id_usuario}/${id_huerta}`}>
+                                <Link to={`/mihuerta/${id_usuario}/${id_huerta}`}>
                                 <button  type="button" className="btn btn-primary"> Comentarios </button>
-                                </Link> */}
+                                </Link>
 
 
                                 </>

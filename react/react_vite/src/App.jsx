@@ -20,6 +20,7 @@ import { MisUsuarios } from './componentes/miHuerta/MisUsuarios'
 import { MisComentarios} from './componentes/miHuerta/MisComentarios'
 import {ListaMisPlantas} from './componentes/miHuerta/ListaMisPlantas'
 import { AgregarMisPlantas } from './componentes/miHuerta/AgregarMisPlantas'
+import { ListaMisUsuariosAgregar } from './componentes/miHuerta/ListaMisUsuariosAgregar'
 // import {Contacto} from './componentes/usuarios/Contacto'
 //import "./componentes/login/loginn.css";
 // import { Login } from './servicios/servicios'
@@ -72,7 +73,8 @@ function App() {
         {/* <Route path='/contacto' element={<Contacto/>}> </Route> */}
         {/* <Route path='mihuerta_listaPlantas' element={<ListaMisPlantas/>}></Route> */}
         <Route path='/mihuerta_listaPlantas/:id_huerta' element={<ListaMisPlantas/>}></Route>
-       <Route path='/mihuerta_agregarPlanta/:id_huerta/:id_planta' element={<AgregarMisPlantas/>}></Route>
+        <Route path='/mihuerta_agregarPlanta/:id_huerta/:id_planta' element={<AgregarMisPlantas/>}></Route>
+        <Route path='/mihuerta_agregarUsuario/:id_usuario/:id_huerta' element={<ListaMisUsuariosAgregar/>}></Route>
       </Routes>
 </div>
     }    
