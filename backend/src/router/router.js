@@ -923,21 +923,16 @@ router.get('/mihuerta/:id_usuario/:id_huerta/listaPlantas',(req,res)=>{
  //});
 
 //AGREGAR PLANTA DE LA LISTA DE LA HUERTA---boton ((AGREGAR))
-router.post('/mihuerta/:id_usuario/:id_huerta/listaPlantas/:id_planta',async(req,res)=>{
+router.post('/mihuerta_agregarPlanta/:id_huerta/:id_planta',async(req,res)=>{
    //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
    //      if(err){
    //         res.sendStatus(403);
    //      }else{
             const {cantidad,fecha}=req.body
-            let id_usuario= req.params.id_usuario;
+            //let id_usuario= req.params.id_usuario;
             let id_huerta= req.params.id_huerta;
             let id_planta= req.params.id_planta;
-            
-            let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}' AND estado='A';`;
-            mysqlConeccion.query(query,(err,registros)=>{
-               if(!err){
                   //console.log(registros.length)
-                  if(registros.length!=undefined){
                      if(fecha.length!=0 && fecha!="" && cantidad!=""){
                         let query1= `INSERT INTO huerta.huerta_planta ( id_huerta, id_planta, cantidad, fecha) VALUES ('${id_huerta}','${id_planta}','${cantidad}','${fecha}');`;    
                         //SELECT p.id_planta,p.nombre,TT.Fecha_Plantado,TT.cantidad,TT.Comentarios  FROM(SELECT T.id_planta, chp.id_c_hp,chp.id_hp,T.fecha Fecha_Plantado,T.cantidad,count(chp.id_hp) Comentarios FROM (SELECT hp.id_planta,hp.id_hp,hp.fecha,hp.cantidad FROM huerta.huerta_planta AS hp WHERE hp.id_huerta='1' AND hp.estado='A') T LEFT JOIN huerta.comentario_hp AS chp ON T.id_hp=chp.id_hp WHERE estado='A' GROUP BY id_hp) TT INNER JOIN huerta.plantas AS p WHERE TT.id_planta=p.id_planta AND p.estado='A' ;  
@@ -973,19 +968,7 @@ router.post('/mihuerta/:id_usuario/:id_huerta/listaPlantas/:id_planta',async(req
                            };
                         });
                      }
-                  }else{
-                     res.json({
-                        status: false,
-                        mensaje: "No eres colaborador en esta huerta"
-                     });
-                  };
-               }else{
-                  res.json({
-                     status: false,
-                     mensaje: "Ocurrio un ERROR en el servidor"
-                  });
-               }
-            }); 
+
           });
    //   });
    // });
@@ -1208,11 +1191,83 @@ router.get('/mihuerta/:id_usuario/:id_huerta/listaUsuariosHuerta',(req,res)=>{
   // })
  //});
 
- //AGREGAR USUARIO-- boton((AGREGAR COLABORADOR)) //////NO ME TOMA EL BODY
- router.post('/mihuerta/:id_usuario/:id_huerta/listaUsuariosHuerta/agregar',(req,res)=>{
+//LISTAR USUARIOS
+router.get('/mihuerta_agregarUsuario/:id_huerta', (req,res)=>{
+   //  jwt.verify(req.token,'huerta1Key',(err,valido)=>{
+   //     if(err){
+   //        res.sendStatus(403);
+    //    }else{
    let id_usuario= req.params.id_usuario;
    let id_huerta= req.params.id_huerta;
-   const {username}=req.body
+
+           let query= `SELECT T.id_usuario,T.username, p.nombre,p.apellido,p.contacto ,p.email ,T.estado FROM (
+            SELECT u.id_usuario,u.username, up.estado ,up.id_persona FROM huerta.usuarios as u 
+            INNER JOIN huerta.usuario_persona as up  where u.id_usuario=up.id_usuario) AS T  
+            JOIN huerta.personas as p on T.id_persona=p.id_persona 
+            LEFT JOIN (SELECT uh.id_usuario FROM huerta.usuario_huerta AS uh WHERE uh.id_huerta='${id_huerta}' AND uh.estado='A') AS P 
+            ON T.id_usuario=P.id_usuario WHERE P.id_usuario IS NULL;`;
+           mysqlConeccion.query(query,(err,registros)=>{
+           if(!err){
+              res.json(registros);
+           }else{
+              res.json({
+                 status: false,
+                 mensaje: "Ocurrio un ERROR en el servidor"
+              });
+           }
+        })
+        });
+  //      };
+  //   });
+  //});
+  
+  
+  
+  
+  //Buscar usuario
+  router.post('/buscar_usuarios', (req,res)=>{
+     let {username,nombre,apellido}=req.body
+     console.log(req.body)
+        let query= `SELECT T.id_usuario,T.username, p.nombre,p.apellido,p.contacto, p.email, T.estado FROM (
+              SELECT u.id_usuario,u.username ,up.id_persona,up.estado FROM huerta.usuarios as u 
+              inner join huerta.usuario_persona as up  where u.id_usuario=up.id_usuario and up.estado='A') AS T  
+              JOIN huerta.personas as p on T.id_persona=p.id_persona WHERE 1`;
+           if(apellido){
+              query=query +` AND apellido like '%${apellido}%'`;
+           }
+  
+           if(nombre){
+              query=query +` AND nombre like '%${nombre}%'`;
+           }
+  
+           if(username){
+              query=query +` AND username like '%${username}%'`;
+           }
+           //console.log(query);
+               mysqlConeccion.query(query,(err,registros)=>{
+               if(!err){
+                  //console.log(registros)
+                  res.json(registros);
+               }else{
+                 console.log(err)
+                  res.json({
+                     status: false,
+                     mensaje: "Ocurrio un ERROR en el servidor"
+                  });
+               }
+            })
+          });
+
+
+
+
+
+ //AGREGAR USUARIO-- boton((AGREGAR COLABORADOR)) //////NO ME TOMA EL BODY
+ router.post('/mihuerta_agregarUsuario/:id_huerta/:id_usuario',(req,res)=>{
+   
+   let id_huerta= req.params.id_huerta;
+   let id_usuario= req.params.id_usuario;
+   //const {id_usuario}=req.body
    //console.log(username);
    //console.log(id_usuario);
    //console.log(id_huerta);
@@ -1228,59 +1283,23 @@ router.get('/mihuerta/:id_usuario/:id_huerta/listaUsuariosHuerta',(req,res)=>{
 //             console.log(username);
 //             console.log(id_usuario);
 //             console.log(id_huerta);
-            let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}' AND estado='A';`;
-            mysqlConeccion.query(query,(err,registros)=>{
-                 if(!err){
-                    if(registros.length!=undefined){
-                          if(username!=undefined && username!=""){
-                          let query1=`SELECT id_usuario FROM huerta.usuarios WHERE username='${username}'`;
-                          //SELECT id_usuario FROM huerta.usuarios WHERE username='macrina'
-                          mysqlConeccion.query(query1,(err,registros)=>{
-                             if(registros!=undefined){
-                                const {id_usuario}=registros[0];
-                                //console.log(id_usuario)
-                                 let query2=`INSERT INTO huerta.usuario_huerta (id_usuario, id_huerta) VALUES ('${id_usuario}', '${id_huerta}')`;
-                                 //INSERT INTO `huerta`.`usuario_huerta` (`id_usuario`, `id_huerta`) VALUES ('2', '5');
-                                 mysqlConeccion.query(query2,(err,registros)=>{
-                                    if(!err){
-                                       res.json({
-                                          status: true,
-                                          mensaje: "El colaborador fue agregado correctamente"
-                                       });
-                                    }else{
-                                       res.json({
-                                          status: false,
-                                          mensaje: "Ocurrio un error en el servidor"
-                                       });
-                                    };
-                                 });
-                             }else{
-                              res.json({
-                                 status: false,
-                                 mensaje: "El usuario no existe"
-                              });
-                             }
-                          })
-                       }else{
-                        res.json({
-                           status: false,
-                           mensaje: "Los datos se competaron incorrectamente"
-                        });
-                       };
-                    }else{
-                     res.json({
-                        status: false,
-                        mensaje: "No eres colaborador en esta huerta"
-                     });
-                    };
-                 }else{
-                  res.json({
-                     status: false,
-                     mensaje: "Ocurrio un error en el servidor"
-                  });
-                 }
-              }); 
-           });
+      let query2=`INSERT INTO huerta.usuario_huerta (id_usuario, id_huerta) VALUES ('${id_usuario}', '${id_huerta}')`;
+      //INSERT INTO `huerta`.`usuario_huerta` (`id_usuario`, `id_huerta`) VALUES ('2', '5');
+      mysqlConeccion.query(query2,(err,registros)=>{
+         if(!err){
+            res.json({
+               status: true,
+               mensaje: "El colaborador fue agregado correctamente"
+            });
+         }else{
+            console.log(err)
+            res.json({
+               status: false,
+               mensaje: "Ocurrio un error en el servidor"
+            });
+         };
+      });
+   });
     //   });
     // });
       
