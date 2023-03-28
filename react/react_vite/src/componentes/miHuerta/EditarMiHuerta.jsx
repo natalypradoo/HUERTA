@@ -3,8 +3,9 @@ import { Link, useParams } from "react-router-dom"
 import * as API from '../../servicios/servicios' 
 
 
-export function EditarHuerta() {
+export function EditarMiHuerta() {
   const {id_huerta} = useParams();
+  const[id_usuario,setIdUsuario]=useState('');
   const [nombre, setNombre] = useState('');
   const [localidad, setLocalidad]=useState('');
   const [mensajeError,setmensajeError]=useState('');
@@ -12,6 +13,15 @@ export function EditarHuerta() {
 
   useEffect(()=>{
     trae_datos(id_huerta)
+    
+        const usuarioLogueado = JSON.parse(localStorage.getItem('usuario'))
+        //console.log(usuarioLogueado.datos[0].username)
+        if(usuarioLogueado){
+          setIdUsuario(usuarioLogueado.datos[0].id_usuario);
+          //setNombreUsuario(usuarioLogueado.datos[0].username);
+            console.log(id_usuario)
+        }
+    
   },[])
 
   const trae_datos  = async ()=>{
@@ -83,7 +93,7 @@ export function EditarHuerta() {
               <button  onClick={editar_planta}  type="button" className="btn btn-primary">Guardar</button>
               <small id="helpId" className="text-muted">&nbsp;</small>
               {/* </div><button onClick={guardar} type="button" className="btn btn-primary">Guardar</button> */}
-              <Link to={'/listarHuertas'}><button type="button" className="btn btn-dark">Volver al Listado</button></Link>
+              <Link to={`/mihuerta/${id_usuario}`}><button type="button" className="btn btn-dark">Volver al Listado</button></Link>
             </div>
           </div>
         </div>

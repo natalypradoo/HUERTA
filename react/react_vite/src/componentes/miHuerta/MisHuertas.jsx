@@ -62,12 +62,6 @@ const bajaMisHuertas  = async(id_uh)=>{
          } 
     }
 
-
-
-
-
-
-
 return(
     <>
     <div className="card">
@@ -75,22 +69,23 @@ return(
         <div className="card-header">
                 Las Huertas en las que participas son:
             </div>
-         {
+                {
                     mensajeError?
                     <div className="alert alert-warning" role="alert">
                      {mensajeError}
                     </div>:''
                 }
-
                 {
                     mensajeSuccess?
                     <div className="alert alert-success" role="alert">
                      {mensajeSuccess}
                     </div>:''
                 } 
+                 
+              
                 <div className="col-2">
-
-                <Link name="" id="" className="btn btn-primary" to={'/crearHuerta'} role="button">Agregar Huerta</Link>
+                <small id="helpId" className="text-muted">&nbsp;</small>
+                <Link name="" id="" className="btn btn-primary" to={'/mihuerta_crearMiHuerta'} role="button">Agregar Huerta</Link>
                 <small id="helpId" className="text-muted">&nbsp;</small>
                 </div>
         
@@ -111,24 +106,25 @@ return(
                         <td scope="row">{mis_huertas.nombre}</td>
                         <td scope="row">{mis_huertas.localidad}</td>
                         <td scope="row"> {mis_huertas.Tipos_de_Plantas}</td>
-
-                            
-                        
                         <td>
                             <div className="btn-group" role="group" aria-label="">
                                 { (mis_huertas.estado=='A')?
-                                <>
-                                <button  onClick={() =>bajaMisHuertas(mis_huertas.id_uh)} type="button" className="btn btn-outline-danger"> Baja </button>
+                                <>                                
                                 <Link to={`/mihuerta/${id_usuario}/${mis_huertas.id_huerta}`}>
-                                <button  type="button" className="btn btn-success"> Ver</button>
+                                    <button  type="button" className="btn btn-success"> Ver</button>
                                 </Link>
                                 <small id="helpId" className="text-muted">&nbsp;</small>
-                                <Link name="" id="" className="btn btn-primary" to={`/mihuerta/${id_usuario}/${mis_huertas.id_huerta}/listaUsuariosHuerta`} role="button">
-                                Colaboradores
+                                <Link  to={`/mihuerta/${id_usuario}/${mis_huertas.id_huerta}/listaUsuariosHuerta`}>
+                                    <button  type="button" className="btn btn-dark">Colaboradores</button>
                                 </Link>
-                                <Link to={`/editar_huerta/${mis_huertas.id_huerta}`}>
-                                        <button  type="button" className="btn btn-warning">Editar</button>                       
+                                <small id="helpId" className="text-muted">&nbsp;</small>
+
+                                <Link to={`/mihuerta_EditarHuerta/${mis_huertas.id_huerta}`}>
+                                    <button  type="button" className="btn btn-warning">Editar</button>                       
                                 </Link>
+                                <small id="helpId" className="text-muted">&nbsp;</small>
+                                <button  onClick={() =>bajaMisHuertas(mis_huertas.id_uh)} type="button" className="btn btn-outline-danger"> Baja </button>
+                                <small id="helpId" className="text-muted">&nbsp;</small>
                                 </>
                                 : 
                                 <>
@@ -141,11 +137,9 @@ return(
                     ))}
                 </tbody>
             </table>
-
      <div className="card-footer text-muted ">
          Mi Huerta - Silicon Misiones
      </div>
-
      </div>
      <small id="helpId" className="text-muted">&nbsp;</small>
 </>

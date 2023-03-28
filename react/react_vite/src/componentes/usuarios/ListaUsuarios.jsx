@@ -213,10 +213,13 @@ return(
                 </tbody>
             </table>
         </div>
-        </div>
+        
     <div className="card-footer text-muted ">
         Mi Huerta - Silicon Misiones
     </div>
+    
+    </div>
+    <small id="helpId" className="text-muted">&nbsp;</small>
 
         </>
         )

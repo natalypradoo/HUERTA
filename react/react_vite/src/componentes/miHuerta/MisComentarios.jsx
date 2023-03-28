@@ -9,9 +9,9 @@ export function MisComentarios(){
     const {id_usuario}= useParams();
     const {id_huerta}= useParams();
     const {id_hp}=useParams();
-    console.log('param', id_usuario)
-    console.log('param', id_huerta)
-    console.log('param', id_hp)
+    //console.log('param', id_usuario)
+    //console.log('param', id_huerta)
+    //console.log('param', id_hp)
 
     const [mis_comentarios,setMisComentarios]=useState([]);
 
@@ -21,7 +21,7 @@ export function MisComentarios(){
 
     useEffect(()=>{
         API.getMisComentarios(id_usuario,id_huerta,id_hp).then(setMisComentarios)
-        console.log(mis_comentarios)
+        //console.log(mis_comentarios)
 
     },[]);
 
@@ -66,11 +66,12 @@ export function MisComentarios(){
 
     return(
         <>
-        <div className="card-body">
+        <div className="card">
         <div className="card-header">
                 Sus anotaciones son:
             </div>
-         {
+            <div className="card-body">
+                {
                     mensajeError?
                     <div className="alert alert-warning" role="alert">
                      {mensajeError}
@@ -83,11 +84,11 @@ export function MisComentarios(){
                      {mensajeSuccess}
                     </div>:''
                 } 
-        <Link name="" id="" className="btn btn-primary" to={'/'} role="button">Agregar Anotación</Link>
+        <Link name="" id="" className="btn btn-primary" to={`/mihuerta_AgregarComentario/${id_huerta}/${id_hp}`} role="button">Agregar Anotación</Link>
         <small id="helpId" className="text-muted">&nbsp;</small>
         <Link name="" id="" className="btn btn-primary" to={`/mihuerta/${id_usuario}/${id_huerta}/listaUsuariosHuerta`} role="button">Colaboradores</Link>
         <small id="helpId" className="text-muted">&nbsp;</small>
-        <Link name="" id="" className="btn btn-primary" to={`/mihuerta/${id_usuario}/${id_huerta}`} role="button">
+        <Link name="" id="" className="btn btn-dark" to={`/mihuerta/${id_usuario}/${id_huerta}`} role="button">
          Volver 
         </Link>
             <table className="table table-striped table-inverse table-responsive">
@@ -107,17 +108,16 @@ export function MisComentarios(){
                         <td scope="row">{mis_comentarios.comentario}</td>
                         <td scope="row">{mis_comentarios.fecha}</td>
 
-
-                            
-                        
                         <td>
                             <div className="btn-group" role="group" aria-label="">
                                 { (mis_comentarios.estado=='A')?
                                 <>
                                 <button onClick={() =>bajaMisComentarios(mis_comentarios.id_c_hp)} type="button" className="btn btn-outline-danger"> Baja </button>
-                                <Link >
-                                <button  type="button" className="btn btn-primary"> Modificar </button>
+                                <small id="helpId" className="text-muted">&nbsp;</small>
+                                <Link to={`/mihuerta_EditarComentario/${mis_comentarios.id_c_hp}`}>
+                                <button  type="button" className="btn btn-warning"> Modificar </button>
                                 </Link>
+                                <small id="helpId" className="text-muted">&nbsp;</small>
 
 
                                 </>
@@ -137,7 +137,8 @@ export function MisComentarios(){
      <div className="card-footer text-muted ">
          Mi Huerta - Silicon Misiones
      </div>
-    
+     </div>
+     <small id="helpId" className="text-muted">&nbsp;</small>
 </>
 
     );

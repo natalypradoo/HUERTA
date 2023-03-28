@@ -21,6 +21,10 @@ import { MisComentarios} from './componentes/miHuerta/MisComentarios'
 import {ListaMisPlantas} from './componentes/miHuerta/ListaMisPlantas'
 import { AgregarMisPlantas } from './componentes/miHuerta/AgregarMisPlantas'
 import { ListaMisUsuariosAgregar } from './componentes/miHuerta/ListaMisUsuariosAgregar'
+import { CrearMiHuerta} from './componentes/miHuerta/CrearMiHuerta'
+import { AgregarMiComentario } from './componentes/miHuerta/AgregarMiComentario'
+import { EditarMiComentario } from './componentes/miHuerta/EditarMisComentarios'
+import { EditarMiHuerta } from './componentes/miHuerta/EditarMiHuerta'
 // import {Contacto} from './componentes/usuarios/Contacto'
 //import "./componentes/login/loginn.css";
 // import { Login } from './servicios/servicios'
@@ -75,6 +79,10 @@ function App() {
         <Route path='/mihuerta_listaPlantas/:id_huerta' element={<ListaMisPlantas/>}></Route>
         <Route path='/mihuerta_agregarPlanta/:id_huerta/:id_planta' element={<AgregarMisPlantas/>}></Route>
         <Route path='/mihuerta_agregarUsuario/:id_usuario/:id_huerta' element={<ListaMisUsuariosAgregar/>}></Route>
+        <Route path='/mihuerta_crearMiHuerta' element={<CrearMiHuerta/>}></Route>
+        <Route path='/mihuerta_AgregarComentario/:id_huerta/:id_hp' element={<AgregarMiComentario/>}></Route>
+        <Route path='/mihuerta_EditarComentario/:id_c_hp' element={<EditarMiComentario/>}></Route>
+        <Route path='/mihuerta_EditarHuerta/:id_huerta' element={<EditarMiHuerta/>}></Route>
       </Routes>
 </div>
     }    

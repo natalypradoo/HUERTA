@@ -4,12 +4,39 @@ import {Link} from 'react-router-dom'
 import * as API from '../../servicios/servicios'
 
 export function ListaPlantas(){
+    //busqueda
+    const [nombre, setNombre]=useState([]);
+    const [epoca, setEpoca]=useState([]);
+    const [luna, setLuna]=useState([]);
+
     const [plantas,setPlantas]=useState([]);
     const [mensajeError,setmensajeError]=useState('');
     const [mensajeSuccess, setmensajeSuccess] = useState('')
     useEffect(()=>{
-        API.getPlantas().then(setPlantas)
+        API.getPlantas().then(setPlantas);
+        
     },[])
+
+
+//funcion para buscar PlanTA
+const buscar_planta = ()=>{
+
+    const filtros={
+        nombre: nombre,
+        epoca: epoca,
+        luna: luna,
+    };
+   // console.log('le manda los filtros',filtros)
+    API.BuscarPlantas(filtros).then(setPlantas);
+}
+
+const limpiar_filtros = ()=>{
+    setNombre('');
+    setEpoca('');
+    setLuna('');
+
+    API.getPlantas().then(setPlantas)   
+}
 
     //baja de Plantas
 const bajaPlantas  = async(id_planta)=>{
@@ -53,7 +80,61 @@ const altaPlantas= async(id_planta)=>{
 }
 
     return(
-        
+        <> 
+        <div className='card'>
+            <div className="card-header">
+                Filtros de busqueda
+            </div>
+            <div className="card-body">
+                <div className='row'>
+                    <div className='col-2'>
+                        <label>Nombre</label>
+                            <input 
+                             id='nombre'
+                             className='form-control'
+                             value={nombre} 
+                             onChange={(event)=>setNombre(event.target.value)}
+                            />
+                    </div>
+                    <div className='col-3'>
+                        <label>Epoca</label>
+                        <input 
+                            id='epoca'
+                            className='form-control'
+                            value={epoca} 
+                            onChange={(event)=>setEpoca(event.target.value)}
+                        />
+                    </div>
+                    <div className='col-3'>
+                        <label>Luna</label>
+                            <input 
+                            id='luna'
+                             className='form-control'
+                            value={luna} 
+                            onChange={(event)=>setLuna(event.target.value)}
+                            />
+                    </div>
+                    <div className='col-1'>
+                    </div>
+                    <div className='col-1'>
+                    <small id="helpId" className="text-muted">&nbsp;</small>
+
+                        <button onClick={buscar_planta} className='btn btn-primary'>Buscar</button>
+                    </div>
+                    <div className='col-2'>
+                    <small id="helpId" className="text-muted">&nbsp;</small>
+                    <small id="helpId" className="text-muted">&nbsp;</small>
+
+                        <button  onClick={limpiar_filtros} className='btn btn-dark'>Limpiar Filtros</button>                    
+                    </div>
+                </div>                   
+                </div>
+            </div> 
+
+            <small id="helpId" className="text-muted">&nbsp;</small>
+
+
+
         <div className="card">
             
             <div className="card-header">
@@ -73,6 +154,7 @@ const altaPlantas= async(id_planta)=>{
                      {mensajeSuccess}
                     </div>:''
                 }
+
                 <Link name="" id="" className="btn btn-primary" to={'/crearPlanta'} role="button">Nueva Planta</Link>
                 <table className="table table-striped table-inverse table-responsive">
                 <thead className="thead-inverse">
@@ -99,7 +181,7 @@ const altaPlantas= async(id_planta)=>{
                             <td>{planta.luna}</td>
                             <td>{planta.forma}</td>
                             <td>{planta.comentario}</td>
-                            <td><span class="badge bg-primary rounded-pill">{planta.Comentarios}</span></td>
+                            <td><span className="badge bg-primary rounded-pill">{planta.Comentarios}</span></td>
 
                             <td>
                             <div className="btn-group" role="group" aria-label="">
@@ -132,6 +214,7 @@ const altaPlantas= async(id_planta)=>{
                 Mi Huerta - Silicon Misiones
             </div>
         </div>
-        
+        <small id="helpId" className="text-muted">&nbsp;</small>
+        </>
     )
 }

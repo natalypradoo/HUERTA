@@ -8,8 +8,8 @@ export function MisPlantas(){
 
     const {id_usuario}= useParams();
     const {id_huerta}= useParams();
-    console.log('param', id_usuario)
-    console.log('param', id_huerta)
+    //console.log('param', id_usuario)
+    //console.log('param', id_huerta)
 
 
     const [mis_plantas,setMisPlantas]=useState([]);
@@ -20,9 +20,8 @@ export function MisPlantas(){
 
     useEffect(()=>{
         API.getMisPlantas(id_usuario,id_huerta).then(setMisPlantas)
-        console.log(mis_plantas)
-
-      },[]);
+        //console.log(mis_plantas)
+    },[]);
 
 //baja de Plantas
 const bajaMisPlantas  = async(id_hp)=>{
@@ -66,10 +65,12 @@ const bajaMisPlantas  = async(id_hp)=>{
     
     return(
         <>
-        <div className="card-body">
+        <div className="card">
+        
         <div className="card-header">
                 Las Plantas en la huerta son:
-            </div>
+        </div>
+        <div className="card-body">
          {
                     mensajeError?
                     <div className="alert alert-warning" role="alert">
@@ -108,7 +109,7 @@ const bajaMisPlantas  = async(id_hp)=>{
                 <tbody>
                     {mis_plantas.map((mis_plantas)=>(
  
-                        <tr key={mis_plantas.id_planta}>
+                        <tr key={mis_plantas.id_hp}>
                         <td scope="row">{mis_plantas.id_planta}</td>
                         <td scope="row">{mis_plantas.nombre}</td>
                         <td scope="row">{mis_plantas.fecha}</td>
@@ -120,12 +121,10 @@ const bajaMisPlantas  = async(id_hp)=>{
                             <div className="btn-group" role="group" aria-label="">
                                 { (mis_plantas.estado=='A')?
                                 <>
-                                <button onClick={() =>bajaMisPlantas(mis_plantas.id_hp)} type="button" className="btn btn-outline-danger"> Baja </button>
                                 <Link to={`/mihuerta_comentarios/${id_usuario}/${id_huerta}/${mis_plantas.id_hp}`}>
-                                <button  type="button" className="btn btn-primary"> Comentarios </button>
+                                <button  type="button" className="btn btn-success"> Ver </button>
                                 </Link>
-
-
+                                <button onClick={() =>bajaMisPlantas(mis_plantas.id_hp)} type="button" className="btn btn-outline-danger"> Baja </button>
                                 </>
                                 : 
                                 <>
@@ -143,7 +142,8 @@ const bajaMisPlantas  = async(id_hp)=>{
      <div className="card-footer text-muted ">
          Mi Huerta - Silicon Misiones
      </div>
-    
+     </div>
+     <small id="helpId" className="text-muted">&nbsp;</small>
 </>
     );
 }

@@ -64,11 +64,13 @@ const bajaMisUsuarios  = async(id_uh)=>{
 
     return(
         <>
-        <div className="card-body">
+        <div className="card">
+        
         <div className="card-header">
-                Las Plantas en la huerta son:
+                Las Colaboradores de la huerta son:
             </div>
-         {
+            <div className="card-body">
+                {
                     mensajeError?
                     <div className="alert alert-warning" role="alert">
                      {mensajeError}
@@ -81,11 +83,14 @@ const bajaMisUsuarios  = async(id_uh)=>{
                      {mensajeSuccess}
                     </div>:''
                 } 
-        <Link name="" id="" className="btn btn-primary" to={`/mihuerta_agregarUsuario/${id_usuario}/${id_huerta}`} role="button">Agregar Colaborador</Link>
-        <small id="helpId" className="text-muted">&nbsp;</small>
-        <Link name="" id="" className="btn btn-primary" to={`/mihuerta/${id_usuario}/${id_huerta}`} role="button">
-         Volver 
-        </Link>
+                <div className="row">
+                    <div className="col-10">
+                    <Link name="" id="" className="btn btn-primary" to={`/mihuerta_agregarUsuario/${id_usuario}/${id_huerta}`} role="button">Agregar Colaborador</Link>
+                    </div>
+                    <div className="col-2">
+                    <Link name="" id="" className="btn btn-dark" to={`/mihuerta/${id_usuario}`} role="button">Volver</Link>
+                    </div>
+                </div>
             <table className="table table-striped table-inverse table-responsive">
                 <thead className="thead-inverse">
                     <tr>
@@ -105,9 +110,9 @@ const bajaMisUsuarios  = async(id_uh)=>{
                                 { (mis_usuarios.estado=='A')?
                                 <>
                                 <button onClick={() =>bajaMisUsuarios(mis_usuarios.id_uh)}  type="button" className="btn btn-outline-danger"> Baja </button>
-                                <Link to={`/mihuerta/${id_usuario}/${id_huerta}`}>
+                                {/* <Link to={`/mihuerta/${id_usuario}/${id_huerta}`}>
                                 <button  type="button" className="btn btn-primary"> Comentarios </button>
-                                </Link>
+                                </Link> */}
 
 
                                 </>
@@ -127,7 +132,9 @@ const bajaMisUsuarios  = async(id_uh)=>{
      <div className="card-footer text-muted ">
          Mi Huerta - Silicon Misiones
      </div>
-    
+     </div>
+     <small id="helpId" className="text-muted">&nbsp;</small>
+
 </>
     );
 }

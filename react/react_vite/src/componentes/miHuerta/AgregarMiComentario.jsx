@@ -1,18 +1,20 @@
 import { useState,useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import * as API from '../../servicios/servicios' 
 
-export function CreaHuerta(){
+export function AgregarMiComentario(){
+    const {id_huerta}= useParams();
+    const {id_hp}=useParams();
     const[id_usuario,setIdUsuario]=useState('')
-    const [nombre, setNombre] = useState('');
-    const [localidad, setLocalidad] = useState('');
+    const [comentario, setComentario] = useState('');
+    const [fecha, setFecha] = useState('');
     const [mensajeSuccess, setmensajeSuccess] = useState('');
     const [mensajeError, setmensajeError] = useState('');
 
 
-   const HuertaForm  = async (event)=>{
+   const ComentarioForm  = async (event)=>{
     event.preventDefault();
-      const user = await API.CrearHuerta(id_usuario,{nombre,localidad})
+      const user = await API.CrearMiComentario(id_huerta,id_hp,{comentario,fecha})
   if(user.status){
           setmensajeSuccess(user.mensaje)
          setTimeout(()=>{
@@ -22,11 +24,10 @@ export function CreaHuerta(){
          // window.location.reload(true)
      }else{
        setmensajeError(user.mensaje)
-          setmensajeError(user)
-         setTimeout(()=>{
-               setmensajeError('');
-          }, 4000)
-         
+        setmensajeError(user)
+        setTimeout(()=>{
+            setmensajeError('');
+        }, 4000)   
      }
    }
    useEffect(()=>{
@@ -42,47 +43,60 @@ export function CreaHuerta(){
         <>
         <div className="card">
             <div className="card-header">
-                Crear Huerta
+                Agregar anotación:
             </div>
                 <div className="card-body">
-                <form onSubmit={HuertaForm}>
+                {
+                    mensajeError?
+                    <div className="alert alert-warning" role="alert">
+                     {mensajeError}
+                    </div>:''
+                }
+
+                {
+                    mensajeSuccess?
+                    <div className="alert alert-success" role="alert">
+                     {mensajeSuccess}
+                    </div>:''
+                } 
+                <form onSubmit={ComentarioForm}>
                     <div className="row">
                         <div className="col-6">
                             <div className="form-group">
-                                <label for="">Nombre de la Huerta</label>
+                                <label for="">Comentario</label>
                                 <input required
                                 type="text" 
-                                value={nombre}
-                                onChange={(event)=>setNombre(event.target.value)} 
+                                value={comentario}
+                                onChange={(event)=>setComentario(event.target.value)} 
                                 className="form-control" 
-                                placeholder="Nombre de la Huerta" />
+                                placeholder="Comente" />
                                
                             </div>
                         </div>
                         <div className="col-6">
                             <div className="form-group">
-                                <label for="">Localidad</label>
+                                <label for="">Fecha</label>
                                 <input required
-                                type="text" 
-                                value= {localidad} 
-                                onChange={(event)=>setLocalidad(event.target.value)} 
+                                type="date" 
+                                value= {fecha} 
+                                onChange={(event)=>setFecha(event.target.value)} 
                                 className="form-control"
-                                placeholder="Localidad" />
+                                placeholder="" />
                                 
                             </div>
                         </div>
                     </div>
                 <div className="form-group">
-                    <button onClick={HuertaForm} type="button" className="btn btn-primary">Guardar</button>
+                    <button onClick={ComentarioForm} type="button" className="btn btn-primary">Guardar</button>
                     <small id="helpId" className="text-muted">&nbsp;</small>
-                    <Link to={'/listarHuertas'}><button type="button" className="btn btn-dark">Volver al Listado</button></Link>
+                    <Link to={`/mihuerta_comentarios/${id_usuario}/${id_huerta}/${id_hp}`}><button type="button" className="btn btn-dark">Volver al Listado</button></Link>
 
                 </div>
                 </form>
                 </div>
                 
             <div className="card-footer text-muted">
-                Mi Huerta
+                Mi Huerta - Silicon Misiones
             </div>
         </div>
         <small id="helpId" className="text-muted">&nbsp;</small>

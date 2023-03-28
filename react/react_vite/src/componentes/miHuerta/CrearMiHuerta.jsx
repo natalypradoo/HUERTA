@@ -2,7 +2,7 @@ import { useState,useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import * as API from '../../servicios/servicios' 
 
-export function CreaHuerta(){
+export function CrearMiHuerta(){
     const[id_usuario,setIdUsuario]=useState('')
     const [nombre, setNombre] = useState('');
     const [localidad, setLocalidad] = useState('');
@@ -75,7 +75,7 @@ export function CreaHuerta(){
                 <div className="form-group">
                     <button onClick={HuertaForm} type="button" className="btn btn-primary">Guardar</button>
                     <small id="helpId" className="text-muted">&nbsp;</small>
-                    <Link to={'/listarHuertas'}><button type="button" className="btn btn-dark">Volver al Listado</button></Link>
+                    <Link to={`/mihuerta/${id_usuario}`}><button type="button" className="btn btn-dark">Volver al Listado</button></Link>
 
                 </div>
                 </form>

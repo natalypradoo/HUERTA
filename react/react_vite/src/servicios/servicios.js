@@ -248,6 +248,21 @@ export async function getPlantas(){
     }
 };
 
+//buscar Plantas
+export async function BuscarPlantas(filtros){
+    const requestOptions={
+        method:'POST',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(filtros)
+    };
+    //console.log(filtros)
+    const response = await fetch(`${API_URL}/buscar_plantas`, requestOptions);
+    const data= await response.json()
+    return data;
+}
+
 //Editar info de Plantas
 //editar
 export async function getPlantasbyId(id_planta){
@@ -503,7 +518,7 @@ export async function AltaMisPlantas(id_hp){
     try{
         const response = await fetch(`${API_URL}/mihuerta_plantas_alta/${id_hp}`, requestOptions)
         const data = await response.json();
-        console.log(data)
+        //console.log(data)
         return data;
     } catch(e){
 
@@ -522,7 +537,7 @@ export async function AgregarPlantasHuerta(id_huerta,id_planta,datos){
     try{
     const response = await fetch(`${API_URL}/mihuerta_agregarPlanta/${id_huerta}/${id_planta}`, requestOptions)
     const data = await response.json();
-    console.log(data)
+    //console.log(data)
     return data;
     } catch(e){
         console.log(e);
@@ -539,7 +554,7 @@ export async function getMisUsuarios(id_usuario,id_huerta){
     try{
 const response = await fetch(`${API_URL}/mihuerta/${id_usuario}/${id_huerta}/listaUsuariosHuerta`);
 const data= await response.json();
-console.log(data)
+//console.log(data)
 return data;
 }catch(error){
 console.log('Nuestro error',error);
@@ -556,7 +571,7 @@ export async function BajaMisUsuarios(id_uh){
     try{
         const response = await fetch(`${API_URL}/mihuerta_usuario_baja/${id_uh}`, requestOptions)
         const data = await response.json();
-        console.log(data)
+        //console.log(data)
         return data;
     } catch(e){
 
@@ -574,7 +589,7 @@ export async function AltaMisUsuarios(id_uh){
     try{
         const response = await fetch(`${API_URL}/mihuerta_usuario_alta/${id_uh}`, requestOptions)
         const data = await response.json();
-        console.log(data)
+        //console.log(data)
         return data;
     } catch(e){
 
@@ -591,7 +606,7 @@ export async function getMisComentarios(id_usuario,id_huerta,id_hp){
     try{
 const response = await fetch(`${API_URL}/mihuerta_comentarios/${id_usuario}/${id_huerta}/${id_hp}`);
 const data= await response.json();
-console.log(data)
+//console.log(data)
 return data;
 }catch(error){
 console.log('Nuestro error',error);
@@ -608,7 +623,7 @@ export async function BajaMisComentarios(id_c_hp){
     try{
         const response = await fetch(`${API_URL}/mihuerta_comentarios_baja/${id_c_hp}`, requestOptions)
         const data = await response.json();
-        console.log(data)
+        //console.log(data)
         return data;
     } catch(e){
 
@@ -626,10 +641,62 @@ export async function AltaMisComentarios(id_c_hp){
     try{
         const response = await fetch(`${API_URL}/mihuerta_comentarios_alta/${id_c_hp}`, requestOptions)
         const data = await response.json();
-        console.log(data)
+        //console.log(data)
         return data;
     } catch(e){
 
         alert('No se puede conectar con el servidor')
     }
 }
+//Agregar comentario a planta de una huerta
+///mihuerta_AgregarComentario/:id_huerta/:id_hp
+export async function CrearMiComentario(id_huerta,id_hp,datos){
+    const requestOptions={
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datos)
+    };
+    try{
+    const response = await fetch(`${API_URL}/mihuerta_AgregarComentario/${id_huerta}/${id_hp}`, requestOptions)
+    const data = await response.json();
+    //console.log(data)
+    return data;
+    } catch(e){
+        console.log(e);
+        // console.log('no funciona')
+    }
+}
+//Editar Comentario de una planta en una huerta
+//Editar info de Plantas
+//editar
+export async function getMiComentariobyId(id_c_hp){
+    try{
+const response = await fetch(`${API_URL}/mihuerta_EditarComentario/${id_c_hp}`);
+const data= await response.json();
+console.log(data)
+return data[0];
+}catch(error){
+console.log('Nuestro error',error);
+}
+};
+
+ export async function   UpdateMiComentario(id_c_hp, datos_enviar){
+   const requestOptions={
+         method: 'PUT',
+         headers: {
+             'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(datos_enviar)
+     };
+     try{
+        const response = await fetch(`${API_URL}/mihuerta_EditarComentario/${id_c_hp}`, requestOptions)
+        const data = await response.json();
+        console.log(data)
+        return data;
+    } catch(e){
+
+        alert('No se puede conectar con el servidor')
+    }
+ }
