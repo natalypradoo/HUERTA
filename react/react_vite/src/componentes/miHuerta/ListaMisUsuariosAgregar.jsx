@@ -22,7 +22,7 @@ export function ListaMisUsuariosAgregar(){
     useEffect(()=>{
         API.getListaMisUsuariosAgregar(id_huerta).then(setUsuarios)
              const usuarioLogueado = JSON.parse(localStorage.getItem('usuario'))
-             console.log(usuarioLogueado)
+             //console.log(usuarioLogueado)
               if(usuarioLogueado){
                 setIdUsuarioLogueado(usuarioLogueado.datos[0].id_usuario);
                 setNombreUsuario(usuarioLogueado.datos[0].username);
@@ -35,7 +35,7 @@ export function ListaMisUsuariosAgregar(){
             setmensajeSuccess(user.mensaje)
             setTimeout(()=>{
                 setmensajeSuccess('');
-            }, 4000)
+            }, 5000)
                  
                   window.location.reload(true)
             }else{
@@ -43,7 +43,7 @@ export function ListaMisUsuariosAgregar(){
             setmensajeError(user)
             setTimeout(()=>{
                 setmensajeError('');
-            }, 4000)
+            }, 5000)
                  
         }
     }
@@ -52,12 +52,13 @@ export function ListaMisUsuariosAgregar(){
 const buscar_usuario = ()=>{
 
     const filtros={
+        id_huerta: id_huerta,
         username: username,
         nombre: nombre,
         apellido: apellido,
     };
    // console.log('le manda los filtros',filtros)
-    API.BuscarUsuarios(filtros).then(setUsuarios);
+    API.BuscarUsuariosMiHuerta(filtros).then(setUsuarios);
 }
 
 const limpiar_filtros = ()=>{

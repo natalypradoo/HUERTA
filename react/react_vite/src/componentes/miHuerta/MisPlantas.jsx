@@ -48,9 +48,9 @@ const bajaMisPlantas  = async(id_hp)=>{
          const user = await API.AltaMisPlantas(id_hp)
          // const user = await API.bajaUsuario(id)
          if(user.status){
-            setmensajeError(user.mensaje)
+            setmensajeSuccess(user.mensaje)
               setTimeout(()=>{
-                setmensajeError('')
+                setmensajeSuccess('')
                  window.location.reload(true)
     
               }, 4000)

@@ -35,7 +35,7 @@ export function LoginForm() {
   <div className="container" >
       <div className="row justify-content-center">
       <div className="col-md-4">
-       <div className="card bg-success">
+       <div className="card bg-secundary">
 
         <div className="card-title text-center">
         <h2>Mi Huerta</h2>

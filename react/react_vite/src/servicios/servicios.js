@@ -475,7 +475,19 @@ export async function AgregarUsuariosHuerta(id_huerta,id_usuario){
         // console.log('no funciona')
     }
 }
-
+//buscarUsuariosHUERTA
+export async function BuscarUsuariosMiHuerta(filtros){
+    const requestOptions={
+        method:'POST',
+        headers:{
+            'Content-Type':'application/json'
+        },
+        body:JSON.stringify(filtros)
+    };
+    const response = await fetch(`${API_URL}/buscar_usuariosMiHurta`, requestOptions);
+    const data= await response.json()
+    return data;
+}
 
 //Lista las PLANTAS de una HUERTA
 export async function getMisPlantas(id_usuario,id_huerta){
@@ -700,3 +712,15 @@ console.log('Nuestro error',error);
         alert('No se puede conectar con el servidor')
     }
  }
+
+
+ ////// API LOCALIDADES
+ export async function getLocalidades(){
+    try{
+const response = await fetch(`${API_URL}/localidades`);
+const data= await response.json();
+return data;
+}catch(error){
+console.log('Nuestro error',error);
+}
+};

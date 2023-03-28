@@ -10,8 +10,11 @@ export function EditarMiHuerta() {
   const [localidad, setLocalidad]=useState('');
   const [mensajeError,setmensajeError]=useState('');
   const [mensajeSuccess, setmensajeSuccess] = useState('')
+  //...
+  const [localidades,setLocalidades]=useState([]);
 
   useEffect(()=>{
+    API.getLocalidades().then(setLocalidades)
     trae_datos(id_huerta)
     
         const usuarioLogueado = JSON.parse(localStorage.getItem('usuario'))
@@ -76,18 +79,21 @@ export function EditarMiHuerta() {
                     name="" id="" className="form-control" placeholder="" aria-describedby="helpId"/>
                 </div>
               </div>
+
               <div className="col-6">
                 <div className="form-group">
-                  <label for="">Localidad</label>
-                  <div className="form-group" >
-                    <input 
-                      type="text"
-                      value={localidad} 
-                      onChange={(event)=>setLocalidad(event.target.value)}
-                      name="" id="" className="form-control" placeholder="" aria-describedby="helpId"/>
-                  </div>
+                <label for="">Localidad</label>
+                <select 
+                onChange={(event)=>setLocalidad(event.target.value)} 
+                className='form-control'>
+                <option>{localidad}</option>
+                {localidades.map((loca)=>(
+                  <option value={loca.nombre}>{loca.nombre}</option>
+                ))}
+                </select>                             
                 </div>
               </div>
+
             </div>
             <div className="form-group">
               <button  onClick={editar_planta}  type="button" className="btn btn-primary">Guardar</button>

@@ -8,7 +8,8 @@ export function CreaHuerta(){
     const [localidad, setLocalidad] = useState('');
     const [mensajeSuccess, setmensajeSuccess] = useState('');
     const [mensajeError, setmensajeError] = useState('');
-
+    //...
+    const [localidades,setLocalidades]=useState([]);
 
    const HuertaForm  = async (event)=>{
     event.preventDefault();
@@ -30,6 +31,7 @@ export function CreaHuerta(){
      }
    }
    useEffect(()=>{
+    API.getLocalidades().then(setLocalidades)
     const usuarioLogueado = JSON.parse(localStorage.getItem('usuario'))
     //console.log(usuarioLogueado.datos[0].username)
     if(usuarioLogueado){
@@ -61,14 +63,15 @@ export function CreaHuerta(){
                         </div>
                         <div className="col-6">
                             <div className="form-group">
-                                <label for="">Localidad</label>
-                                <input required
-                                type="text" 
-                                value= {localidad} 
-                                onChange={(event)=>setLocalidad(event.target.value)} 
-                                className="form-control"
-                                placeholder="Localidad" />
-                                
+                            <label for="">Localidad</label>
+                            <select 
+                            onChange={(event)=>setLocalidad(event.target.value)} 
+                            className='form-control'>
+                            <option>Seleccionar una Localidad</option>
+                            {localidades.map((localidad)=>(
+                                <option value={localidad.nombre}>{localidad.nombre}</option>
+                            ))}
+                            </select>                             
                             </div>
                         </div>
                     </div>

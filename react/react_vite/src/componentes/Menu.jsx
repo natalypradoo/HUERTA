@@ -94,8 +94,10 @@ export function Menu(){
 </div>
 
   <div className='col-2'>
+    
     <li className="nav-item active">
-      <a href="">Hola, {nombre_usuario}!</a>
+      
+      <a href=""className='success'><h4>Hola, {nombre_usuario}!</h4> </a>
     </li> 
   </div>  
 

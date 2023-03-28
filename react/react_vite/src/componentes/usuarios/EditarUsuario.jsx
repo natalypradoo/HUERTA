@@ -23,7 +23,7 @@ export function EditarUsuario(){
     const trae_datos  = async ()=>{
       // event.preventDefault();
       const datos_usuario = await API.getUsuariosbyId(id_usuario);
-      //console.log(datos_usuario);
+    //console.log(datos_usuario);
       setEmail(datos_usuario.email)
       setUsername(datos_usuario.username);
       setNombre(datos_usuario.nombre);
