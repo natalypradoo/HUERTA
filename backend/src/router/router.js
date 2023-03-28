@@ -681,7 +681,7 @@ router.get('/mihuerta/:id_usuario',(req,res)=>{
          let query= `SELECT T.id_huerta, hh.nombre,hh.localidad,T.Tipos_de_Plantas, T.estado,T.id_uh FROM (
          SELECT uh.id_usuario, uh.id_huerta,count(hp.id_huerta) Tipos_de_Plantas, uh.estado, uh.id_uh FROM huerta.usuario_huerta AS uh 
          LEFT JOIN huerta.huerta_planta AS hp ON uh.id_huerta=hp.id_huerta WHERE (uh.id_usuario='${id_usuario}') GROUP BY id_huerta) AS T 
-         INNER JOIN huerta.huerta AS hh WHERE hh.id_huerta=T.id_huerta;`;
+         INNER JOIN huerta.huerta AS hh WHERE hh.id_huerta=T.id_huerta AND hh.estado='A';`;
          // SELECT T.id_huerta, hh.nombre,hh.localidad,T.Tipos_de_Plantas FROM (
          //    SELECT uh.id_usuario, uh.id_huerta,count(hp.id_huerta) Tipos_de_Plantas FROM huerta.usuario_huerta AS uh 
          //    LEFT JOIN huerta.huerta_planta AS hp ON uh.id_huerta=hp.id_huerta WHERE (uh.id_usuario='1' AND uh.estado='A') GROUP BY id_huerta) AS T 
@@ -712,7 +712,7 @@ router.post('/mihuerta_crearHuerta/:id_usuario',async(req,res)=>{
          //INSERT INTO `huerta`.`huerta` (`nombre`, `localidad`) VALUES ('Pato', 'Oberá');
          mysqlConeccion.query(query, (err,rows)=>{
             if(!err){
-            let query1 =`SELECT id_huerta FROM huerta.huerta WHERE nombre='${nombre}'; `;
+            let query1 =`SELECT id_huerta FROM huerta.huerta WHERE nombre='${nombre}' ORDER BY id_huerta DESC LIMIT 1 ; `;
             mysqlConeccion.query(query1, (err,rows)=>{
             const {id_huerta}=rows[0];
                if(!err){
@@ -973,81 +973,6 @@ router.post('/mihuerta_agregarPlanta/:id_huerta/:id_planta',async(req,res)=>{
    //   });
    // });
 
-//COMENTAR SOBRE LAS PLANTAS--- boton ((COMENTAR))
-router.post('/mihuerta/:id_usuario/:id_huerta/:id_hp',async(req,res)=>{
-//   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
-//      if(err){
-//         res.sendStatus(403);
-//      }else{
-         const {comentario,fecha} = req.body
-         let id_usuario= req.params.id_usuario;
-         let id_huerta= req.params.id_huerta;
-         let id_hp= req.params.id_hp;
-         let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}' AND estado='A';`;
-         mysqlConeccion.query(query,(err,registros)=>{
-            if(!err){
-               //console.log(registros.length)
-               if(registros.length!=undefined){
-                  if(comentario!=undefined && fecha!=undefined){
-                     if(comentario!="" && fecha!="" ){
-                        let query1= `INSERT INTO huerta.comentario_hp ( id_hp, comentario, fecha) VALUES ('${id_hp}','${comentario}','${fecha}');`;    
-                        //INSERT INTO `huerta`.`comentario_hp` (`id_hp`, `comentario`, `fecha`) VALUES ('10', 'lindo día', '2023-03-03 13:00:00');
-                        mysqlConeccion.query(query1,(err,registros)=>{
-                           if(!err){
-                              res.json({
-                                 status: true,
-                                 mensaje: "Se agregó correctamente el comentario"
-                              });
-                           }else{
-                              res.json({
-                                 status: false,
-                                 mensaje: "Ocurrio un ERROR en el servidor"
-                              });
-                           };
-                        });
-                     }                 
-                     if(comentario!="" && fecha=="" ){
-                        let query2= `INSERT INTO huerta.comentario_hp ( id_hp, comentario, fecha) VALUES ('${id_hp}','${comentario}',NOW());`;    
-                        mysqlConeccion.query(query2,(err,registros)=>{
-                           if(!err){
-                              res.json({
-                                 status: true,
-                                 mensaje: "Se agregó correctamente el comentario"
-                              });                           }else{
-                              res.json({
-                                 status: false,
-                                 mensaje: "Ocurrio un ERROR en el servidor"
-                              });
-                           };
-                        });
-                     }else{
-                        res.json({
-                           status: false,
-                           mensaje: "Debe completar el campo comentario"
-                        });
-                     };
-                  }else{
-                     res.json({
-                        status: false,
-                        mensaje: "Los datos se completaron incorrectamente"
-                     });
-                  };
-               }else{
-                  res.json({
-                     status: false,
-                     mensaje: "No eres colaborador en esta huerta"
-                  });
-               };
-            }else{
-               res.json({
-                  status: false,
-                  mensaje: "Ocurrio un ERROR en el servidor"
-               });
-            }
-         }); 
-       });
-//   });
-// });
 
 //BAJA DE LAS PLANTAS DE UNA HUERTA----boton ((BAJA)) o ((ELIMINAR))
 
@@ -1364,7 +1289,7 @@ router.get('/mihuerta_comentarios/:id_usuario/:id_huerta/:id_hp',(req,res)=>{
          let query=`SELECT * FROM huerta.usuario_huerta WHERE id_usuario='${id_usuario}' AND id_huerta='${id_huerta}';`;
          mysqlConeccion.query(query,(err,registros)=>{
             if(!err){
-               console.log(registros)
+               //console.log(registros)
                if(registros.length!=undefined){
                //SELECT uh.id_uh,u.username  FROM huerta.usuario_huerta AS uh INNER JOIN huerta.usuarios AS u WHERE uh.id_usuario=u.id_usuario AND uh.estado='A' AND id_huerta='1'
                let query= `SELECT * FROM huerta.comentario_hp WHERE id_hp='${id_hp}' ORDER BY fecha desc;`;
@@ -1389,6 +1314,65 @@ router.get('/mihuerta_comentarios/:id_usuario/:id_huerta/:id_hp',(req,res)=>{
       });         
   // })
  //});
+
+//COMENTAR SOBRE LAS PLANTAS--- boton ((COMENTAR))
+router.post('/mihuerta_AgregarComentario/:id_huerta/:id_hp',async(req,res)=>{
+   //   jwt.verify(req.token, 'huerta1Key',(err,valido)=>{
+   //      if(err){
+   //         res.sendStatus(403);
+   //      }else{
+            const {comentario,fecha} = req.body
+            let id_hp= req.params.id_hp;    
+                     if(comentario!=undefined && fecha!=undefined){
+                        if(comentario!="" && fecha!="" ){
+                           let query1= `INSERT INTO huerta.comentario_hp ( id_hp, comentario, fecha) VALUES ('${id_hp}','${comentario}','${fecha}');`;    
+                           //INSERT INTO `huerta`.`comentario_hp` (`id_hp`, `comentario`, `fecha`) VALUES ('10', 'lindo día', '2023-03-03 13:00:00');
+                           mysqlConeccion.query(query1,(err,registros)=>{
+                              if(!err){
+                                 res.json({
+                                    status: true,
+                                    mensaje: "Se agregó correctamente el comentario"
+                                 });
+                              }else{
+                                 res.json({
+                                    status: false,
+                                    mensaje: "Ocurrio un ERROR en el servidor"
+                                 });
+                              };
+                           });
+                        }                 
+                        else if(comentario!="" && fecha=="" ){
+                           let query2= `INSERT INTO huerta.comentario_hp ( id_hp, comentario, fecha) VALUES ('${id_hp}','${comentario}',NOW());`;    
+                           mysqlConeccion.query(query2,(err,registros)=>{
+                              if(!err){
+                                 res.json({
+                                    status: true,
+                                    mensaje: "Se agregó correctamente el comentario"
+                                 });                          
+                              }else{
+                                 res.json({
+                                    status: false,
+                                    mensaje: "Ocurrio un ERROR en el servidor"
+                                 });
+                              };
+                           });
+                        }else{
+                           res.json({
+                              status: false,
+                              mensaje: "Debe completar el campo comentario"
+                           });
+                        };
+                     }else{
+                        res.json({
+                           status: false,
+                           mensaje: "Los datos se completaron incorrectamente"
+                        });
+                     };
+          });
+   //   });
+   // });
+
+
 
 ///BAJA DE UN COMENTARIO EN MI HUERTA
 //BAJA COMENTARIO
@@ -1431,8 +1415,84 @@ router.put('/mihuerta_comentarios_alta/:id_c_hp',(req,res)=>{
    });
 });
 
+//Trae un comentario de una Huerta
+router.get('/mihuerta_EditarComentario/:id_c_hp',(req,res)=>{
+   //jwt.verify(req.token,'huerta1Key',(err,valido)=>{
+    //  if(err){
+      //   res.sendStatus(403);
+    //  }else{
+         let id_c_hp= req.params.id_c_hp;
+         let query= `SELECT id_c_hp,id_hp,comentario, DATE_FORMAT(fecha, "%Y-%m-%d") fecha, estado FROM huerta.comentario_hp WHERE id_c_hp='${id_c_hp}';`;
+         mysqlConeccion.query(query,(err,registros)=>{
+            if(!err){
+               //console.log(registros)
+               res.json(registros);
+            }else{
+               console.log(err)
+               res.json({
+                  status: false,
+                  mensaje: "Ocurrio un ERROR en el servidor"
+               })
+            }
+         })
+      });
+  // })
+ //});
 
 
+//editar 
+ router.put('/mihuerta_EditarComentario/:id_c_hp', async (req,res)=>{
+   const {comentario,fecha} = req.body
+   let id_c_hp= req.params.id_c_hp;
+   console.log('datos que entran a la consulta',comentario,fecha)    
+            if(comentario!=undefined && fecha!=undefined){
+               if(comentario!="" && fecha!="" ){
+                  let query1= `UPDATE huerta.comentario_hp SET comentario='${comentario}',fecha='${fecha}' WHERE (id_c_hp='${id_c_hp}');`;    
+                  //INSERT INTO `huerta`.`comentario_hp` (`id_hp`, `comentario`, `fecha`) VALUES ('10', 'lindo día', '2023-03-03 13:00:00');
+                  mysqlConeccion.query(query1,(err,registros)=>{
+                     if(!err){
+                        res.json({
+                           status: true,
+                           mensaje: "Se MODIFICÓ correctamente el comentario"
+                        });
+                     }else{
+                        res.json({
+                           status: false,
+                           mensaje: "Ocurrio un ERROR en el servidor"
+                        });
+                     };
+                  });
+               }                 
+               else if(comentario!="" && fecha=="" ){
+                  let query2= `UPDATE huerta.comentario_hp SET comentario='${comentario}',fecha=NOW() WHERE (id_c_hp='${id_c_hp}');`;    
+                  mysqlConeccion.query(query2,(err,registros)=>{
+                     if(!err){
+                        res.json({
+                           status: true,
+                           mensaje: "Se MODIFICÓ correctamente el comentario con la fecha del día"
+                        });                          
+                     }else{
+                        res.json({
+                           status: false,
+                           mensaje: "Ocurrio un ERROR en el servidor"
+                        });
+                     };
+                  });
+               }else{
+                  res.json({
+                     status: false,
+                     mensaje: "Debe completar el campo comentario"
+                  });
+               };
+            }else{
+               res.json({
+                  status: false,
+                  mensaje: "Los datos se completaron incorrectamente"
+               });
+            };
+ });
+//   });
+// });
 
 
 
@@ -1471,7 +1531,40 @@ router.get('/plantas',(req,res)=>{
       });
   // })
  //});
-//ALTA
+
+
+//Buscar Planta
+router.post('/buscar_plantas', (req,res)=>{
+   let {nombre,epoca,luna}=req.body
+   console.log(req.body)
+      let query= `SELECT pl.id_planta, pl.nombre, pl.comentario, pl.epoca, pl.luna, pl.forma,pl.estado FROM huerta.plantas AS pl 
+       WHERE 1`;
+         if(nombre){
+            query=query +` AND nombre like '%${nombre}%'`;
+         }
+
+         if(epoca){
+            query=query +` AND epoca like '%${epoca}%'`;
+         }
+
+         if(luna){
+            query=query +` AND luna like '%${luna}%'`;
+         }
+         //console.log(query);
+             mysqlConeccion.query(query,(err,registros)=>{
+             if(!err){
+                //console.log(registros)
+                res.json(registros);
+             }else{
+               console.log(err)
+                res.json({
+                   status: false,
+                   mensaje: "Ocurrio un ERROR en el servidor"
+                });
+             }
+          })
+        });
+
 
 
 //BAJA de plantas
