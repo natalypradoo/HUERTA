@@ -295,7 +295,7 @@ router.get('/usuarios/:id_usuario', (req,res)=>{
 //console.log(registro)
               res.json(registros);
             }else{
-               console.log(err)
+               //console.log(err)
               res.json({
                  status: false,
                  mensaje: "Ocurrio un ERROR en el servidor"
@@ -821,7 +821,7 @@ router.get('/mihuerta/:id_usuario/:id_huerta',(req,res)=>{
             if(!err){
                //console.log(registros.length)
                if(registros.length!=undefined){
-                  let query1= `SELECT p.id_planta,p.nombre,TT.fecha,TT.estado,TT.id_hp FROM(SELECT T.id_hp,T.id_planta,T.cantidad,T.fecha,T.estado FROM 
+                  let query1= `SELECT p.id_planta,p.nombre, DATE_FORMAT(TT.fecha, "%Y-%m-%d") fecha,TT.estado,TT.id_hp FROM(SELECT T.id_hp,T.id_planta,T.cantidad,T.fecha,T.estado FROM 
                      (SELECT hp.id_hp,hp.id_huerta,hp.id_planta,hp.cantidad,hp.fecha,hp.estado 
                      FROM huerta.huerta_planta AS hp where hp.id_huerta='${id_huerta}' ) AS T 
                      LEFT JOIN huerta.comentario_hp AS chp ON T.id_hp=chp.id_hp group by T.id_hp) 
@@ -1149,14 +1149,16 @@ router.get('/mihuerta_agregarUsuario/:id_huerta', (req,res)=>{
   
   
   
-  //Buscar usuario
-  router.post('/buscar_usuarios', (req,res)=>{
-     let {username,nombre,apellido}=req.body
+  //Buscar usuario de HUERTA
+  router.post('/buscar_usuariosMiHurta', (req,res)=>{
+     let {id_huerta,username,nombre,apellido}=req.body
      console.log(req.body)
-        let query= `SELECT T.id_usuario,T.username, p.nombre,p.apellido,p.contacto, p.email, T.estado FROM (
-              SELECT u.id_usuario,u.username ,up.id_persona,up.estado FROM huerta.usuarios as u 
-              inner join huerta.usuario_persona as up  where u.id_usuario=up.id_usuario and up.estado='A') AS T  
-              JOIN huerta.personas as p on T.id_persona=p.id_persona WHERE 1`;
+        let query= `SELECT T.id_usuario,T.username, p.nombre,p.apellido,p.contacto ,p.email ,T.estado FROM (
+         SELECT u.id_usuario,u.username, up.estado ,up.id_persona FROM huerta.usuarios as u 
+         INNER JOIN huerta.usuario_persona as up  where u.id_usuario=up.id_usuario) AS T  
+         JOIN huerta.personas as p on T.id_persona=p.id_persona 
+         LEFT JOIN (SELECT uh.id_usuario FROM huerta.usuario_huerta AS uh WHERE uh.id_huerta='${id_huerta}' AND uh.estado='A') AS P 
+         ON T.id_usuario=P.id_usuario WHERE P.id_usuario IS NULL AND 1 `;
            if(apellido){
               query=query +` AND apellido like '%${apellido}%'`;
            }
@@ -1292,7 +1294,7 @@ router.get('/mihuerta_comentarios/:id_usuario/:id_huerta/:id_hp',(req,res)=>{
                //console.log(registros)
                if(registros.length!=undefined){
                //SELECT uh.id_uh,u.username  FROM huerta.usuario_huerta AS uh INNER JOIN huerta.usuarios AS u WHERE uh.id_usuario=u.id_usuario AND uh.estado='A' AND id_huerta='1'
-               let query= `SELECT * FROM huerta.comentario_hp WHERE id_hp='${id_hp}' ORDER BY fecha desc;`;
+               let query= `SELECT id_c_hp,id_hp,comentario, DATE_FORMAT(fecha, "%Y-%m-%d") fecha FROM huerta.comentario_hp WHERE id_hp='${id_hp}' ORDER BY fecha desc;`;
                mysqlConeccion.query(query,(err,registros)=>{
                if(!err){
                   res.json(registros);
@@ -1792,6 +1794,27 @@ router.put('/plantas/:id_planta' , (req, res)=>{
        }
    })});
  
+
+
+////LOCALIDADES
+
+ router.get('/localidades',(req,res)=>{
+   //jwt.verify(req.token,'huerta1Key',(err,valido)=>{
+    //  if(err){
+      //   res.sendStatus(403);
+    //  }else{
+         let query= `SELECT * FROM huerta.localidades;`;
+      //SELECT * FROM huerta.comentario_planta WHERE id_planta='1';
+         mysqlConeccion.query(query,(err,registros)=>{
+          if(!err){
+            res.json(registros);
+          }else{
+             console.log(err);
+          }
+       })
+      });
+  // })
+ //});  
 
 
 
